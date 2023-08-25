@@ -11,5 +11,17 @@ export default defineConfig(() => {
         "Cache-Control": "public, max-age=600",
       },
     },
+    build: {
+      cssMinify: 'lightningcss' as const,
+    },
+    css: {
+      transformer: 'lightningcss' as const,
+      lightningcss: {
+        drafts: {
+          nesting: true,
+          customMedia: true
+        }
+      },
+    }
   };
 });

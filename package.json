@@ -18,21 +18,28 @@
     "lint": "eslint \"src/**/*.ts*\"",
     "preview": "qwik build preview && vite preview --open",
     "start": "vite --open --mode ssr",
-    "qwik": "qwik"
+    "qwik": "qwik",
+    "ci": "esrun ./src/ci/index.ts"
   },
   "devDependencies": {
     "@builder.io/qwik": "^1.2.8",
     "@builder.io/qwik-city": "^1.2.8",
+    "@digitak/esrun": "^3.2.24",
     "@types/eslint": "8.44.1",
     "@types/node": "^20.4.5",
     "@typescript-eslint/eslint-plugin": "6.2.0",
     "@typescript-eslint/parser": "6.2.0",
     "eslint": "8.45.0",
     "eslint-plugin-qwik": "^1.2.8",
+    "lightningcss": "^1.21.7",
     "prettier": "3.0.0",
     "typescript": "5.1.6",
     "undici": "5.22.1",
     "vite": "4.4.7",
     "vite-tsconfig-paths": "4.2.0"
+  },
+  "dependencies": {
+    "pokenode-ts": "^1.20.0",
+    "sharp": "^0.32.5"
   }
 }
