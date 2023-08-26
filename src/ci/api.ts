@@ -1,6 +1,6 @@
-import type { Pokemon as APIPokemon } from 'pokenode-ts';
+import type { Pokemon as APIPokemon, Type as APIType } from 'pokenode-ts';
 
-export { APIPokemon };
+export { APIPokemon, APIType };
 
 const baseUrl = `https://pokeapi.co/api/v2`;
 
@@ -9,6 +9,10 @@ interface API {
     list: { name: string, url: string },
     item: APIPokemon
   };
+  type: {
+    list: { name: string, url: string },
+    item: APIType
+  }
 }
 
 export type Endpoints = Extract<keyof API, string>;

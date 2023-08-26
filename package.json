@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "pokenode-ts": "^1.20.0",
+    "qwik-hueeye": "^0.0.7",
     "sharp": "^0.32.5"
   }
 }
