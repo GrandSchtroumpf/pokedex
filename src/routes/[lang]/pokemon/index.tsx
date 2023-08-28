@@ -19,7 +19,10 @@ const baseTransition = (name: string | undefined, i: number, array: any[]) =>  `
 }`;
 const groupTransition = (pokemon: Pokemon) => `
 ::view-transition-old(pokemon-${pokemon.id}):only-child {
-  animation: scale-in ease-in 0.3s forwards;
+  --scale: 2;
+  animation:
+    scale ease-in 0.3s reverse both,
+    fade ease-in 0.3s reverse both;
 }`;
 
 interface PokemonItemProps {

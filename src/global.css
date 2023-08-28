@@ -43,9 +43,9 @@ h1, h2, h3, h4, h5, p {
   ::view-transition-group(main) {
     animation: none;
   }
-  ::view-transition-old(main) {
+  /* ::view-transition-old(main) {
     animation: fade reverse 0.2s both;
-  }
+  } */
   ::view-transition-new(main) {
     animation: fade 0.3s 0.2s both;
   }
@@ -59,6 +59,11 @@ h1, h2, h3, h4, h5, p {
 @keyframes fade {
   from {
     opacity: 0;
+  }
+}
+@keyframes slide-up {
+  from {
+    transform: translateY(var(--translate, 5vh));
   }
 }
 

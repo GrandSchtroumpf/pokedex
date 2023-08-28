@@ -59,7 +59,7 @@ export default component$(() => {
           {Object.entries(pokemon.stats).map(([key, stat]) => (
           <li key={key}>
             <span>{key}</span>
-            <progress max={100} value={stat.value}></progress>
+            <progress max={255} value={stat.value}></progress>
             <span>{stat.value}</span>
           </li>
           ))}

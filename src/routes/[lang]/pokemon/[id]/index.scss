@@ -14,11 +14,15 @@
   article {
     position: relative;
     display: flex;
-    width: 60%;
-    margin: auto;
+    width: 900px;
+    min-width: 60%;
+    max-width: 90%;
+    margin-inline: auto;
+    margin-bottom: 24px;
     gap: 16px;
   }
   .pokemon-index {
+    z-index: -1;
     position: absolute;
     inset-inline-end: 24px;
     inset-block-start: 24px;
@@ -74,6 +78,7 @@
       grid-template-columns: 20% auto 20%;
       align-items: center;
       gap: 8px;
+      text-align: center;
     }
     /* TODO: Firefox: hide the progress and style over it */
     & progress {
@@ -94,13 +99,62 @@
 }
 
 
-
-/* @supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    ::view-transition-new(main) {
-      animation-duration: 1s;
-      animation-delay: 0.5s;
-      animation-fill-mode: both;
+@media (max-width: 900px) {
+  #pokemon-page {
+    article {
+      width: 100%;
+      flex-direction: column;
+    }
+    .pokemon-index {
+      inset-inline-end: 0;
+      inset-block-start: unset;
+      font-size: 5rem;
     }
   }
-}   */
+}
+
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    #pokemon-page img {
+      view-transition-name: pokemon-img;
+    }
+    #pokemon-page .pokemon-profile {
+      view-transition-name: pokemon-profile;
+    }
+    #pokemon-page #pokemon-stats {
+      view-transition-name: pokemon-stats;
+    }
+
+    ::view-transition-old(main) {
+      --scale: 0.98;
+      animation:
+        scale 0.3s reverse both,
+        fade 0.3s reverse both;
+    }
+
+    ::view-transition-new(pokemon-img),
+    ::view-transition-new(pokemon-profile),
+    ::view-transition-new(pokemon-stats) {
+      --scale: 0.9;
+      --translate: 5vh;
+      --ease-out: cubic-bezier(0.25, 1, 0.5, 1); // sine-out
+      animation: 
+        slide-up 0.3s var(--delay) var(--ease-out) both,
+        fade 0.3s var(--delay) var(--ease-out) both;
+    }
+    ::view-transition-new(pokemon-img) {
+      --scale: 1.5;
+      --delay: 900ms;
+      animation: 
+        scale 0.4s var(--delay) var(--ease-out) both,
+        fade 0.4s var(--delay) var(--ease-out) both;
+    }
+    ::view-transition-new(pokemon-profile) {
+      --delay: 950ms;
+    }
+    ::view-transition-new(pokemon-stats) {
+      --delay: 1000ms;
+    }
+  }
+}
