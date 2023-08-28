@@ -1,13 +1,15 @@
+import type { QwikJSX} from "@builder.io/qwik";
 import { Slot, component$ } from "@builder.io/qwik";
 import type { LinkProps} from "@builder.io/qwik-city";
 import { Link, useLocation } from "@builder.io/qwik-city";
 
-interface BackProps extends LinkProps {}
+type BackProps = LinkProps & QwikJSX.IntrinsicElements['button'];
+// interface BackProps extends LinkProps {}
 
 export const Back = component$((props: BackProps) => {
   const { prevUrl, url } = useLocation();
   if (prevUrl && prevUrl.toString() !== url.toString()) {
-    return <button onClick$={() => history.back()}>
+    return <button {...props} onClick$={() => history.back()}>
       <Slot/>
     </button>
   } else {

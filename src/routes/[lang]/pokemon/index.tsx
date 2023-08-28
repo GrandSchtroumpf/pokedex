@@ -4,9 +4,15 @@ import { NavGrid, LinkItem } from 'qwik-hueeye';
 import type { Pokemon } from "~/model/pokemon";
 import { LoadMore, useComputedList, useListProvider } from "~/components/load-more";
 import { ViewTransitionContext } from "./layout";
-import pokemons from '~/data/pokemon.json';
-import style from './index.css?inline';
+import { useTranslate } from "~/components/translate";
+import { pokemons } from '~/data';
+import style from './index.scss?inline';
+import { cssColor } from "~/components/color";
 
+const mainTransition = `
+::view-transition-new(main) {
+  animation-delay: 500ms;
+}`;
 const baseTransition = (name: string | undefined, i: number, array: any[]) =>  `
 ::view-transition-old(${name}):only-child {
   animation: scale-out cubic-bezier(0.7, 0, 0.84, 0) 0.3s ${500 / array.length * i}ms forwards;
@@ -20,27 +26,35 @@ interface PokemonItemProps {
   pokemon: Pokemon;
 }
 const PokemonItem = component$(({ pokemon }: PokemonItemProps) => {
+  const t = useTranslate();
   const transitionNames = useContext(ViewTransitionContext);
-  const viewTransitionName = `pokemon-${pokemon.id}`;
   const props = {
     class: 'item',
-    style: `view-transition-name: ${viewTransitionName}`,
+    style: cssColor(pokemon.color),
+    'data-name': `pokemon-${pokemon.id}`,
   }
   const animate = $((event: any, el: HTMLElement) => {
     if (!('startViewTransition' in document)) return;
     const children = Array.from(el.parentElement?.children ?? []);
-    const baseStyle = children
-      .filter(child => child.checkVisibility({checkOpacity: true}) && child !== el)
-      .map(child => child.computedStyleMap().get('view-transition-name')?.toString())
-      .filter(name => !!name && name !== 'none')
-      .map(baseTransition);
+    const items: string[] = [];
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i] as HTMLElement;
+      if (!child.checkVisibility({checkOpacity: true})) {
+        if (items.length) break;
+        continue;
+      }
+      if (!child.dataset.name) continue;
+      child.style.setProperty('view-transition-name', child.dataset.name);
+      if (child !== el) items.push(child.dataset.name);
+    }
+    const baseStyle = items.map(baseTransition);
     const groupStyle = groupTransition(pokemon);
-    transitionNames.value = [...baseStyle, groupStyle].join('\n');
+    transitionNames.value = [...baseStyle, groupStyle, mainTransition].join('\n');
   });
   return <>
     <LinkItem href={pokemon.id.toString()} {...props} onClick$={animate}>
       <PokemonImg pokemon={pokemon}/>
-      <h2>{pokemon.id} - {pokemon.name}</h2>
+      <h2>{pokemon.id} - {t(pokemon.name)}</h2>
     </LinkItem>
   </>
 })
@@ -52,7 +66,7 @@ export default component$(() => {
     limit: 50,
   });
   const result = useComputedList(list);
-  return <main>
+  return <main id="pokemon-list">
     <NavGrid class="grid">
       {result.value.map(p => <PokemonItem key={p.id} pokemon={p}/>)}
       <LoadMore limit={50} q:slot="grid-end"></LoadMore>

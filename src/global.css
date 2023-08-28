@@ -1,12 +1,6 @@
-
-
-/**
- * WHAT IS THIS FILE?
- *
- * Globally applied styles. No matter which components are in the page or matching route,
- * the styles in here will be applied to the Document, without any sort of CSS scoping.
- *
- */
+:root {
+  color-scheme: dark light;
+}
 html {
   --hue: 250;
   -webkit-text-size-adjust: 100%;
@@ -33,6 +27,11 @@ html {
 body {
   margin: 0;
   line-height: inherit;
+  background-color: oklch(20% 0.01 var(--hue));
+}
+
+h1, h2, h3, h4, h5, p {
+  margin-block: unset;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -44,7 +43,12 @@ body {
   ::view-transition-group(main) {
     animation: none;
   }
-
+  ::view-transition-old(main) {
+    animation: fade reverse 0.2s both;
+  }
+  ::view-transition-new(main) {
+    animation: fade 0.3s 0.2s both;
+  }
 }
 
 @keyframes scale {
@@ -52,7 +56,7 @@ body {
     transform: scale(var(--scale, 0.9));
   }
 }
-@keyframes scale {
+@keyframes fade {
   from {
     opacity: 0;
   }

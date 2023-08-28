@@ -1,30 +1,31 @@
-import type { Pokemon as APIPokemon, Type as APIType } from 'pokenode-ts';
+import type {
+  NamedAPIResource as APIResource,
+  Pokemon as APIPokemon,
+  PokemonSpecies as APISpecies,
+  PokemonShape as APIShape,
+  Type as APIType
+} from 'pokenode-ts';
 
-export { APIPokemon, APIType };
+export { APIPokemon, APIType, APIResource, APISpecies };
 
 const baseUrl = `https://pokeapi.co/api/v2`;
 
 interface API {
-  pokemon: {
-    list: { name: string, url: string },
-    item: APIPokemon
-  };
-  type: {
-    list: { name: string, url: string },
-    item: APIType
-  }
+  pokemon: APIPokemon;
+  type: APIType;
+  'pokemon-species': APISpecies;
+  'pokemon-shape': APIShape;
 }
 
 export type Endpoints = Extract<keyof API, string>;
-export type List<K extends Endpoints> = API[K]['list'];
-export type Item<K extends Endpoints> = API[K]['item'];
+export type Item<K extends Endpoints> = API[K];
 
 
-interface ListResult<K extends Endpoints> {
+interface ListResult {
   count: number;
   next: string | null;
   previous: string | null;
-  results: List<K>[];
+  results: APIResource[];
 }
 
 interface QueryParams {
@@ -39,13 +40,13 @@ export async function query<K extends Endpoints>(path: K, params: QueryParams = 
   }
   const res = await fetch(url);
   const list = await res.json();
-  return list as ListResult<K>;
+  return list as ListResult;
 }
 
 export async function queryAll<K extends Endpoints>(path: K) {
   const { count } = await query(path, { limit: 1 });
   const { results} = await query(path, { limit: count });
-  return results as List<K>[];
+  return results as APIResource[];
 }
 
 export function get<K extends Endpoints>(url: string): Promise<Item<K>> {

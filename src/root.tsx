@@ -1,13 +1,21 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, Slot } from "@builder.io/qwik";
 import {
   QwikCityProvider,
   RouterOutlet,
   ServiceWorkerRegister,
+  useLocation,
 } from "@builder.io/qwik-city";
 import { HueEyeProvider } from 'qwik-hueeye';
 import { RouterHead } from "./components/router-head/router-head";
 
 import "./global.css";
+
+const Body = component$(() => {
+  const { params } = useLocation();
+  return <body lang={params.lang || 'en'}>
+    <Slot/>
+  </body>
+})
 
 export default component$(() => {
   /**
@@ -24,12 +32,12 @@ export default component$(() => {
         <link rel="manifest" href="/manifest.json" />
         <RouterHead />
       </head>
-      <body lang="en">
+      <Body>
         <HueEyeProvider>
           <RouterOutlet />
           <ServiceWorkerRegister />
         </HueEyeProvider>
-      </body>
+      </Body>
     </QwikCityProvider>
   );
 });

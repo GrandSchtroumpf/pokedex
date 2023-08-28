@@ -5,9 +5,10 @@ import { ViewTransitionContext } from "../layout";
 import { Back } from "~/components/back";
 import type { TypeName } from "~/model/type";
 import type { Pokemon } from "~/model/pokemon";
-import types from '~/data/type.json';
-import pokemons from '~/data/pokemon.json';
-import style from './index.css?inline';
+import { useTranslate } from "~/components/translate";
+import { pokemons, types } from '~/data';
+import style from './index.scss?inline';
+import { cssColor } from "~/components/color";
 
 interface TypeItemProps {
   name: TypeName;
@@ -22,37 +23,48 @@ const TypeItem = component$(({ name }: TypeItemProps) => {
 
 export default component$(() => {
   useStyles$(style);
+  const t = useTranslate();
   const transitionNames = useContext(ViewTransitionContext);
   const { params } = useLocation();
   const pokemon = (pokemons as Pokemon[]).find(p => p.id.toString() === params.id);
   if (!pokemon) return <Link href=".."> [Back] No pokemon found</Link>;
+
   const mainType = types[pokemon.types[0]];
-  const cssvar = {
-    '--lum': mainType.color.l,
-    '--chroma': mainType.color.c,
-    '--hue': mainType.color.h,
-  } 
 
   // Clear animation state
   useVisibleTask$(() => {
     transitionNames.value = '';
   })
 
-  return <main id="pokemon-page" style={cssvar}>
-    <Back href="..">Back</Back>
+  return <main id="pokemon-page" style={cssColor(mainType.color)}>
+    <Back class="btn" href="..">Pokedex</Back>
     <section aria-labelledby="pokemon-name">
-      <PokemonImg pokemon={pokemon} eager />
       <article>
-        <h1 id="pokemon-name">{pokemon.name}</h1>
-        <ol class="type-list">
-          {pokemon.types.map(type => (
-          <TypeItem key={type} name={type}/>
-          ))}
-        </ol>
+        <PokemonImg pokemon={pokemon} eager />
+        <div class="pokemon-profile">          
+          <ol class="type-list">
+            {pokemon.types.map(type => (
+            <TypeItem key={type} name={type}/>
+            ))}
+          </ol>
+          <h1 id="pokemon-name">{t(pokemon.name)}</h1>
+          <h2 class="genus">{t(pokemon.shape)} - {t(pokemon.genus)}</h2>
+          <p class="description">{t(pokemon.flavorText)}</p>
+          <p class="pokemon-index">#{pokemon.id}</p>
+        </div>
       </article>
-    </section>
-    <section>
-      <h2></h2>
+      <article id="pokemon-stats">
+        <h2>Stats</h2>
+        <ul class="stats">
+          {Object.entries(pokemon.stats).map(([key, stat]) => (
+          <li key={key}>
+            <span>{key}</span>
+            <progress max={100} value={stat.value}></progress>
+            <span>{stat.value}</span>
+          </li>
+          ))}
+        </ul>
+      </article>
     </section>
   </main>
 })
