@@ -22,6 +22,8 @@ html {
     "Segoe UI Emoji",
     "Segoe UI Symbol",
     "Noto Color Emoji";
+  scroll-behavior: smooth;
+  scroll-snap-type: inline mandatory;
 }
 
 body {
@@ -37,7 +39,6 @@ h1, h2, h3, h4, h5, p {
 @media (prefers-reduced-motion: no-preference) {
   main {
     view-transition-name: main;
-    min-height: 100dvh;
   }
   /* Avoid new page to slidein if height is different */
   ::view-transition-group(main) {
