@@ -1,13 +1,13 @@
 import { $, component$, useContext, useStyles$ } from "@builder.io/qwik";
 import { PokemonImg } from "~/components/img/img";
-import { NavGrid, LinkItem } from 'qwik-hueeye';
 import type { Pokemon } from "~/model/pokemon";
 import { LoadMore, useComputedList, useListProvider } from "~/components/load-more";
 import { ViewTransitionContext } from "./layout";
 import { useTranslate } from "~/components/translate";
 import { pokemons } from '~/data';
-import style from './index.scss?inline';
 import { cssColor } from "~/components/color";
+import { Link } from "@builder.io/qwik-city";
+import style from './index.scss?inline';
 
 const mainTransition = `
 ::view-transition-new(main) {
@@ -55,10 +55,10 @@ const PokemonItem = component$(({ pokemon }: PokemonItemProps) => {
     transitionNames.value = [...baseStyle, groupStyle, mainTransition].join('\n');
   });
   return <>
-    <LinkItem href={pokemon.id.toString()} {...props} onClick$={animate}>
+    <Link href={pokemon.id.toString()} {...props} onClick$={animate}>
       <PokemonImg pokemon={pokemon}/>
       <h2>{pokemon.id} - {t(pokemon.name)}</h2>
-    </LinkItem>
+    </Link>
   </>
 })
 
@@ -70,9 +70,9 @@ export default component$(() => {
   });
   const result = useComputedList(list);
   return <main id="pokemon-list">
-    <NavGrid class="grid">
+    <nav class="grid">
       {result.value.map(p => <PokemonItem key={p.id} pokemon={p}/>)}
       <LoadMore limit={50} q:slot="grid-end"></LoadMore>
-    </NavGrid>
+    </nav>
   </main>
 })

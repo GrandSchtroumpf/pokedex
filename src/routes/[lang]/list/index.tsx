@@ -9,6 +9,8 @@ import { Link, useLocation } from "@builder.io/qwik-city";
 import { LoadMore, useComputedList, useList, useListProvider } from "~/components/load-more";
 import style from './index.scss?inline';
 
+declare const ScrollTimeline: any;
+
 interface TypeItemProps {
   name: TypeName;
 }
@@ -111,7 +113,7 @@ export default component$(() => {
     const keyframes = change.map(p => ({
       backgroundColor: `oklch(0.2 0.15 ${types[p.types[0]].color.h})`
     }));
-    const animation = document.documentElement.animate(keyframes, { timeline });
+    const animation = document.documentElement.animate(keyframes, { timeline } as any);
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
         if (entry.isIntersecting) {

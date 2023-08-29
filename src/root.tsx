@@ -5,7 +5,6 @@ import {
   ServiceWorkerRegister,
   useLocation,
 } from "@builder.io/qwik-city";
-import { HueEyeProvider } from 'qwik-hueeye';
 import { RouterHead } from "./components/router-head/router-head";
 
 import "./global.css";
@@ -33,10 +32,8 @@ export default component$(() => {
         <RouterHead />
       </head>
       <Body>
-        <HueEyeProvider>
-          <RouterOutlet />
-          <ServiceWorkerRegister />
-        </HueEyeProvider>
+        <RouterOutlet />
+        <ServiceWorkerRegister />
       </Body>
     </QwikCityProvider>
   );
