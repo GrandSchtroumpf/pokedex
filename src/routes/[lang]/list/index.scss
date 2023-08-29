@@ -1,6 +1,4 @@
 main {
-  min-height: 100dvh;
-  width: fit-content;
   & .previous, .next {
     position: fixed;
     inset-block: 0;
@@ -11,7 +9,7 @@ main {
     place-items: center;
     transition: opacity 2s ease-in-out;
     &.disabled {
-      // opacity: 0;
+      opacity: 0;
       pointer-events: none;
     }
     &:hover {
@@ -28,14 +26,41 @@ main {
     inset-inline-end: 0;
   }
 }
+
+.pokemon-nav {
+  display: flex;
+  gap: 8px;
+  padding: 16px 50vw;
+  box-sizing: border-box;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    border-color: transparent;
+  }
+  & a {
+    text-decoration: none;
+    color: currentColor;
+    flex-shrink: 0;
+    padding: 8px 16px;
+  }
+  & a:hover {
+    background-color: var(1 1 0 / 0.24);
+  }
+}
+
+
 .main-nav {
   display: flex;
   list-style: none;
   margin-block: 0;
   padding-inline: 0;
-  width: fit-content;
+  width: 100vw;
   content-visibility: auto;
   contain-intrinsic-size: 2500vw 100vh;
+  scroll-snap-type: inline mandatory;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    border-color: transparent;
+  }
 
   & > li {
     scroll-snap-stop: always;
@@ -124,21 +149,10 @@ main {
       gap: 8px;
       text-align: center;
     }
-    /* TODO: Firefox: hide the progress and style over it */
-    & progress {
-      width: 100%;
-      height: 16px;
-      appearance: none;
-      &::-webkit-progress-bar {
-        background: transparent;
-        border-radius: 16px;
-        border: solid 1px var(--secondary-text);
-        overflow: hidden;
-      }
-      &::-webkit-progress-value {
-        background-color: var(--text);
-        border-radius: 16px;
-      }
+
+    & .meter {
+      --meter-value-color: var(--secondary-text);
+      --meter-inset-color: oklch(0.2 0.15 var(--hue));
     }
   }
 }
@@ -174,14 +188,31 @@ main {
   }
 }
 
+@keyframes fade-nav-x {
+  0%, 100% {
+    opacity: 0;
+  }
+  25%, 75% {
+    transform: scale(0.5);
+  }
+  40%, 60% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @keyframes progress {
-  from {
+  40%, 60% {
     transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(0);
   }
 }
 
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
+
     .pokemon-page {
       view-timeline-name: var(--timeline-name);
       view-timeline-axis: inline;
@@ -212,9 +243,19 @@ main {
       animation-timeline: var(--timeline-name);
     }
 
-    .stats progress::-webkit-progress-value {
-      animation: progress 10s ease-out both;
-      // animation-timeline: var(--timeline-name);
+    .stats .meter::after {
+      animation: progress ease-out both;
+      animation-timeline: var(--timeline-name);
+    }
+
+    .pokemon-nav {
+      view-timeline-name: --pokemon-nav;
+      view-timeline-axis: inline;
+      & a {
+        opacity: 0;
+        animation: fade-nav-x  ease-out both;
+        animation-timeline: view(inline);
+      }
     }
   }
 }

@@ -1,0 +1,18 @@
+.meter {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--meter-value-color, white);
+  box-shadow: 0 0 0 4px var(--meter-inset-color, transparent) inset;
+  border-radius: 16px;
+  height: 16px;
+  width: 100%;
+}
+.meter::after {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  inset: 4px;
+  border-radius: inherit;
+  background-color: var(--meter-value-color, white);
+  width: var(--percent, 0%);
+}

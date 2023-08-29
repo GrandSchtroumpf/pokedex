@@ -1,11 +1,13 @@
-import type { Signal} from "@builder.io/qwik";
-import { component$, createContextId, untrack, useContext, useContextProvider, useSignal, useStyles$, useVisibleTask$ } from "@builder.io/qwik";
+import { component$, createContextId, untrack, useContext, useContextProvider, useSignal, useStyles$, useTask$, useVisibleTask$ } from "@builder.io/qwik";
+import type { Signal } from "@builder.io/qwik";
+import { isServer } from "@builder.io/qwik/build";
+import { Link, useLocation } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
 import { useTranslate } from "~/components/translate";
+import { Meter } from "~/components/meter/meter";
+import { cssColor } from "~/components/color";
 import { pokemons, types } from "~/data";
 import type { Pokemon, TypeName } from "~/model";
-import { cssColor } from "~/components/color";
-import { Link, useLocation } from "@builder.io/qwik-city";
 import { LoadMore, useComputedList, useList, useListProvider } from "~/components/load-more";
 import style from './index.scss?inline';
 
@@ -56,7 +58,7 @@ const PokemonPage = component$(({ pokemon }: PokemonPage) => {
         {Object.entries(pokemon.stats).map(([key, stat]) => (
         <li key={key}>
           <span>{key}</span>
-          <progress max={255} value={stat.value}></progress>
+          <Meter max={255} value={stat.value} />
           <span>{stat.value}</span>
         </li>
         ))}
@@ -91,6 +93,22 @@ const Next = component$(() => {
   </Link>
 })
 
+
+interface PokemonNavProps {
+  pokemons: Pokemon[];
+}
+const PokemonNav = component$(({pokemons}: PokemonNavProps) => {
+  const t = useTranslate();
+  return <nav class="pokemon-nav" aria-label="Select a pokemon">
+    {pokemons.map(p => (
+    <Link id={`link-${p.id}`} key={p.id} href={`#pokemon-${p.id}`}>
+      {t(p.name)}
+    </Link>
+    ))}
+  </nav>
+})
+
+
 export default component$(() => {
   useStyles$(style);
   const { url } = useLocation();
@@ -98,16 +116,28 @@ export default component$(() => {
   const activeId = useSignal(Number(initialId));
   useContextProvider(ActiveIdContext, activeId);
 
+  useTask$(({ track }) => {
+    const id = track(() => activeId.value);
+    if (isServer) return;
+    location.hash = `pokemon-${id}`;
+    // Weird behavior if outside next animation frame
+    // Not working with smooth
+    requestAnimationFrame(() => {
+      document.getElementById(`link-${id}`)?.scrollIntoView({ inline: 'center' });
+    })
+  })
+
   const list = useListProvider({
     list: pokemons,
     limit: 50,
   });
   const result = useComputedList(list);
-  
+
+
   useVisibleTask$(({ track }) => {
     const change = track(() => result.value);
     const timeline = new ScrollTimeline({
-      source: document.documentElement,
+      source: document.getElementById('pokemon-list'),
       axis: 'inline'
     });
     const keyframes = change.map(p => ({
@@ -119,7 +149,6 @@ export default component$(() => {
         if (entry.isIntersecting) {
           const [, id] = entry.target.id.split('-');
           if (id) activeId.value = Number(id);
-          location.hash = entry.target.id;
         }
       }
     }, { rootMargin: '0% -50%'});
@@ -135,6 +164,7 @@ export default component$(() => {
 
   return <main id="pokemon-list-page" >
     <Previous />
+    <PokemonNav pokemons={result.value}/>
     <ul id="pokemon-list" class="main-nav" >
       {result.value.map(pokemon => (
         <li id={`pokemon-${pokemon.id}`} key={pokemon.id} >
