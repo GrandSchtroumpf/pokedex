@@ -1,13 +1,19 @@
 main {
-  // display: grid;
-  // grid-template-areas: "previous content next";
-  // grid-template-columns: 50px auto 50px;
-  // place-items: center;
-  
+  min-height: 100dvh;
+  width: fit-content;
   & .previous, .next {
+    position: fixed;
+    inset-block: 0;
+    z-index: 1;
     height: 100%;
+    width: 50px;
     display: grid;
     place-items: center;
+    transition: opacity 2s ease-in-out;
+    &.disabled {
+      // opacity: 0;
+      pointer-events: none;
+    }
     &:hover {
       background-color: oklch(0.8 0.15 var(--hue) / 0.12);
     }
@@ -16,14 +22,13 @@ main {
     }
   }
   & .previous {
-    grid-area: "previous";
+    inset-inline-start: 0;
   }
   & .next {
-    grid-area: "next";
+    inset-inline-end: 0;
   }
 }
 .main-nav {
-  // grid-area: "previous content next";
   display: flex;
   list-style: none;
   margin-block: 0;
@@ -31,8 +36,6 @@ main {
   width: fit-content;
   content-visibility: auto;
   contain-intrinsic-size: 2500vw 100vh;
-  background-color: oklch(0.2 0.15 var(--hue, 0));
-  background-image: linear-gradient(to bottom, transparent, oklch(0 0 0 / 0.32));
 
   & > li {
     scroll-snap-stop: always;
@@ -67,7 +70,8 @@ main {
     inset-inline-end: 24px;
     inset-block-start: 24px;
     font-size: 15rem;
-    color: oklch(1 var(--chroma) var(--hue) / 0.2);
+    font-weight: bold;
+    color: oklch(1 var(--chroma) var(--hue) / 0.12);
   }
   .pokemon-profile {
     display: flex;
@@ -129,6 +133,7 @@ main {
         background: transparent;
         border-radius: 16px;
         border: solid 1px var(--secondary-text);
+        overflow: hidden;
       }
       &::-webkit-progress-value {
         background-color: var(--text);
@@ -169,6 +174,12 @@ main {
   }
 }
 
+@keyframes progress {
+  from {
+    transform: translateX(-100%);
+  }
+}
+
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .pokemon-page {
@@ -176,20 +187,20 @@ main {
       view-timeline-axis: inline;
     }
     .pokemon-stats {
-      --translate-x-leave: 5vw;
-      --translate-x-enter: 30vw;
+      --translate-x-leave: -5vw;
+      --translate-x-enter: 5vw;
     }
     .pokemon-index {
       --translate-x-leave: -10vw;
-      --translate-x-enter: 20vw;
+      --translate-x-enter: 10vw;
     }
     .pokemon-profile {
       --translate-x-leave: -20vw;
-      --translate-x-enter: 10vw;
+      --translate-x-enter: 20vw;
     }
     .pokemon-img {
       --translate-x-leave: -30vw;
-      --translate-x-enter: -5vw;
+      --translate-x-enter: 30vw;
     }
 
     .pokemon-index,
@@ -199,6 +210,11 @@ main {
       opacity: 0;
       animation: fade-timeline-x ease-out both;
       animation-timeline: var(--timeline-name);
+    }
+
+    .stats progress::-webkit-progress-value {
+      animation: progress 10s ease-out both;
+      // animation-timeline: var(--timeline-name);
     }
   }
 }

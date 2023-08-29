@@ -22,14 +22,12 @@ html {
     "Segoe UI Emoji",
     "Segoe UI Symbol",
     "Noto Color Emoji";
-  scroll-behavior: smooth;
   scroll-snap-type: inline mandatory;
 }
 
 body {
   margin: 0;
   line-height: inherit;
-  background-color: oklch(20% 0.01 var(--hue));
 }
 
 h1, h2, h3, h4, h5, p {

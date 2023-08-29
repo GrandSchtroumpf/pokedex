@@ -10,6 +10,10 @@ interface ListState<T, Search extends Record<string, any>> {
   sortOrder: 'asc' | 'desc'
 }
 
+export function useList<T, Search extends Record<string, any>>() {
+  return useContext<ListState<T, Search>>(ContextList);
+}
+
 export function useListProvider<T, Search extends Record<string, any> = {}>(initialState: Partial<ListState<T, Search>>) {
   const state = useStore({
     list: [],
