@@ -33,6 +33,7 @@ main {
   padding: 16px 50vw;
   box-sizing: border-box;
   overflow: auto;
+  scroll-behavior: smooth;
   &::-webkit-scrollbar {
     border-color: transparent;
   }
@@ -41,9 +42,14 @@ main {
     color: currentColor;
     flex-shrink: 0;
     padding: 8px 16px;
+    border-radius: 4px;
   }
   & a:hover {
-    background-color: var(1 1 0 / 0.24);
+    background-color: oklch(1 0 0 / 0.24);
+  }
+  & a[aria-current="page"] {
+    color: white;
+    text-shadow: 0 0 4px oklch(90% 0 0);
   }
 }
 
@@ -58,6 +64,7 @@ main {
   contain-intrinsic-size: 2500vw 100vh;
   scroll-snap-type: inline mandatory;
   overflow: auto;
+  scroll-behavior: smooth;
   &::-webkit-scrollbar {
     border-color: transparent;
   }
@@ -68,6 +75,7 @@ main {
     flex-shrink: 0;
     width: 100vw;
   }
+
 }
 .pokemon-page {
   width: 100%;
@@ -189,15 +197,16 @@ main {
 }
 
 @keyframes fade-nav-x {
-  0%, 100% {
+  20%, 80% {
     opacity: 0;
-  }
-  25%, 75% {
     transform: scale(0.5);
   }
   40%, 60% {
     opacity: 1;
     transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
   }
 }
 

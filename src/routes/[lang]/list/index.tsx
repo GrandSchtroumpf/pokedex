@@ -1,4 +1,4 @@
-import { component$, createContextId, untrack, useContext, useContextProvider, useSignal, useStyles$, useTask$, useVisibleTask$ } from "@builder.io/qwik";
+import { component$, createContextId, untrack, useComputed$, useContext, useContextProvider, useSignal, useStyles$, useTask$, useVisibleTask$ } from "@builder.io/qwik";
 import type { Signal } from "@builder.io/qwik";
 import { isServer } from "@builder.io/qwik/build";
 import { Link, useLocation } from "@builder.io/qwik-city";
@@ -99,9 +99,10 @@ interface PokemonNavProps {
 }
 const PokemonNav = component$(({pokemons}: PokemonNavProps) => {
   const t = useTranslate();
+  const activeId = useContext(ActiveIdContext);
   return <nav class="pokemon-nav" aria-label="Select a pokemon">
     {pokemons.map(p => (
-    <Link id={`link-${p.id}`} key={p.id} href={`#pokemon-${p.id}`}>
+    <Link id={`link-${p.id}`} key={p.id} href={`#pokemon-${p.id}`} aria-current={activeId.value === p.id ? 'page' : undefined}>
       {t(p.name)}
     </Link>
     ))}
@@ -116,51 +117,69 @@ export default component$(() => {
   const activeId = useSignal(Number(initialId));
   useContextProvider(ActiveIdContext, activeId);
 
+  const listState = useListProvider({
+    list: pokemons,
+    limit: 50,
+  });
+  const result = useComputedList(listState);
+
+  // On Active changes
   useTask$(({ track }) => {
     const id = track(() => activeId.value);
     if (isServer) return;
     location.hash = `pokemon-${id}`;
-    // Weird behavior if outside next animation frame
-    // Not working with smooth
+    
+    // ScrollIntoView should not happen when scroll happen
     requestAnimationFrame(() => {
-      document.getElementById(`link-${id}`)?.scrollIntoView({ inline: 'center' });
+      document.getElementById(`link-${id}`)?.scrollIntoView({ behavior: 'smooth', inline: 'center' });
     })
   })
 
-  const list = useListProvider({
-    list: pokemons,
-    limit: 50,
-  });
-  const result = useComputedList(list);
-
-
-  useVisibleTask$(({ track }) => {
+  // On List Changes
+  useVisibleTask$(({ track, cleanup }) => {
     const change = track(() => result.value);
-    const timeline = new ScrollTimeline({
-      source: document.getElementById('pokemon-list'),
-      axis: 'inline'
-    });
-    const keyframes = change.map(p => ({
-      backgroundColor: `oklch(0.2 0.15 ${types[p.types[0]].color.h})`
-    }));
-    const animation = document.documentElement.animate(keyframes, { timeline } as any);
+    // Observer
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
         if (entry.isIntersecting) {
           const [, id] = entry.target.id.split('-');
-          if (id) activeId.value = Number(id);
+          if (!id) continue;
+          if (entry.intersectionRatio === 1) activeId.value = Number(id);
+
+          // Fallback: Animate background if no scroll timeline available
+          const ratio = Math.round(entry.intersectionRatio * 100);
+          if (ratio > 10 && ratio < 30) {
+            if (typeof ScrollTimeline === 'undefined') {
+              const current = listState.list[activeId.value - 1];
+              const next = listState.list[Number(id) - 1];
+              document.documentElement.animate([{
+                backgroundColor: `oklch(0.2 0.15 ${types[current.types[0]].color.h})`
+              },{
+                backgroundColor: `oklch(0.2 0.15 ${types[next.types[0]].color.h})`
+              }], { duration: 500, fill: 'both' });
+            }
+          }
         }
       }
-    }, { rootMargin: '0% -50%'});
+    }, { threshold: [0.2, 1] });
     const children = document.getElementById('pokemon-list')?.children ?? [];
     for (const child of children) {
       observer.observe(child);
     }
-    return () => {
-      animation.finish();
-      observer.disconnect();
+    cleanup(() => observer.disconnect());
+    // Timeline
+    if (typeof ScrollTimeline !== 'undefined') {
+      const timeline = new ScrollTimeline({
+        source: document.getElementById('pokemon-list'),
+        axis: 'inline'
+      });
+      const keyframes = change.map(p => ({
+        backgroundColor: `oklch(0.2 0.15 ${types[p.types[0]].color.h})`
+      }));
+      const animation = document.documentElement.animate(keyframes, { timeline } as any);
+      cleanup(() => animation.finish());
     }
-  });
+  }, { strategy: 'document-ready' });
 
   return <main id="pokemon-list-page" >
     <Previous />
