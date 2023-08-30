@@ -132,13 +132,14 @@ export default component$(() => {
     
     // ScrollIntoView should not happen when scroll happen
     requestAnimationFrame(() => {
-      document.getElementById(`link-${id}`)?.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+      document.getElementById(`link-${id}`)?.scrollIntoView({ block: 'nearest', inline: 'center' });
     })
   })
 
   // On List Changes
   useVisibleTask$(({ track, cleanup }) => {
     const change = track(() => result.value);
+    const list = document.getElementById('pokemon-list')!;
     // Observer
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
@@ -162,8 +163,11 @@ export default component$(() => {
           }
         }
       }
-    }, { threshold: [0.2, 1] });
-    const children = document.getElementById('pokemon-list')?.children ?? [];
+    }, {
+      threshold: [0.2, 1],
+      root: list
+    });
+    const children = list.children;
     for (const child of children) {
       observer.observe(child);
     }
@@ -171,7 +175,7 @@ export default component$(() => {
     // Timeline
     if (typeof ScrollTimeline !== 'undefined') {
       const timeline = new ScrollTimeline({
-        source: document.getElementById('pokemon-list'),
+        source: list,
         axis: 'inline'
       });
       const keyframes = change.map(p => ({

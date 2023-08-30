@@ -1,30 +1,28 @@
-main {
-  & .previous, .next {
-    position: fixed;
-    inset-block: 0;
-    z-index: 1;
-    height: 100%;
-    width: 50px;
-    display: grid;
-    place-items: center;
-    transition: opacity 2s ease-in-out;
-    &.disabled {
-      opacity: 0;
-      pointer-events: none;
-    }
-    &:hover {
-      background-color: oklch(0.8 0.15 var(--hue) / 0.12);
-    }
-    & svg {
-      fill: white;
-    }
+.previous, .next {
+  position: fixed;
+  inset-block: 0;
+  z-index: 1;
+  height: 100%;
+  width: 50px;
+  display: grid;
+  place-items: center;
+  transition: opacity 2s ease-in-out;
+  &.disabled {
+    opacity: 0;
+    pointer-events: none;
   }
-  & .previous {
-    inset-inline-start: 0;
+  &:hover {
+    background-color: oklch(0.8 0.15 var(--hue) / 0.12);
   }
-  & .next {
-    inset-inline-end: 0;
+  & svg {
+    fill: white;
   }
+}
+.previous {
+  inset-inline-start: 0;
+}
+.next {
+  inset-inline-end: 0;
 }
 
 .pokemon-nav {
@@ -165,6 +163,12 @@ main {
   }
 }
 
+@media (max-width: 900px) {
+  .previous, .next {
+    display: none;
+  }
+}
+
 
 @media (max-width: 900px) {
   .pokemon-page {
@@ -184,7 +188,7 @@ main {
 @keyframes fade-timeline-x {
   0%, 30% {
     opacity: 0.1;
-    transform: translateX(var(--translate-x-enter, 0));
+    transform: translateX(var(--translate-x, 0));
   }
   50% {
     opacity: 1;
@@ -192,12 +196,12 @@ main {
   }
   80%, 100% {
     opacity: 0.1;
-    transform: translateX(var(--translate-x-leave, 0));
+    transform: translateX(calc(var(--translate-x, 0) * -1));
   }
 }
 
 @keyframes fade-nav-x {
-  20%, 80% {
+  10%, 90% {
     opacity: 0;
     transform: scale(0.5);
   }
@@ -227,20 +231,16 @@ main {
       view-timeline-axis: inline;
     }
     .pokemon-stats {
-      --translate-x-leave: -5vw;
-      --translate-x-enter: 5vw;
+      --translate-x: 50px;
     }
     .pokemon-index {
-      --translate-x-leave: -10vw;
-      --translate-x-enter: 10vw;
+      --translate-x: 100px;
     }
     .pokemon-profile {
-      --translate-x-leave: -20vw;
-      --translate-x-enter: 20vw;
+      --translate-x: 200px;
     }
     .pokemon-img {
-      --translate-x-leave: -30vw;
-      --translate-x-enter: 30vw;
+      --translate-x: 300px;
     }
 
     .pokemon-index,
