@@ -1,4 +1,4 @@
-import { LCH } from "~/model";
+import type { LCH } from "~/model";
 
 export const cssColor = ({ l, c, h }: LCH) => (Object.entries({
   '--lum': l,

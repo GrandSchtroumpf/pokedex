@@ -1,7 +1,7 @@
-import { PokemonStat } from "pokenode-ts";
+import type { PokemonStat } from "pokenode-ts";
 import type { APIPokemon, APISpecies, APIResource} from "./api";
-import { getAll } from "./api";
 import type { TypeName, SpeciesColor } from "./colors";
+import { getAll } from "./api";
 import { speciesColor, typeColors } from "./colors";
 import { optimizeImg } from "./img";
 import { writeData } from "./json";
@@ -54,7 +54,7 @@ function toPokemon(
     id,
     imgName: pokemon.name,
     name: toText(names, 'name'),
-    shape: shape ? shapes[shape.name] : {}, // species have no shape
+    shape: typeof shape !== 'undefined' ? shapes[shape.name] : {}, // species have no shape
     color: speciesColor[species.color.name as SpeciesColor],
     types: pokemon.types.sort((a,b) => a.slot - b.slot).map(type => type.type.name as TypeName),
     genus: toText(species.genera, 'genus'),

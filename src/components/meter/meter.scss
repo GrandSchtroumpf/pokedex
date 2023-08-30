@@ -1,18 +1,25 @@
 .meter {
   position: relative;
   overflow: hidden;
-  border: 1px solid var(--meter-value-color, white);
-  box-shadow: 0 0 0 4px var(--meter-inset-color, transparent) inset;
+  box-sizing: border-box;
+  border: 4px solid var(--meter-inset-color, white);
+  outline: 1px solid var(--meter-value-color, white);
   border-radius: 16px;
   height: 16px;
   width: 100%;
 }
 .meter::after {
   content: "";
-  z-index: -1;
   position: absolute;
-  inset: 4px;
+  inset: 0;
   border-radius: inherit;
   background-color: var(--meter-value-color, white);
   width: var(--percent, 0%);
 }
+// .meter:hover {
+//   box-shadow: 0 0 6px var(--meter-value-color, white);
+//   outline-color: white;
+//   &::after {
+//     background-color: white;
+//   }
+// }

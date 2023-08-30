@@ -8,7 +8,7 @@ import sharp from "sharp";
 const imgBuffer: Record<string, Promise<ArrayBuffer>> = {};
 const retries: Record<string, number> = {}
 export async function getImgBuffer(url: string) {
-  if (!imgBuffer[url]) {
+  if (!(url in imgBuffer)) {
     const tryDownload = (): Promise<ArrayBuffer> => {
       retries[url] ||= 0;
       retries[url]++;

@@ -1,12 +1,13 @@
-import { component$, createContextId, untrack, useComputed$, useContext, useContextProvider, useSignal, useStyles$, useTask$, useVisibleTask$ } from "@builder.io/qwik";
+import { component$, createContextId, untrack, useContext, useContextProvider, useSignal, useStyles$, useTask$, useVisibleTask$ } from "@builder.io/qwik";
 import type { Signal } from "@builder.io/qwik";
 import { isServer } from "@builder.io/qwik/build";
+import type { StaticGenerateHandler} from "@builder.io/qwik-city";
 import { Link, useLocation } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
 import { useTranslate } from "~/components/translate";
 import { Meter } from "~/components/meter/meter";
 import { cssColor } from "~/components/color";
-import { pokemons, types } from "~/data";
+import { pokemons, types, langs } from "~/data";
 import type { Pokemon, TypeName } from "~/model";
 import { LoadMore, useComputedList, useList, useListProvider } from "~/components/load-more";
 import style from './index.scss?inline';
@@ -195,3 +196,10 @@ export default component$(() => {
     <Next />
   </main>
 })
+
+
+export const onStaticGenerate: StaticGenerateHandler = async () => {
+  return {
+    params: langs.map((lang) => ({ lang })),
+  };
+};
