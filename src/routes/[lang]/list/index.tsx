@@ -39,7 +39,7 @@ const PokemonPage = component$(({ pokemon }: PokemonPage) => {
 
   return <section class="pokemon-page" aria-labelledby="pokemon-name" style={style}>
     <article>
-      <PokemonImg class="pokemon-img" pokemon={pokemon} />
+      <PokemonImg class="pokemon-img" pokemon={pokemon} eager/>
       <div class="pokemon-profile">          
         <ol class="type-list">
           {pokemon.types.map(type => (

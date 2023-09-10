@@ -16,6 +16,7 @@ export default component$(() => {
       align-items: center;
       justify-content: center;
       gap: 16px;
+      view-transition-name: none;
     }
     a {
       padding: 8px 16px;
