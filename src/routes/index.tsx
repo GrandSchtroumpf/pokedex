@@ -10,9 +10,12 @@ export default component$(() => {
   });
   const {scopeId} = useStylesScoped$(`
     main {
-      display: grid;
+      display: flex;
+      flex-direction: column;
       min-height: 100dvh;
-      place-items: center;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
     }
     a {
       padding: 8px 16px;
@@ -25,7 +28,8 @@ export default component$(() => {
   `);
   return (
     <main>
-      <Link class={scopeId} href={`${lang.value}/list`}>Get Started</Link>
+      <Link class={scopeId} href={`${lang.value}/pokemon`}>Pokemon grid</Link>
+      <Link class={scopeId} href={`${lang.value}/list`}>Pokemon list</Link>
     </main>
   );
 });

@@ -22,11 +22,16 @@
     border-radius: 4px;
     background-color: oklch(90% 0 0 / 0.12);
     padding: 8px 16px;
+    box-sizing: border-box;
+    text-decoration: none;
+    color: inherit;
+    border: solid 1px transparent;
     & img {
       width: 150px;
     }
     &:hover {
       background-color: oklch(60% var(--chroma) var(--hue) / 0.12);
+      border-color: oklch(60% var(--chroma) var(--hue));
     }
   }
 

@@ -28,12 +28,19 @@
 .pokemon-nav {
   display: flex;
   gap: 8px;
-  padding: 16px 50vw;
+  padding: 16px;
+  width: 100%;
   box-sizing: border-box;
   overflow: auto;
-  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
   &::-webkit-scrollbar {
     border-color: transparent;
+  }
+  & a:first-child {
+    margin-inline-start: 45%;
+  }
+  & a:last-child {
+    margin-inline-end: 45%;
   }
   & a {
     text-decoration: none;
@@ -57,7 +64,7 @@
   list-style: none;
   margin-block: 0;
   padding-inline: 0;
-  width: 100vw;
+  width: 100%;
   content-visibility: auto;
   contain-intrinsic-size: 2500vw 100vh;
   scroll-snap-type: inline mandatory;
@@ -71,7 +78,7 @@
     scroll-snap-stop: always;
     scroll-snap-align: center;
     flex-shrink: 0;
-    width: 100vw;
+    width: 100%;
   }
 
 }

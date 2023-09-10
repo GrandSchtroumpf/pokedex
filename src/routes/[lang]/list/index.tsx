@@ -125,31 +125,39 @@ export default component$(() => {
   const result = useComputedList(listState);
 
   // On Active changes
-  useTask$(({ track }) => {
+  useVisibleTask$(({ track }) => {
     const id = track(() => activeId.value);
-    if (isServer) return;
-    location.hash = `pokemon-${id}`;
-    
-    // ScrollIntoView should not happen when scroll happen
-    requestAnimationFrame(() => {
-      document.getElementById(`link-${id}`)?.scrollIntoView({ block: 'nearest', inline: 'center' });
-    })
-  })
+    const child = document.getElementById(`link-${id}`)!;
+    const parent = child.parentElement!;
+    const childRect = child.getBoundingClientRect();
+    const parentRect = parent.getBoundingClientRect();
+    const left = childRect.left  + parent.scrollLeft - (parentRect.width - childRect.width) / 2;
+    parent.scrollTo({
+      behavior: 'smooth',
+      left,
+    });
+  }, { strategy: 'document-ready' })
 
   // On List Changes
   useVisibleTask$(({ track, cleanup }) => {
     const change = track(() => result.value);
     const list = document.getElementById('pokemon-list')!;
+    const [, id] = location.hash.split('-');
+    if (id) activeId.value = Number(id);
     // Observer
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
         if (entry.isIntersecting) {
           const [, id] = entry.target.id.split('-');
           if (!id) continue;
-          if (entry.intersectionRatio === 1) activeId.value = Number(id);
+          const ratio = Math.round(entry.intersectionRatio * 100);
+
+          // Update active pokemon
+          if (ratio === 100) {
+            activeId.value = Number(id);
+          }
 
           // Fallback: Animate background if no scroll timeline available
-          const ratio = Math.round(entry.intersectionRatio * 100);
           if (ratio > 10 && ratio < 30) {
             if (typeof ScrollTimeline === 'undefined') {
               const current = listState.list[activeId.value - 1];

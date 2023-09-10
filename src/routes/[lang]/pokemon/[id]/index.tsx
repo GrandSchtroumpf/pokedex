@@ -37,7 +37,7 @@ export default component$(() => {
   })
 
   return <main id="pokemon-page" style={cssColor(mainType.color)}>
-    <Back class="btn" href="..">Pokedex</Back>
+    <Back class="btn back" href="..">Pokedex</Back>
     <section aria-labelledby="pokemon-name">
       <article>
         <PokemonImg pokemon={pokemon} eager />

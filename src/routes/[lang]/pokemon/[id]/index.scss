@@ -11,6 +11,23 @@
     oklch(0.2 0.05 var(--hue))
   );
   accent-color: var(--primary);
+
+  .back {
+    border: 1px solid oklch(60% var(--chroma) var(--hue));
+    border-radius: 4px;
+    color: var(--text);
+    text-decoration: none;
+    cursor: pointer;
+    padding: 8px 16px;
+    background-color: oklch(80% var(--chroma) var(--hue) / .12);
+    &:hover {
+      background-color: oklch(80% var(--chroma) var(--hue) / .24);
+    }
+    &:active {
+      background-color: oklch(80% var(--chroma) var(--hue) / .32);
+    }
+  }
+
   article {
     position: relative;
     display: flex;
