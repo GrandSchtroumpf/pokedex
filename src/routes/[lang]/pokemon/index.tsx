@@ -4,8 +4,9 @@ import type { Pokemon } from "~/model/pokemon";
 import { LoadMore, useComputedList, useListProvider } from "~/components/load-more";
 import { ViewTransitionContext } from "./layout";
 import { useTranslate } from "~/components/translate";
-import { pokemons } from '~/data';
+import { langs, pokemons } from '~/data';
 import { cssColor } from "~/components/color";
+import type { StaticGenerateHandler } from "@builder.io/qwik-city";
 import { Link } from "@builder.io/qwik-city";
 import style from './index.scss?inline';
 
@@ -76,3 +77,9 @@ export default component$(() => {
     </nav>
   </main>
 })
+
+export const onStaticGenerate: StaticGenerateHandler = async () => {
+  return {
+    params: langs.map((lang) => ({ lang })),
+  };
+};

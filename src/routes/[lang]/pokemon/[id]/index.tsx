@@ -1,4 +1,5 @@
 import { component$, useContext, useStyles$, useVisibleTask$ } from "@builder.io/qwik";
+import type { StaticGenerateHandler} from "@builder.io/qwik-city";
 import { Link, useLocation } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
 import { ViewTransitionContext } from "../layout";
@@ -6,9 +7,10 @@ import { Back } from "~/components/back";
 import type { TypeName } from "~/model/type";
 import type { Pokemon } from "~/model/pokemon";
 import { useTranslate } from "~/components/translate";
-import { pokemons, types } from '~/data';
-import style from './index.scss?inline';
+import { langs, pokemons, types } from '~/data';
 import { cssColor } from "~/components/color";
+import style from './index.scss?inline';
+import { Meter } from "~/components/meter/meter";
 
 interface TypeItemProps {
   name: TypeName;
@@ -59,7 +61,7 @@ export default component$(() => {
           {Object.entries(pokemon.stats).map(([key, stat]) => (
           <li key={key}>
             <span>{key}</span>
-            <progress max={255} value={stat.value}></progress>
+            <Meter max={255} value={stat.value} />
             <span>{stat.value}</span>
           </li>
           ))}
@@ -67,4 +69,14 @@ export default component$(() => {
       </article>
     </section>
   </main>
-})
+});
+
+export const onStaticGenerate: StaticGenerateHandler = async () => {
+  const params: {lang: string, id: string}[] = [];
+  for (const lang of langs) {
+    for (const pokemon of pokemons) {
+      params.push({ lang, id: pokemon.id.toString() })
+    }
+  }
+  return { params };
+};
