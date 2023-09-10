@@ -28,8 +28,8 @@ export default component$(() => {
   `);
   return (
     <main>
-      <Link class={scopeId} href={`${lang.value}/pokemon`}>Pokemon grid</Link>
-      <Link class={scopeId} href={`${lang.value}/list`}>Pokemon list</Link>
+      <Link class={scopeId} href={`${lang.value}/pokemon`}>View Transition API</Link>
+      <Link class={scopeId} href={`${lang.value}/list`}>ScrollTimeline Animation</Link>
     </main>
   );
 });
