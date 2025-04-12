@@ -1,10 +1,10 @@
 import { component$, Resource, useResource$, useStyles$ } from "@builder.io/qwik";
-import { useLocation } from "@builder.io/qwik-city";
+import { StaticGenerateHandler, useLocation } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
 import { Back } from "~/components/back";
 import type { TypeName } from "~/model/type";
 import type { Pokemon } from "~/model/pokemon";
-import { types } from '~/data';
+import { langs, pokemons, types } from '~/data';
 import { cssColor } from "~/components/color";
 import { Meter } from "~/components/meter/meter";
 import style from './index.scss?inline';
@@ -63,12 +63,12 @@ export default component$(() => {
   )} />
 });
 
-// export const onStaticGenerate: StaticGenerateHandler = async () => {
-//   const params: {lang: string, id: string}[] = [];
-//   for (const lang of langs) {
-//     for (const id of pokemons) {
-//       params.push({ lang, id: id.toString() })
-//     }
-//   }
-//   return { params };
-// };
+export const onStaticGenerate: StaticGenerateHandler = async () => {
+  const params: {lang: string, id: string}[] = [];
+  for (const lang of langs) {
+    for (const id of pokemons) {
+      params.push({ lang, id: id.toString() })
+    }
+  }
+  return { params };
+};
