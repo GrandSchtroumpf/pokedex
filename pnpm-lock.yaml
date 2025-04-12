@@ -7,16 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      pokenode-ts:
-        specifier: ^1.20.0
-        version: 1.20.0(axios-cache-interceptor@1.7.0(axios@1.8.4))(axios@1.8.4)
-      qwik-hueeye:
-        specifier: 0.0.33
-        version: 0.0.33(@builder.io/qwik-city@https://pkg.pr.new/@builder.io/qwik-city@23ed7db(acorn@8.14.1)(rollup@4.39.0)(typescript@5.8.3)(vite@6.2.6(@types/node@20.4.5)(lightningcss@1.29.3)(sass@1.86.3)))(@builder.io/qwik@https://pkg.pr.new/@builder.io/qwik@23ed7db(vite@6.2.6(@types/node@20.4.5)(lightningcss@1.29.3)(sass@1.86.3)))
-      sharp:
-        specifier: 0.34.1
-        version: 0.34.1
     devDependencies:
       '@builder.io/qwik':
         specifier: https://pkg.pr.new/@builder.io/qwik@23ed7db
@@ -48,12 +38,18 @@ importers:
       lightningcss:
         specifier: 1.29.3
         version: 1.29.3
+      pokenode-ts:
+        specifier: ^1.20.0
+        version: 1.20.0(axios-cache-interceptor@1.7.0(axios@1.8.4))(axios@1.8.4)
       prettier:
         specifier: 3.0.0
         version: 3.0.0
       sass:
         specifier: ^1.66.1
         version: 1.86.3
+      sharp:
+        specifier: 0.34.1
+        version: 0.34.1
       typescript:
         specifier: 5.8.3
         version: 5.8.3
@@ -2053,14 +2049,6 @@ packages:
 
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
-
-  qwik-hueeye@0.0.33:
-    resolution: {integrity: sha512-DnvWqulPMakHi0s0RbFFLv2QRmO0A+irSkgZ3AQa3csGSleUbMBQ2Sb/fpIAt6Tua+Fw5XbqjiwWR+3OGxYQow==}
-    version: 0.0.33
-    engines: {node: '>=15.0.0'}
-    peerDependencies:
-      '@builder.io/qwik': '>1.5.0'
-      '@builder.io/qwik-city': '>1.5.0'
 
   readdirp@3.6.0:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
@@ -4615,11 +4603,6 @@ snapshots:
   punycode@2.3.1: {}
 
   queue-microtask@1.2.3: {}
-
-  qwik-hueeye@0.0.33(@builder.io/qwik-city@https://pkg.pr.new/@builder.io/qwik-city@23ed7db(acorn@8.14.1)(rollup@4.39.0)(typescript@5.8.3)(vite@6.2.6(@types/node@20.4.5)(lightningcss@1.29.3)(sass@1.86.3)))(@builder.io/qwik@https://pkg.pr.new/@builder.io/qwik@23ed7db(vite@6.2.6(@types/node@20.4.5)(lightningcss@1.29.3)(sass@1.86.3))):
-    dependencies:
-      '@builder.io/qwik': https://pkg.pr.new/@builder.io/qwik@23ed7db(vite@6.2.6(@types/node@20.4.5)(lightningcss@1.29.3)(sass@1.86.3))
-      '@builder.io/qwik-city': https://pkg.pr.new/@builder.io/qwik-city@23ed7db(acorn@8.14.1)(rollup@4.39.0)(typescript@5.8.3)(vite@6.2.6(@types/node@20.4.5)(lightningcss@1.29.3)(sass@1.86.3))
 
   readdirp@3.6.0:
     dependencies:

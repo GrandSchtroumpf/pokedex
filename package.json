@@ -2,7 +2,7 @@
   "name": "my-qwik-empty-starter",
   "description": "App with Routing built-in ready to create your app",
   "engines": {
-    "node": ">=15.0.0"
+    "node": ">=22.0.0"
   },
   "private": true,
   "type": "module",
@@ -34,17 +34,14 @@
     "eslint": "8.45.0",
     "eslint-plugin-qwik": "https://pkg.pr.new/eslint-plugin-qwik@23ed7db",
     "lightningcss": "1.29.3",
+    "pokenode-ts": "^1.20.0",
     "prettier": "3.0.0",
     "sass": "^1.66.1",
+    "sharp": "0.34.1",
     "typescript": "5.8.3",
     "undici": "5.22.1",
     "vite": "6.2.6",
     "vite-tsconfig-paths": "5.1.4"
   },
-  "dependencies": {
-    "pokenode-ts": "^1.20.0",
-    "qwik-hueeye": "0.0.33",
-    "sharp": "0.34.1"
-  },
-  "packageManager": "pnpm@10.8.0+sha512.0e82714d1b5b43c74610193cb20734897c1d00de89d0e18420aebc5977fa13d780a9cb05734624e81ebd81cc876cd464794850641c48b9544326b5622ca29971"
+  "packageManager": "pnpm@10.8.0"
 }
