@@ -5,6 +5,7 @@
     "node": ">=15.0.0"
   },
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "qwik build",
     "build.client": "vite build",
@@ -23,26 +24,27 @@
     "qwik": "qwik"
   },
   "devDependencies": {
-    "@builder.io/qwik": "^1.2.8",
-    "@builder.io/qwik-city": "^1.2.8",
+    "@builder.io/qwik": "https://pkg.pr.new/@builder.io/qwik@23ed7db",
+    "@builder.io/qwik-city": "https://pkg.pr.new/@builder.io/qwik-city@23ed7db",
     "@digitak/esrun": "^3.2.24",
     "@types/eslint": "8.44.1",
-    "@types/node": "^20.4.5",
+    "@types/node": "20.4.5",
     "@typescript-eslint/eslint-plugin": "6.2.0",
     "@typescript-eslint/parser": "6.2.0",
     "eslint": "8.45.0",
-    "eslint-plugin-qwik": "^1.2.8",
-    "lightningcss": "^1.21.7",
+    "eslint-plugin-qwik": "https://pkg.pr.new/eslint-plugin-qwik@23ed7db",
+    "lightningcss": "1.29.3",
     "prettier": "3.0.0",
     "sass": "^1.66.1",
-    "typescript": "5.1.6",
+    "typescript": "5.8.3",
     "undici": "5.22.1",
-    "vite": "4.4.7",
-    "vite-tsconfig-paths": "4.2.0"
+    "vite": "6.2.6",
+    "vite-tsconfig-paths": "5.1.4"
   },
   "dependencies": {
     "pokenode-ts": "^1.20.0",
-    "qwik-hueeye": "^0.0.7",
-    "sharp": "^0.32.5"
-  }
+    "qwik-hueeye": "0.0.33",
+    "sharp": "0.34.1"
+  },
+  "packageManager": "pnpm@10.8.0+sha512.0e82714d1b5b43c74610193cb20734897c1d00de89d0e18420aebc5977fa13d780a9cb05734624e81ebd81cc876cd464794850641c48b9544326b5622ca29971"
 }
