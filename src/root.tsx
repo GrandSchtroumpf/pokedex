@@ -11,9 +11,11 @@ import "./global.css";
 
 const Body = component$(() => {
   const { params } = useLocation();
-  return <body lang={params.lang || 'en'}>
-    <Slot/>
-  </body>
+  return (
+    <body lang={params.lang || 'en'}>
+      <Slot/>
+    </body>
+  );
 })
 
 export default component$(() => {
@@ -27,7 +29,6 @@ export default component$(() => {
   return (
     <QwikCityProvider>
       <head>
-        <meta charSet="utf-8" />
         <link rel="manifest" href="/manifest.json" />
         <RouterHead />
       </head>

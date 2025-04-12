@@ -1,3 +1,8 @@
+#pokemon-list-page {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: 100dvh;
+}
 .previous, .next {
   position: fixed;
   inset-block: 0;
@@ -79,6 +84,8 @@
     scroll-snap-align: center;
     flex-shrink: 0;
     width: 100%;
+    display: grid;
+    place-items: center;
   }
 
 }
