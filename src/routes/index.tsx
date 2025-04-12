@@ -1,38 +1,28 @@
-import { component$, useSignal, useStylesScoped$, useVisibleTask$ } from "@builder.io/qwik";
-import { Link, type DocumentHead } from "@builder.io/qwik-city";
-import { langs } from '~/data';
+import { component$, Resource, useResource$, useStyles$} from "@builder.io/qwik";
+import { Link, useLocation, type DocumentHead } from "@builder.io/qwik-city";
+import type { Language } from "pokenode-ts";
+import style from './index.scss?inline';
 
 export default component$(() => {
-  const lang = useSignal('en');
-  useVisibleTask$(() => {
-    const currentLang = navigator.language.split('-').shift();
-    if (currentLang && langs.includes(currentLang)) lang.value = currentLang;
-  });
-  const {scopeId} = useStylesScoped$(`
-    main {
-      display: flex;
-      flex-direction: column;
-      min-height: 100dvh;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      view-transition-name: none;
-    }
-    a {
-      padding: 8px 16px;
-      border-radius: 4px;
-      background-color: oklch(0.2 0.15 340);
-      color: oklch(1 0.15 340);
-      border: solid 1px oklch(0.8 0.15 340);
-      text-decoration: none;
-    }
-  `);
+  useStyles$(style);
+  const { url } = useLocation();
+  const languagesResource =  useResource$<Language[]>(async () => {
+    const res = await fetch(`${url.origin}/data/en/languages.json`);
+    return res.json();
+  })
+
   return (
-    <main>
-      <Link class={scopeId} href={`${lang.value}/pokemon`}>View Transition API</Link>
-      <Link class={scopeId} href={`${lang.value}/list`}>ScrollTimeline Animation</Link>
+    <main id="select-lang-page">
+      <h1>Pokedex</h1>
+      <Resource value={languagesResource} onResolved={(languages) => (
+        <nav>
+          {languages.map((language) => (
+            <Link key={language.id} href={`/${language.id}`}>{language.name}</Link>
+          ))}
+        </nav>
+      )} />
     </main>
-  );
+  )
 });
 
 export const head: DocumentHead = {
