@@ -26,7 +26,7 @@
     top: 0;
     cursor: text;
     width: 450px;
-    max-width: 100%;
+    max-width: calc(100dvw - 24px);
     padding: 16px 8px;
     border-radius: 24px;
     isolation: isolate;
@@ -39,9 +39,9 @@
   }
   dialog {
     width: 500px;
-    max-width: 100%;
+    max-width: calc(100dvw - 24px);
     height: 500px;
-    max-height: 100%;
+    max-height: calc(100dvh - 24px);
     border-radius: 24px;
     border: 0;
     padding: 0;
@@ -166,7 +166,7 @@ html:active-view-transition-type(search) {
 }
 
 @media (max-width: 600px) {
-  search dialog {
+  #search-section dialog {
     height: calc(100% - 24px);
     width: calc(100% - 24px);
   }

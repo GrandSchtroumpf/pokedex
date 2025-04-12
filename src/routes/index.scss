@@ -1,11 +1,11 @@
 #select-lang-page {
   margin: auto;
   max-width: 1920px;
+  min-height: 80dvh;
   display: grid;
   align-content: center;
   text-align: center;
   gap: 24px;
-  height: 80dvh;
   nav {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));

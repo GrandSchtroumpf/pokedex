@@ -1,6 +1,7 @@
 import { $, component$, Resource, useComputed$, useSignal, useStyles$ } from "@builder.io/qwik";
 import { useGenerations } from "~/hooks/useData";
-import { Link, StaticGenerateHandler, useLocation } from "@builder.io/qwik-city";
+import type { StaticGenerateHandler} from "@builder.io/qwik-city";
+import { Link, useLocation } from "@builder.io/qwik-city";
 import type { Pokemon } from "~/model";
 import { PokemonImg } from "~/components/img/img";
 import style from './index.scss?inline';
