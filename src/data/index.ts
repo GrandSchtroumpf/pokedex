@@ -6,17 +6,17 @@ import typeRecord from './type.json';
 export const pokemons = pokemonList as number[];
 export const types = typeRecord as Record<string, Type>;
 export const langs = [
-  // "ja-Hrkt",
-  // "roomaji",
-  // "ko",
-  // "zh-Hant",
+  "ja-Hrkt",
+  "roomaji",
+  "ko",
+  "zh-Hant",
   "fr",
-  // "de",
-  // "es",
-  // "it",
-  // "en",
-  // "cs",
-  // "ja",
-  // "zh-Hans",
-  // "pt-BR"
+  "de",
+  "es",
+  "it",
+  "en",
+  "cs",
+  "ja",
+  "zh-Hans",
+  "pt-BR"
 ];

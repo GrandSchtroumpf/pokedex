@@ -1,12 +1,10 @@
 import { $, component$, createContextId, isServer, Resource, untrack, useContext, useContextProvider, useSignal, useStyles$, useTask$, useVisibleTask$ } from "@builder.io/qwik";
 import type { Signal } from "@builder.io/qwik";
-import type { StaticGenerateHandler} from "@builder.io/qwik-city";
 import { Link, useLocation, useNavigate } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
 import { Meter } from "~/components/meter/meter";
 import { cssColor } from "~/components/color";
-import { types, langs } from "~/data";
-import generations from '~/data/generation.json';
+import { types } from "~/data";
 import type { Pokemon, TypeName } from "~/model";
 import { usePokemonGeneration } from "~/hooks/useData";
 import { LangPicker } from "~/components/lang-picker/lang-picker";
@@ -182,12 +180,12 @@ export default component$(() => {
 })
 
 
-export const onStaticGenerate: StaticGenerateHandler = async () => {
-  const params: {lang: string, generation: string}[] = [];
-  for (const lang of langs) {
-    for (const generation of generations) {
-      params.push({ lang, generation })
-    }
-  }
-  return { params };
-};
+// export const onStaticGenerate: StaticGenerateHandler = async () => {
+//   const params: {lang: string, generation: string}[] = [];
+//   for (const lang of langs) {
+//     for (const generation of generations) {
+//       params.push({ lang, generation })
+//     }
+//   }
+//   return { params };
+// };

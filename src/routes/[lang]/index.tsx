@@ -95,3 +95,11 @@ export default component$(() => {
     </>
   )
 });
+
+// export const onStaticGenerate: StaticGenerateHandler = async () => {
+//   const params: {lang: string}[] = [];
+//   for (const lang of langs) {
+//     params.push({ lang });
+//   }
+//   return { params };
+// };
