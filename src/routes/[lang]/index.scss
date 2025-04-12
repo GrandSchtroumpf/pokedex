@@ -1,0 +1,189 @@
+@mixin animated-background {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: oklch(30% 2% var(--hue));
+  border-radius: inherit;
+}
+@mixin animated-text {
+  font-size: 1rem;
+  line-height: normal;
+  height: unset;
+  font-family: system-ui;
+  color: oklch(70% 2% var(--hue));
+}
+
+#search-section {
+  display: grid;
+  place-items: center;
+  place-content: center;
+  gap: 24px;
+  padding: 16px;
+  min-height: 100dvh;
+  & > button {
+    position: sticky;
+    top: 0;
+    cursor: text;
+    width: 450px;
+    max-width: 100%;
+    padding: 16px 8px;
+    border-radius: 24px;
+    isolation: isolate;
+    &::before {
+      @include animated-background;
+    }
+    span {
+      @include animated-text;
+    }
+  }
+  dialog {
+    width: 500px;
+    max-width: 100%;
+    height: 500px;
+    max-height: 100%;
+    border-radius: 24px;
+    border: 0;
+    padding: 0;
+    position: relative;
+    isolation: isolate;
+    &::before {
+      @include animated-background;
+    }
+    .search-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      header {
+        display: flex;
+        gap: 8px;
+
+        button {
+          border: none;
+          align-self: center;
+          padding: 8px;
+        }
+        .search-field {
+          flex: 1;
+          display: grid;
+          grid-template-areas: "stack";
+        }
+        label {
+          grid-area: stack;
+          place-self: center start;
+          opacity: 0;
+          cursor: text;
+          @include animated-text;
+        }
+        input {
+          grid-area: stack;
+          align-self: stretch;
+          border: 0;
+          background-color: transparent;
+          display: block;
+          width: 100%;
+          padding: 16px 0;
+          &:focus-visible {
+            outline: none;
+          }
+        }
+        .search-field:has(input:placeholder-shown) {
+          label {
+            opacity: 1;
+          }
+        }
+      }
+      hr {
+        border: none;
+        border-bottom: solid 1px oklch(60% 10% var(--hue));
+        width: 100%;
+        margin: 0;
+      }
+      nav {
+        flex: 1;
+        overflow: auto;
+        & > a {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          padding: 16px 8px;
+          color: inherit;
+          text-decoration: none;
+          &:hover {
+            background-color: oklch(35% 2% var(--hue));
+          }
+          &:active {
+            background-color: oklch(37% 2% var(--hue));
+          }
+        }
+      }
+    }
+    .search-container:has(input:focus-visible) {
+      hr {
+        border-color: oklch(60% 30% var(--hue))
+      }
+    }
+    .empty {
+      display: none;
+    }
+    nav:empty > .empty {
+      display: grid;
+      place-items: center;
+    }
+  }
+  dialog:open {
+    .search-container {
+      input, button, ul, hr {
+        animation: fade 600ms 300ms backwards;
+      }
+    }
+  }
+}
+#search-section:has(dialog:open) {
+  & > button {
+    opacity: 0;
+  }
+}
+html:active-view-transition-type(search) {
+  #search-section dialog:open {
+    &::before {
+      view-transition-name: search-box;
+    }
+    .search-container label {
+      view-transition-name: search-input;
+    }
+  }
+  search:not(:has(dialog:open)) {
+    & > button{
+      &::before {
+        view-transition-name: search-box;
+      }
+      span {
+        view-transition-name: search-input;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  search dialog {
+    height: calc(100% - 24px);
+    width: calc(100% - 24px);
+  }
+}
+
+
+::view-transition-group(search-box),
+::view-transition-group(search-input) {
+  animation-duration: 300ms;
+}
+::view-transition-image-pair(search-box) {
+  border-radius: 24px;
+  overflow: clip;
+}
+::view-transition-old(search-box),
+::view-transition-new(search-box) {
+  animation: none;
+  height: 100%;
+  width: 100%;
+}
