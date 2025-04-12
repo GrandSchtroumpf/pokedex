@@ -23,12 +23,11 @@ export async function getImgBuffer(url: string) {
 }
 
 interface OptimizeImgConfig {
-  name: string;
   folder: string;
   url: string;
   sizes: number[];
 }
-export async function optimizeImg({ name, folder, url, sizes }: OptimizeImgConfig) {
+export async function optimizeImg({ folder, url, sizes }: OptimizeImgConfig) {
   const path = join(cwd(), 'public', 'imgs', folder);
   if (!existsSync(path)) await mkdir(path, { recursive: true });
   const files = await readdir(path);

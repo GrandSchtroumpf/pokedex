@@ -1,14 +1,14 @@
-import { component$, useStyles$ } from "@builder.io/qwik";
+import { component$, Resource, useResource$, useStyles$ } from "@builder.io/qwik";
 import type { StaticGenerateHandler} from "@builder.io/qwik-city";
-import { Link, useLocation } from "@builder.io/qwik-city";
+import { useLocation } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
 import { Back } from "~/components/back";
 import type { TypeName } from "~/model/type";
 import type { Pokemon } from "~/model/pokemon";
 import { langs, pokemons, types } from '~/data';
 import { cssColor } from "~/components/color";
-import style from './index.scss?inline';
 import { Meter } from "~/components/meter/meter";
+import style from './index.scss?inline';
 
 interface TypeItemProps {
   name: TypeName;
@@ -23,51 +23,52 @@ const TypeItem = component$(({ name }: TypeItemProps) => {
 
 export default component$(() => {
   useStyles$(style);
-  const { params } = useLocation();
-  const pokemon = (pokemons as Pokemon[]).find(p => p.id.toString() === params.id);
-  if (!pokemon) return <Link href=".."> [Back] No pokemon found</Link>;
+  const { url, params } = useLocation();
+  const pokemonResource = useResource$<Pokemon>(async () => {
+    const res = await fetch(`${url.origin}/data/${params.lang}/pokemon/${params.id}.json`);
+    return res.json();
+  })
 
-  const mainType = types[pokemon.types[0]];
-
-
-  return <main id="pokemon-page" style={cssColor(mainType.color)}>
-    <Back class="btn back" href="../..">Pokedex</Back>
-    <section aria-labelledby="pokemon-name">
-      <article>
-        <PokemonImg pokemon={pokemon} eager />
-        <div class="pokemon-profile">          
-          <ol class="type-list">
-            {pokemon.types.map(type => (
-            <TypeItem key={type} name={type}/>
+  return <Resource value={pokemonResource} onResolved={(pokemon) => (
+    <main id="pokemon-page" style={cssColor(types[pokemon.types[0]].color)}>
+      <Back class="btn back" href="../..">Pokedex</Back>
+      <section aria-labelledby="pokemon-name">
+        <article>
+          <PokemonImg pokemon={pokemon} eager />
+          <div class="pokemon-profile">          
+            <ol class="type-list">
+              {pokemon.types.map(type => (
+              <TypeItem key={type} name={type}/>
+              ))}
+            </ol>
+            <h1 id="pokemon-name">{pokemon.name}</h1>
+            <h2 class="genus">{pokemon.shape} - {pokemon.genus}</h2>
+            <p class="description">{pokemon.flavorText}</p>
+            <p class="pokemon-index">#{pokemon.id}</p>
+          </div>
+        </article>
+        <article id="pokemon-stats">
+          <h2>Stats</h2>
+          <ul class="stats">
+            {Object.entries(pokemon.stats).map(([key, stat]) => (
+            <li key={key}>
+              <span>{key}</span>
+              <Meter max={255} value={stat.value} />
+              <span>{stat.value}</span>
+            </li>
             ))}
-          </ol>
-          <h1 id="pokemon-name">{pokemon.name}</h1>
-          <h2 class="genus">{pokemon.shape} - {pokemon.genus}</h2>
-          <p class="description">{pokemon.flavorText}</p>
-          <p class="pokemon-index">#{pokemon.id}</p>
-        </div>
-      </article>
-      <article id="pokemon-stats">
-        <h2>Stats</h2>
-        <ul class="stats">
-          {Object.entries(pokemon.stats).map(([key, stat]) => (
-          <li key={key}>
-            <span>{key}</span>
-            <Meter max={255} value={stat.value} />
-            <span>{stat.value}</span>
-          </li>
-          ))}
-        </ul>
-      </article>
-    </section>
-  </main>
+          </ul>
+        </article>
+      </section>
+    </main>
+  )} />
 });
 
 export const onStaticGenerate: StaticGenerateHandler = async () => {
   const params: {lang: string, id: string}[] = [];
   for (const lang of langs) {
-    for (const pokemon of pokemons) {
-      params.push({ lang, id: pokemon.id.toString() })
+    for (const id of pokemons) {
+      params.push({ lang, id: id.toString() })
     }
   }
   return { params };
