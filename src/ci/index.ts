@@ -86,15 +86,20 @@ async function getPokemons() {
     getAll('language'),
     getAll('generation'),
   ]);
-
   
-  const allImg = pokemons.map(async p => {
-    const url = p.sprites.other?.["official-artwork"].front_default;
-    if (!url) throw new Error(`Pokemon ${p.name} has no image`);
-    return optimizeImg({ name: p.name, url, sizes: [100, 250, 500, 750], folder: `pokemon/${p.name}` })
-  });
+  const writes: (() => Promise<any>)[] = [];
 
-  const writes = [];
+  for (const p of pokemons) {
+    const url = p.sprites.other?.["official-artwork"].front_default;
+    if (!url) {
+      console.warn(`Pokemon ${p.name} has no image`);
+      continue;
+    }
+    writes.push(() => {
+      return optimizeImg({ url, sizes: [100, 250, 500, 750], folder: `pokemon/${p.name}` })
+    });
+  }
+
   for (const language of languages) {
     const lang = language.name;
 
@@ -120,11 +125,19 @@ async function getPokemons() {
       writes.push(writeData(`${lang}/generation/${generation}`, generationRecord[generation]))
     }
   }
+
+  for (let i = 0; i < writes.length; i += 50) {
+    console.log('Batch', i);
+    const batch = [];
+    for (let j = i; j < Math.min(i + 50, writes.length); j++) {
+      batch.push(writes[j]());
+    }
+    const results = await Promise.allSettled(batch);
+    for (const res of results) {
+      if (res.status === 'rejected') console.warn(res.reason);
+    }
+  }
   
-  return Promise.allSettled([
-    ...allImg,
-    ...writes,
-  ]);
 }
 
 // TYPES

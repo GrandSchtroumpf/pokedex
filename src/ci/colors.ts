@@ -34,6 +34,8 @@ export const typeColors = {
   rock: lch(0.71, 0.11, 98),
   shadow: lch(0.34, 0.03, 309),
   steel: lch(0.79, 0.03, 285),
+  // TODO: should be gradient
+  stellar: lch(0.67, 0.05, 170),
   unknown: lch(0.67, 0.05, 170),
   water: lch(0.67, 0.14, 270),
 }
