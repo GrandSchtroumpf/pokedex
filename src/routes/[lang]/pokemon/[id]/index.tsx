@@ -1,8 +1,7 @@
-import { component$, useContext, useStyles$, useVisibleTask$ } from "@builder.io/qwik";
+import { component$, useStyles$ } from "@builder.io/qwik";
 import type { StaticGenerateHandler} from "@builder.io/qwik-city";
 import { Link, useLocation } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
-import { ViewTransitionContext } from "../layout";
 import { Back } from "~/components/back";
 import type { TypeName } from "~/model/type";
 import type { Pokemon } from "~/model/pokemon";
@@ -24,17 +23,12 @@ const TypeItem = component$(({ name }: TypeItemProps) => {
 
 export default component$(() => {
   useStyles$(style);
-  const transitionNames = useContext(ViewTransitionContext);
   const { params } = useLocation();
   const pokemon = (pokemons as Pokemon[]).find(p => p.id.toString() === params.id);
   if (!pokemon) return <Link href=".."> [Back] No pokemon found</Link>;
 
   const mainType = types[pokemon.types[0]];
 
-  // Clear animation state
-  useVisibleTask$(() => {
-    transitionNames.value = '';
-  })
 
   return <main id="pokemon-page" style={cssColor(mainType.color)}>
     <Back class="btn back" href="../..">Pokedex</Back>
