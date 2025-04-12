@@ -133,7 +133,7 @@
   }
   dialog:open {
     .search-container {
-      input, button, ul, hr {
+      input, button, .empty, hr, nav {
         animation: fade 600ms 300ms backwards;
       }
     }
