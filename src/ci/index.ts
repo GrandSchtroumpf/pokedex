@@ -1,5 +1,5 @@
 import type { PokemonStat } from "pokenode-ts";
-import type { APIPokemon, APISpecies, APIResource} from "./api";
+import type { APIPokemon, APISpecies, APIResource, APILanguage, APIGeneration } from "./api";
 import type { TypeName, SpeciesColor } from "./colors";
 import { getAll } from "./api";
 import { speciesColor, typeColors } from "./colors";
@@ -21,14 +21,12 @@ function toRecord<I, O>(
   return record;
 }
 
-type TextRecord = Record<string, string>;
 /** Transform a list of text to a record */
-function toText<T extends { language: APIResource }>(list: T[], key: Extract<keyof T, string>): TextRecord {
-  const record: Record<string, string> = {};
+function toText<T extends { language: APIResource }>(list: T[], key: Extract<keyof T, string>, lang: string): string {
   for (const item of list) {
-    record[item.language.name] = item[key] as string;
+    if (item.language.name === lang) return item[key] as string;
   }
-  return record;
+  return '';
 }
 
 // POKEMON
@@ -46,34 +44,49 @@ function toStats(stats: PokemonStat[]) {
 function toPokemon(
   species: APISpecies,
   pokemons: APIPokemon[],
-  shapes: Record<string, TextRecord>
+  shapes: Record<string, string>,
+  lang: string,
 ) {
   const { id, names, shape } = species;
   const pokemon = pokemons.at(id - 1)!;
   return {
     id,
     imgName: pokemon.name,
-    name: toText(names, 'name'),
-    shape: typeof shape !== 'undefined' ? shapes[shape.name] : {}, // species have no shape
+    name: toText(names, 'name', lang),
+    shape: typeof shape !== 'undefined' ? shapes[shape.name] : '', // species have no shape
     color: speciesColor[species.color.name as SpeciesColor],
     types: pokemon.types.sort((a,b) => a.slot - b.slot).map(type => type.type.name as TypeName),
-    genus: toText(species.genera, 'genus'),
-    flavorText: toText(species.flavor_text_entries, 'flavor_text'),
-    formDescription: toText(species.form_descriptions, 'description'),
+    genus: toText(species.genera, 'genus', lang),
+    flavorText: toText(species.flavor_text_entries, 'flavor_text', lang),
+    formDescription: toText(species.form_descriptions, 'description', lang),
     stats: toStats(pokemon.stats)
   }
 }
 
+function toLanguage(language: APILanguage, lang: string) {
+  return {
+    id: language.name,
+    name: toText(language.names, 'name', lang)
+  }
+}
+
+function toGeneration(genaration: APIGeneration, lang: string) {
+  return { id: genaration.name, name: toText(genaration.names, 'name', lang) }
+}
+
 export type Pokemon = ReturnType<typeof toPokemon>;
+export type Language = ReturnType<typeof toLanguage>;
+export type Generation = ReturnType<typeof toGeneration>;
 
 async function getPokemons() {
-  const [pokemons, species, shapes] = await Promise.all([
+  const [pokemons, species, shapes, languages, generations] = await Promise.all([
     getAll('pokemon'),
     getAll('pokemon-species'),
-    getAll('pokemon-shape')
+    getAll('pokemon-shape'),
+    getAll('language'),
+    getAll('generation'),
   ]);
-  const shapeRecord = toRecord(shapes, 'name', shape => toText(shape.names, 'name'));
-  const allPokemons = species.map(p => toPokemon(p, pokemons, shapeRecord));
+
   
   const allImg = pokemons.map(async p => {
     const url = p.sprites.other?.["official-artwork"].front_default;
@@ -81,10 +94,36 @@ async function getPokemons() {
     return optimizeImg({ name: p.name, url, sizes: [100, 250, 500, 750], folder: `pokemon/${p.name}` })
   });
 
+  const writes = [];
+  for (const language of languages) {
+    const lang = language.name;
+
+    // Language list
+    const languageNames = languages.map((l) => toLanguage(l, lang));
+    writes.push(writeData(`${lang}/languages`, languageNames));
+
+    // Generation names
+    const generationNames = generations.map((g) => toGeneration(g, lang));
+    writes.push(writeData(`${lang}/generations`, generationNames));
+
+    const generationRecord: Record<string, Pokemon[]> = {};
+    const shapeRecord = toRecord(shapes, 'name', shape => toText(shape.names, 'name', lang));
+    for (const p of species) {
+      const pokemon = toPokemon(p, pokemons, shapeRecord, lang);
+      // Each pokemon
+      writes.push(writeData(`${lang}/pokemon/${pokemon.id}`, pokemon));
+      generationRecord[p.generation.name] ||= [];
+      generationRecord[p.generation.name].push(pokemon);
+    }
+    // List of pokemon per generation
+    for (const generation in generationRecord) {
+      writes.push(writeData(`${lang}/generation/${generation}`, generationRecord[generation]))
+    }
+  }
   
   return Promise.allSettled([
     ...allImg,
-    writeData('pokemon', allPokemons)
+    ...writes,
   ]);
 }
 
@@ -112,9 +151,9 @@ function main() {
 main()
 .then(() => {
   console.log('Closing gracefuly');
-  process.exit(1)
+  process.exit(0)
 })
 .catch(err => {
   console.error(err);
-  process.exit(0);
+  process.exit(1);
 })

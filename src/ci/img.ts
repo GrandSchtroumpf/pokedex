@@ -29,7 +29,6 @@ interface OptimizeImgConfig {
   sizes: number[];
 }
 export async function optimizeImg({ name, folder, url, sizes }: OptimizeImgConfig) {
-  console.time(name);
   const path = join(cwd(), 'public', 'imgs', folder);
   if (!existsSync(path)) await mkdir(path, { recursive: true });
   const files = await readdir(path);
@@ -41,10 +40,9 @@ export async function optimizeImg({ name, folder, url, sizes }: OptimizeImgConfi
     if (files.includes(`${width}w.webp`)) continue;
     operations.push((buffer: ArrayBuffer) => sharp(buffer).toFormat('webp').resize({ width }).toFile(join(path, `${width}w.webp`)));
   }
-  if (!operations.length) return console.timeEnd(name);
+  if (!operations.length) return;
   
   // Get img only if you need it
   const buffer = await getImgBuffer(url);
   await Promise.allSettled(operations.map(fn => fn(buffer)));
-  console.timeEnd(name);
 }

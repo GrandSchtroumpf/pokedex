@@ -6,7 +6,6 @@ import { ViewTransitionContext } from "../layout";
 import { Back } from "~/components/back";
 import type { TypeName } from "~/model/type";
 import type { Pokemon } from "~/model/pokemon";
-import { useTranslate } from "~/components/translate";
 import { langs, pokemons, types } from '~/data';
 import { cssColor } from "~/components/color";
 import style from './index.scss?inline';
@@ -25,7 +24,6 @@ const TypeItem = component$(({ name }: TypeItemProps) => {
 
 export default component$(() => {
   useStyles$(style);
-  const t = useTranslate();
   const transitionNames = useContext(ViewTransitionContext);
   const { params } = useLocation();
   const pokemon = (pokemons as Pokemon[]).find(p => p.id.toString() === params.id);
@@ -39,7 +37,7 @@ export default component$(() => {
   })
 
   return <main id="pokemon-page" style={cssColor(mainType.color)}>
-    <Back class="btn back" href="..">Pokedex</Back>
+    <Back class="btn back" href="../..">Pokedex</Back>
     <section aria-labelledby="pokemon-name">
       <article>
         <PokemonImg pokemon={pokemon} eager />
@@ -49,9 +47,9 @@ export default component$(() => {
             <TypeItem key={type} name={type}/>
             ))}
           </ol>
-          <h1 id="pokemon-name">{t(pokemon.name)}</h1>
-          <h2 class="genus">{t(pokemon.shape)} - {t(pokemon.genus)}</h2>
-          <p class="description">{t(pokemon.flavorText)}</p>
+          <h1 id="pokemon-name">{pokemon.name}</h1>
+          <h2 class="genus">{pokemon.shape} - {pokemon.genus}</h2>
+          <p class="description">{pokemon.flavorText}</p>
           <p class="pokemon-index">#{pokemon.id}</p>
         </div>
       </article>

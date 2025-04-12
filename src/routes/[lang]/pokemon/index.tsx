@@ -1,9 +1,8 @@
 import { $, component$, useContext, useStyles$ } from "@builder.io/qwik";
 import { PokemonImg } from "~/components/img/img";
 import type { Pokemon } from "~/model/pokemon";
-import { LoadMore, useComputedList, useListProvider } from "~/components/load-more";
+import { useComputedList, useListProvider } from "~/components/load-more";
 import { ViewTransitionContext } from "./layout";
-import { useTranslate } from "~/components/translate";
 import { langs, pokemons } from '~/data';
 import { cssColor } from "~/components/color";
 import type { StaticGenerateHandler } from "@builder.io/qwik-city";
@@ -30,7 +29,6 @@ interface PokemonItemProps {
   pokemon: Pokemon;
 }
 const PokemonItem = component$(({ pokemon }: PokemonItemProps) => {
-  const t = useTranslate();
   const transitionNames = useContext(ViewTransitionContext);
   const props = {
     class: 'item',
@@ -58,7 +56,7 @@ const PokemonItem = component$(({ pokemon }: PokemonItemProps) => {
   return <>
     <Link href={pokemon.id.toString()} {...props} onClick$={animate}>
       <PokemonImg pokemon={pokemon}/>
-      <h2>{pokemon.id} - {t(pokemon.name)}</h2>
+      <h2>{pokemon.id} - {pokemon.name}</h2>
     </Link>
   </>
 })
@@ -73,7 +71,6 @@ export default component$(() => {
   return <main id="pokemon-list">
     <nav class="grid">
       {result.value.map(p => <PokemonItem key={p.id} pokemon={p}/>)}
-      <LoadMore limit={50} q:slot="grid-end"></LoadMore>
     </nav>
   </main>
 })

@@ -3,16 +3,20 @@ import type {
   Pokemon as APIPokemon,
   PokemonSpecies as APISpecies,
   PokemonShape as APIShape,
-  Type as APIType
+  Type as APIType,
+  Generation as APIGeneration,
+  Language as APILanguage
 } from 'pokenode-ts';
 
-export { APIPokemon, APIType, APIResource, APISpecies };
+export { APIPokemon, APIType, APIResource, APISpecies, APIGeneration, APILanguage };
 
 const baseUrl = `https://pokeapi.co/api/v2`;
 
 interface API {
-  pokemon: APIPokemon;
+  language: APILanguage;
+  generation: APIGeneration;
   type: APIType;
+  pokemon: APIPokemon;
   'pokemon-species': APISpecies;
   'pokemon-shape': APIShape;
 }
