@@ -25,7 +25,7 @@
     }
   }
   &::backdrop {
-    background-color: oklch(30% 20% var(--hue) / 8%);
+    background-color: oklch(10% 10% var(--hue) / 70%);
     backdrop-filter: blur(20px) saturate(150%);
   }
 }

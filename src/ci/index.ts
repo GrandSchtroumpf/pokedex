@@ -5,6 +5,7 @@ import { getAll } from "./api";
 import { speciesColor, typeColors } from "./colors";
 import { optimizeImg } from "./img";
 import { writeData } from "./json";
+import { langs } from "~/data";
 
 
 // Utils
@@ -100,11 +101,10 @@ async function getPokemons() {
     });
   }
 
-  for (const language of languages) {
-    const lang = language.name;
+  for (const lang of langs) {
 
     // Language list
-    const languageNames = languages.map((l) => toLanguage(l, lang));
+    const languageNames = languages.filter(v => langs.includes(v.name)).map((l) => toLanguage(l, lang));
     writes.push(writeData(`${lang}/languages`, languageNames));
 
     // Generation names

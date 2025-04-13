@@ -1,8 +1,8 @@
 import { $, component$, createContextId, isServer, Resource, untrack, useContext, useContextProvider, useSignal, useStyles$, useTask$, useVisibleTask$ } from "@builder.io/qwik";
 import type { Signal } from "@builder.io/qwik";
-import { Link, StaticGenerateHandler, useLocation, useNavigate } from "@builder.io/qwik-city";
+import type { StaticGenerateHandler} from "@builder.io/qwik-city";
+import { Link, useLocation, useNavigate } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
-import { Meter } from "~/components/meter/meter";
 import { cssColor } from "~/components/color";
 import { generations, langs, types } from "~/data";
 import type { Pokemon, TypeName } from "~/model";
@@ -47,18 +47,6 @@ const PokemonPage = component$(({ pokemon }: PokemonPage) => {
         <p class="description">{pokemon.flavorText}</p>
         <p class="pokemon-index">#{pokemon.id}</p>
       </div>
-    </article>
-    <article class="pokemon-stats">
-      <h2>Stats</h2>
-      <ul class="stats">
-        {Object.entries(pokemon.stats).map(([key, stat]) => (
-        <li key={key}>
-          <span>{key}</span>
-          <Meter max={255} value={stat.value} />
-          <span>{stat.value}</span>
-        </li>
-        ))}
-      </ul>
     </article>
   </section>
 })
@@ -117,7 +105,7 @@ const PokemonNav = component$(({pokemons}: PokemonNavProps) => {
 
 const keyframes = (pokemons: Pokemon[]) => `
   @keyframes pokemon-colors {
-    ${pokemons.map((p, i) => `${i / pokemons.length * 100}% { background-color: oklch(25% 15% ${p.color.h});}`).join('')}
+    ${pokemons.map((p, i) => `${i / (pokemons.length - 1) * 100}% { background-color: oklch(25% 15% ${p.color.h});}`).join('')}
   }
 `;
 
@@ -144,7 +132,7 @@ export default component$(() => {
           activeId.value = Number(id);
         }
       }
-    }, { threshold: 1 });
+    }, { threshold: 0.9 });
     const items = document.querySelectorAll('#pokemon-list > li');
     for (const item of items) {
       observer.observe(item);
@@ -166,7 +154,7 @@ export default component$(() => {
         <Previous />
         <ul id="pokemon-list" class="main-nav" >
           {pokemons.map(pokemon => (
-            <li id={`pokemon-${pokemon.id}`} key={pokemon.id} data-target={activeId.value === pokemon.id} >
+            <li id={`pokemon-${pokemon.id}`} key={pokemon.id} data-target={activeId.value === pokemon.id}>
               <PokemonPage pokemon={pokemon} />
             </li>
           ))}

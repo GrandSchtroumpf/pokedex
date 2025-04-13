@@ -31,14 +31,14 @@ export default component$(() => {
 
   const open = $(() => {
     const dialog = document.getElementById('search-box') as HTMLDialogElement;
-    if ('startViewTransition' in document) document.startViewTransition({ types: ['search'], update: () => dialog.showModal() } as any);
+    if ('startViewTransition' in document) document.startViewTransition({ types: ['search-open'], update: () => dialog.showModal() } as any);
     else dialog.showModal();
     preloadPokemon();
   });
 
   const close = $(() => {
     const dialog = document.getElementById('search-box') as HTMLDialogElement;
-    if ('startViewTransition' in document) document.startViewTransition({ types: ['search'], update: () => dialog.close() } as any);
+    if ('startViewTransition' in document) document.startViewTransition({ types: ['search-close'], update: () => dialog.close() } as any);
     else dialog.close();
   });
 
@@ -72,7 +72,7 @@ export default component$(() => {
             <nav>
               {list.value.map((pokemon) => (
                 <Link key={pokemon.id} href={`pokemon/${pokemon.id}`}>
-                  <PokemonImg pokemon={pokemon} width={24} height={24} />
+                  <PokemonImg pokemon={pokemon} width={40} height={40} />
                   <h3>{pokemon.name}</h3>
                 </Link>
               ))}
@@ -85,13 +85,11 @@ export default component$(() => {
       </search>
       <main>
         <Resource value={generationsResource} onResolved={(generations) => (
-          <ul>
+          <nav class="generation-list">
             {generations.map((generation) => (
-              <li key={generation.id}>
-                <Link href={generation.id.toString()}>{generation.name}</Link>
-              </li>
+              <Link key={generation.id} href={generation.id.toString()}>{generation.name}</Link>
             ))}
-          </ul>
+          </nav>
         )} />
       </main>
     </>

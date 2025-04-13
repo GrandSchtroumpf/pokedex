@@ -1,13 +1,14 @@
 import { component$, Resource, useResource$, useStyles$ } from "@builder.io/qwik";
-import { StaticGenerateHandler, useLocation } from "@builder.io/qwik-city";
+import type { StaticGenerateHandler} from "@builder.io/qwik-city";
+import { useLocation } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
 import { Back } from "~/components/back";
 import type { TypeName } from "~/model/type";
 import type { Pokemon } from "~/model/pokemon";
 import { langs, pokemons, types } from '~/data';
 import { cssColor } from "~/components/color";
-import { Meter } from "~/components/meter/meter";
 import style from './index.scss?inline';
+import { PokemonStats } from "~/components/pokemon/stats";
 
 interface TypeItemProps {
   name: TypeName;
@@ -46,18 +47,7 @@ export default component$(() => {
             <p class="pokemon-index">#{pokemon.id}</p>
           </div>
         </article>
-        <article id="pokemon-stats">
-          <h2>Stats</h2>
-          <ul class="stats">
-            {Object.entries(pokemon.stats).map(([key, stat]) => (
-            <li key={key}>
-              <span>{key}</span>
-              <Meter max={255} value={stat.value} />
-              <span>{stat.value}</span>
-            </li>
-            ))}
-          </ul>
-        </article>
+        <PokemonStats pokemon={pokemon} />
       </section>
     </main>
   )} />

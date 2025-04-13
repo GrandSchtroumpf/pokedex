@@ -8,16 +8,11 @@ export const types = typeRecord as Record<string, Type>;
 export const generations = allGeneration as string[];
 export const langs = [
   "ja-Hrkt",
-  // "roomaji",
   "ko",
-  "zh-Hant",
   "fr",
-  // "de",
-  // "es",
-  // "it",
+  "ko",
+  "de",
+  "es",
+  "it",
   "en",
-  // "cs",
-  "ja",
-  // "zh-Hans",
-  // "pt-BR"
 ];

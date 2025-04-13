@@ -20,10 +20,10 @@
   place-content: center;
   gap: 24px;
   padding: 16px;
-  min-height: 100dvh;
+  min-height: 60dvh;
   & > button {
     position: sticky;
-    top: 0;
+    top: 8px;
     cursor: text;
     width: 450px;
     max-width: calc(100dvw - 24px);
@@ -39,14 +39,17 @@
   }
   dialog {
     width: 500px;
-    max-width: calc(100dvw - 24px);
+    max-width: 100dvw;
     height: 500px;
-    max-height: calc(100dvh - 24px);
+    max-height: 100dvh;
     border-radius: 24px;
     border: 0;
     padding: 0;
     position: relative;
     isolation: isolate;
+    &::backdrop {
+      background-color: oklch(10% 10% var(--hue) / 80%);
+    }
     &::before {
       @include animated-background;
     }
@@ -107,13 +110,14 @@
           align-items: center;
           gap: 16px;
           padding: 16px 8px;
-          color: inherit;
-          text-decoration: none;
           &:hover {
             background-color: oklch(35% 2% var(--hue));
           }
           &:active {
             background-color: oklch(37% 2% var(--hue));
+          }
+          h3 {
+            font-weight: 400;
           }
         }
       }
@@ -124,9 +128,14 @@
       }
     }
     .empty {
+      flex: 1;
+      display: none;
+      color: oklch(80% 10% var(--hue));
+    }
+    nav:empty {
       display: none;
     }
-    nav:empty > .empty {
+    nav:empty + .empty {
       display: grid;
       place-items: center;
     }
@@ -144,7 +153,35 @@
     opacity: 0;
   }
 }
-html:active-view-transition-type(search) {
+@media (max-width: 600px) {
+  #search-section dialog {
+    height: 100%;
+    width: 100%;
+    border-radius: 0;
+  }
+}
+
+
+// Generation list
+.generation-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 8px;
+  padding: 16px;
+  max-width: 1020px;
+  margin: auto;
+  & > a  {
+    border: solid 1px oklch(50% 20% var(--hue));
+    border-radius: 8px;
+    padding: 16px 8px;
+  }
+}
+
+
+
+// View Transition
+
+html:active-view-transition-type(search-open, search-close) {
   #search-section dialog:open {
     &::before {
       view-transition-name: search-box;
@@ -163,27 +200,42 @@ html:active-view-transition-type(search) {
       }
     }
   }
+
+  &::view-transition-image-pair(search-box) {
+    overflow: clip;
+    animation-name: clipping;
+  }
+  &::view-transition-group(search-box),
+  &::view-transition-group(search-input),
+  &::view-transition-image-pair(search-box) {
+    animation-duration: 300ms;
+  }
+  
+  &::view-transition-old(search-box),
+  &::view-transition-new(search-box) {
+    animation: none;
+    height: 100%;
+    width: 100%;
+  }
+}
+html:active-view-transition-type(search-open) {
+  &::view-transition-image-pair(search-box) {
+    animation-direction: normal;
+  }
+}
+html:active-view-transition-type(search-close) {
+  &::view-transition-image-pair(search-box) {
+    animation-direction: reverse;
+  }
 }
 
-@media (max-width: 600px) {
-  #search-section dialog {
-    height: calc(100% - 24px);
-    width: calc(100% - 24px);
+@keyframes clipping {
+  from {
+    border-radius: 24px;
+  }
+  to {
+    border-radius: 0px;
   }
 }
 
 
-::view-transition-group(search-box),
-::view-transition-group(search-input) {
-  animation-duration: 300ms;
-}
-::view-transition-image-pair(search-box) {
-  border-radius: 24px;
-  overflow: clip;
-}
-::view-transition-old(search-box),
-::view-transition-new(search-box) {
-  animation: none;
-  height: 100%;
-  width: 100%;
-}
