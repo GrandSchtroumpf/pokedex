@@ -14,6 +14,9 @@ let qwikCache: Cache;
 let cache: Cache;
 
 const fetchResponse = async (event: FetchEvent) => {
+  qwikCache ||= await caches.open("QwikModulePreload");
+  cache ||= await caches.open("Pokedex");
+
   const req = event.request;
   // Check cache
   const cachedResponse = await caches.match(req);
@@ -40,8 +43,6 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(self.registration.navigationPreload?.enable());
 });
 
-self.addEventListener("fetch", async (event) => {
-  qwikCache ||= await caches.open("QwikModulePreload");
-  cache ||= await caches.open("Pokedex");
+self.addEventListener("fetch", (event) => {
   event.respondWith(fetchResponse(event));
 });
