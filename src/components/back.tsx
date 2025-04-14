@@ -1,7 +1,7 @@
 import type { QwikJSX} from "@builder.io/qwik";
 import { Slot, component$ } from "@builder.io/qwik";
 import type { LinkProps} from "@builder.io/qwik-city";
-import { Link, useLocation } from "@builder.io/qwik-city";
+import { useLocation } from "@builder.io/qwik-city";
 
 type BackProps = LinkProps & QwikJSX.IntrinsicElements['button'];
 // interface BackProps extends LinkProps {}
@@ -13,8 +13,8 @@ export const Back = component$((props: BackProps) => {
       <Slot/>
     </button>
   } else {
-    return <Link {...props}>
+    return <a {...props}>
       <Slot/>
-    </Link>
+    </a>
   }
 })

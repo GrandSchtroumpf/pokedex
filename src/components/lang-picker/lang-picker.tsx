@@ -1,5 +1,5 @@
 import { $, component$, Resource, useStyles$ } from "@builder.io/qwik";
-import { Link, useLocation } from "@builder.io/qwik-city";
+import { useLocation } from "@builder.io/qwik-city";
 import { useLanguages } from "~/hooks/useData";
 import style from './lang-picker.scss?inline';
 
@@ -21,7 +21,7 @@ export const LangPicker = component$(() => {
         <Resource value={languagesResource} onResolved={(languages) => (
           <nav>
             {languages.map((language) => (
-              <Link key={language.id} href={`/${language.id}`}>{language.name}</Link>
+              <a key={language.id} href={`/${language.id}`}>{language.name}</a>
             ))}
           </nav>
         )} />

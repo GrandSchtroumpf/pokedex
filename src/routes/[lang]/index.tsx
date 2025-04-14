@@ -1,7 +1,7 @@
 import { $, component$, Resource, useComputed$, useSignal, useStyles$ } from "@builder.io/qwik";
 import { useGenerations } from "~/hooks/useData";
 import type { DocumentHead, StaticGenerateHandler} from "@builder.io/qwik-city";
-import { Link, useLocation } from "@builder.io/qwik-city";
+import { useLocation } from "@builder.io/qwik-city";
 import type { PokemonItem } from "~/model";
 import { PokemonImg } from "~/components/img/img";
 import style from './index.scss?inline';
@@ -71,10 +71,10 @@ export default component$(() => {
             <hr />
             <nav>
               {list.value.map((pokemon) => (
-                <Link key={pokemon.id} href={`pokemon/${pokemon.id}`}>
+                <a key={pokemon.id} href={`pokemon/${pokemon.id}`}>
                   <PokemonImg pokemon={pokemon} width={40} height={40} />
                   <h3>{pokemon.name}</h3>
-                </Link>
+                </a>
               ))}
             </nav>
             <div class="empty">
@@ -87,7 +87,7 @@ export default component$(() => {
         <Resource value={generationsResource} onResolved={(generations) => (
           <nav class="generation-list">
             {generations.map((generation) => (
-              <Link key={generation.id} href={generation.id.toString()}>{generation.name}</Link>
+              <a key={generation.id} href={generation.id.toString()}>{generation.name}</a>
             ))}
           </nav>
         )} />

@@ -96,7 +96,7 @@
   
     & > li {
       content-visibility: auto;
-      contain-intrinsic-width: 100vw;
+      contain-intrinsic-inline-size: 100vw;
       scroll-snap-stop: always;
       scroll-snap-align: center;
       flex-shrink: 0;
@@ -120,7 +120,7 @@
       position: relative;
       display: flex;
       width: 900px;
-      min-width: 60%;
+      min-width: 50%;
       max-width: 90%;
       margin-inline: auto;
       margin-bottom: 24px;
@@ -211,7 +211,11 @@
   }
   
   @keyframes fade-nav-x {
+    0%, 100% {
+      visibility: hidden;
+    }
     10%, 90% {
+      visibility: visible;
       opacity: 0;
       transform: scale(0.5);
     }
@@ -253,7 +257,7 @@
         --translate-x: 50vw;
       }
       .pokemon-img {
-        --translate-x: 30vw;
+        --translate-x: 80vw;
       }      
       .pokemon-index,
       .pokemon-profile,

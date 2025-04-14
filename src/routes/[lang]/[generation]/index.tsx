@@ -1,7 +1,7 @@
 import { $, component$, createContextId, isServer, Resource, untrack, useContext, useContextProvider, useSignal, useStyles$, useTask$, useVisibleTask$ } from "@builder.io/qwik";
 import type { Signal } from "@builder.io/qwik";
 import type { DocumentHead, StaticGenerateHandler} from "@builder.io/qwik-city";
-import { Link, routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
+import { routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
 import { cssColor } from "~/components/color";
 import { generations, langs, types } from "~/data";
@@ -24,8 +24,8 @@ const TypeItem = component$(({ name }: TypeItemProps) => {
 // TODO: url this with MPA
 export const useGeneration = routeLoader$(async (requestEvent) => {
   const { url, params } = requestEvent;
-  const res = await fetch(`${url.origin}/data/${params.lang}/generation/${params.generation}.json`);
-  return res.json() as Promise<Generation>;
+  const res = await fetch(`${url.origin}/data/${params.lang}/generations.json`);
+  return res.json() as Promise<Generation[]>;
 });
 
 
@@ -104,9 +104,9 @@ const PokemonNav = component$(({pokemons}: PokemonNavProps) => {
   const activeId = useContext(ActiveIdContext);
   return <nav class="pokemon-nav" aria-label="Select a pokemon">
     {pokemons.map(p => (
-    <Link id={`link-${p.id}`} key={p.id} href={`#pokemon-${p.id}`} aria-current={activeId.value === p.id ? 'page' : undefined}>
+    <a id={`link-${p.id}`} key={p.id} href={`#pokemon-${p.id}`} aria-current={activeId.value === p.id ? 'page' : undefined}>
       {p.name}
-    </Link>
+    </a>
     ))}
   </nav>
 })
@@ -152,9 +152,9 @@ export default component$(() => {
     <>
     <main id="pokemon-list-page" >
       <header>
-        <Link href=".." class="back">
+        <a href=".." class="back">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
-        </Link>
+        </a>
         <PokemonNav pokemons={pokemons}/>
         <LangPicker />
       </header>
@@ -188,9 +188,10 @@ export const onStaticGenerate: StaticGenerateHandler = async () => {
 
 // Now we can export a function that returns a DocumentHead object
 export const head: DocumentHead = ({ resolveValue, params, url }) => {
-  const generation = resolveValue(useGeneration);
+  const generations = resolveValue(useGeneration);
+  const name = generations.find(({ id }) => id === params.generation)?.name;
   return {
-    title: `Pokedex - ${generation.name}`,
+    title: `Pokedex - ${name}`,
     links: [
       {
         rel: 'icon',

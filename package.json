@@ -24,15 +24,15 @@
     "qwik": "qwik"
   },
   "devDependencies": {
-    "@builder.io/qwik": "https://pkg.pr.new/@builder.io/qwik@23ed7db",
-    "@builder.io/qwik-city": "https://pkg.pr.new/@builder.io/qwik-city@23ed7db",
+    "@builder.io/qwik": "https://pkg.pr.new/@builder.io/qwik@bdc32df",
+    "@builder.io/qwik-city": "https://pkg.pr.new/@builder.io/qwik-city@bdc32df",
     "@digitak/esrun": "^3.2.24",
     "@types/eslint": "8.44.1",
     "@types/node": "20.4.5",
     "@typescript-eslint/eslint-plugin": "6.2.0",
     "@typescript-eslint/parser": "6.2.0",
     "eslint": "8.45.0",
-    "eslint-plugin-qwik": "https://pkg.pr.new/eslint-plugin-qwik@23ed7db",
+    "eslint-plugin-qwik": "https://pkg.pr.new/eslint-plugin-qwik@bdc32df",
     "lightningcss": "1.29.3",
     "pokenode-ts": "^1.20.0",
     "prettier": "3.0.0",

@@ -11,8 +11,11 @@
     oklch(0.2 0.05 var(--hue))
   );
   accent-color: var(--primary);
+  display: grid;
+  grid-template-rows: auto 1fr;
 
   .back {
+    place-self: start;
     border: 1px solid oklch(60% var(--chroma) var(--hue));
     border-radius: 4px;
     color: var(--text);
@@ -25,6 +28,10 @@
     &:active {
       background-color: oklch(80% var(--chroma) var(--hue) / .32);
     }
+  }
+
+  section {
+    place-self: center;
   }
 
   article {

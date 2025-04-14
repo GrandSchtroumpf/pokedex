@@ -1,5 +1,5 @@
 import { component$, Resource, useResource$, useStyles$} from "@builder.io/qwik";
-import { Link, useLocation, type DocumentHead } from "@builder.io/qwik-city";
+import { useLocation, type DocumentHead } from "@builder.io/qwik-city";
 import type { Language } from "pokenode-ts";
 import style from './index.scss?inline';
 
@@ -17,7 +17,7 @@ export default component$(() => {
       <Resource value={languagesResource} onResolved={(languages) => (
         <nav>
           {languages.map((language) => (
-            <Link key={language.id} href={`/${language.id}`}>{language.name}</Link>
+            <a key={language.id} href={`/${language.id}`}>{language.name}</a>
           ))}
         </nav>
       )} />
