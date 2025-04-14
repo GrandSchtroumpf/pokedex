@@ -231,3 +231,12 @@ a {
     transform: translateY(2vh) scale(1.1);
   }
 }
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-new(.pokemon-img):only-child,
+::view-transition-old(.pokemon-img):only-child {
+  animation: none;
+}
