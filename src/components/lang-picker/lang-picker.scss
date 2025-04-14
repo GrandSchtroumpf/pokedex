@@ -10,23 +10,21 @@
 #lang-picker {
   width: 700px;
   max-width: 100%;
-  ul {
+  nav {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 16px;
-    li {
-      display: contents;
-    }
+    padding: 16px;
     a {
       text-align: center;
       padding: 16px;
       border-radius: 8px;
-      border: 1px solid var(--outline);
+      background-color: var(--surface);
       &:hover {
-        background-color: color-mix(in oklch, var(--surface) var(--alpha-hover), transparent);
+        background-color: color-mix(in oklch, var(--text) var(--alpha-hover), var(--surface));
       }
       &:active {
-        background-color: color-mix(in oklch, var(--surface) var(--alpha-focus), transparent);
+        background-color: color-mix(in oklch, var(--text) var(--alpha-focus), var(--surface));
       }
     }
   }

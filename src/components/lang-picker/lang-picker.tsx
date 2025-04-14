@@ -19,13 +19,11 @@ export const LangPicker = component$(() => {
       </button>
       <dialog id="lang-picker" onClick$={(e, el) => e.target === el ? el.close() : null}>
         <Resource value={languagesResource} onResolved={(languages) => (
-          <ul>
+          <nav>
             {languages.map((language) => (
-              <li key={language.id}>
-                <Link href={`/${language.id}`}>{language.name}</Link>
-              </li>
+              <Link key={language.id} href={`/${language.id}`}>{language.name}</Link>
             ))}
-          </ul>
+          </nav>
         )} />
       </dialog>
     </>

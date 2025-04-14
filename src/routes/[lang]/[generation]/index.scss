@@ -87,8 +87,6 @@
     margin-block: 0;
     padding-inline: 0;
     width: 100%;
-    content-visibility: auto;
-    contain-intrinsic-size: 2500vw 100vh;
     scroll-snap-type: inline mandatory;
     overflow: auto;
     scroll-behavior: smooth;
@@ -97,6 +95,8 @@
     }
   
     & > li {
+      content-visibility: auto;
+      contain-intrinsic-width: 100vw;
       scroll-snap-stop: always;
       scroll-snap-align: center;
       flex-shrink: 0;
@@ -139,6 +139,7 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
+      flex: 1;
       h1 {
         color: var(--text);
         text-transform: uppercase;
@@ -245,23 +246,18 @@
         view-timeline-name: var(--timeline-name);
         view-timeline-axis: inline;
       }
-      .pokemon-stats {
-        --translate-x: 50px;
-      }
       .pokemon-index {
-        --translate-x: 100px;
+        --translate-x: 60vw;
       }
       .pokemon-profile {
-        --translate-x: 200px;
+        --translate-x: 50vw;
       }
       .pokemon-img {
-        --translate-x: 300px;
-      }
-  
+        --translate-x: 30vw;
+      }      
       .pokemon-index,
       .pokemon-profile,
-      .pokemon-img,
-      .pokemon-stats {
+      .pokemon-img {
         opacity: 0;
         animation: fade-timeline-x ease-out both;
         animation-timeline: var(--timeline-name);
