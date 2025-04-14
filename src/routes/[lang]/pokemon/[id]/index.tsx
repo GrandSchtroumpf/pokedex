@@ -38,7 +38,7 @@ export default component$(() => {
 
   return <Resource value={pokemonResource} onResolved={(pokemon) => (
     <main id="pokemon-page" style={cssColor(types[pokemon.types[0]].color)}>
-      <Back class="btn back" href="../..">Pokedex</Back>
+      <Back class="btn back" href={`/${params.lang}`}>Pokedex</Back>
       <section aria-labelledby="pokemon-name">
         <article>
           <PokemonImg pokemon={pokemon} eager />

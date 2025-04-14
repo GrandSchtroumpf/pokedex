@@ -90,7 +90,7 @@ export default component$(() => {
             <hr />
             <nav role="listbox" ref={listbox}>
               {list.value.map((pokemon) => (
-                <a role="option" key={pokemon.id} href={`pokemon/${pokemon.id}`}>
+                <a role="option" key={pokemon.id} href={`/${params.lang}/pokemon/${pokemon.id}`}>
                   <PokemonImg pokemon={pokemon} width={40} height={40} />
                   <h3>{pokemon.name}</h3>
                 </a>
@@ -106,7 +106,9 @@ export default component$(() => {
         <Resource value={generationsResource} onResolved={(generations) => (
           <nav class="generation-list">
             {generations.map((generation) => (
-              <a key={generation.id} href={generation.id.toString()}>{generation.name}</a>
+              <a key={generation.id} href={`/${params.lang}/${generation.id}`}>
+                {generation.name}
+              </a>
             ))}
           </nav>
         )} />

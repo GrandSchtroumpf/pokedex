@@ -121,7 +121,7 @@ const keyframes = (pokemons: PokemonItem[]) => `
 
 export default component$(() => {
   useStyles$(style);
-  const { url } = useLocation();
+  const { url, params } = useLocation();
   const [, initialId = '1'] = untrack(() => url.hash.split('-'));
   const activeId = useSignal(Number(initialId));
   useContextProvider(ActiveIdContext, activeId);
@@ -154,7 +154,7 @@ export default component$(() => {
     <>
     <main id="pokemon-list-page" >
       <header>
-        <a href=".." class="back">
+        <a href={`/${params.lang}`} class="back">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
         </a>
         <PokemonNav pokemons={pokemons}/>
