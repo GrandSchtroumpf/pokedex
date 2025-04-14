@@ -43,7 +43,9 @@ const PokemonPage = component$<PokemonPage>(({ pokemon, eager }) => {
 
   return <section class="pokemon-page" aria-labelledby="pokemon-name" style={style}>
     <article>
-      <PokemonImg class="pokemon-img" pokemon={pokemon} eager={eager}/>
+      <a href={`../pokemon/${pokemon.id}`}>
+        <PokemonImg class="pokemon-img" pokemon={pokemon} eager={eager}/>
+      </a>
       <div class="pokemon-profile">          
         <ol class="type-list">
           {pokemon.types.map(type => (

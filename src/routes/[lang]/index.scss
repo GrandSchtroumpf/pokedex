@@ -55,69 +55,70 @@
       display: flex;
       flex-direction: column;
       height: 100%;
-      header {
-        display: flex;
-        gap: 8px;
+    }
+    header {
+      display: flex;
+      gap: 8px;
 
-        button {
-          border: none;
-          align-self: center;
-          padding: 8px;
-        }
-        .search-field {
-          flex: 1;
-          display: grid;
-          grid-template-areas: "stack";
-        }
-        label {
-          grid-area: stack;
-          place-self: center start;
-          opacity: 0;
-          cursor: text;
-          @include animated-text;
-          color: var(--disabled);
-        }
-        input {
-          grid-area: stack;
-          align-self: stretch;
-          border: 0;
-          background-color: transparent;
-          display: block;
-          width: 100%;
-          padding: 16px 0;
-          &:focus-visible {
-            outline: none;
-          }
-        }
-        .search-field:has(input:placeholder-shown) {
-          label {
-            opacity: 1;
-          }
-        }
-      }
-      hr {
+      button {
         border: none;
-        border-bottom: solid 1px var(--divider);
-        width: 100%;
-        margin: 0;
+        align-self: center;
+        padding: 8px;
       }
-      nav {
+      .search-field {
         flex: 1;
-        overflow: auto;
-        & > a {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-          padding: 16px;
-          &:hover {
-            background-color: color-mix(in oklch, var(--surface) var(--alpha-hover), transparent);
-          }
-          &:active {
-            background-color: color-mix(in oklch, var(--surface) var(--alpha-focus), transparent);
-          }
-          h3 {
-            font-weight: 400;
-          }
+        display: grid;
+        grid-template-areas: "stack";
+      }
+      label {
+        grid-area: stack;
+        place-self: center start;
+        opacity: 0;
+        cursor: text;
+        @include animated-text;
+        color: var(--disabled);
+      }
+      input {
+        grid-area: stack;
+        align-self: stretch;
+        border: 0;
+        background-color: transparent;
+        display: block;
+        width: 100%;
+        padding: 16px 0;
+        &:focus-visible {
+          outline: none;
+        }
+      }
+      .search-field:has(input:placeholder-shown) {
+        label {
+          opacity: 1;
+        }
+      }
+    }
+    hr {
+      border: none;
+      border-bottom: solid 1px var(--divider);
+      width: 100%;
+      margin: 0;
+    }
+    nav {
+      flex: 1;
+      overflow: auto;
+      & > a {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px;
+        &[aria-selected],
+        &:hover {
+          background-color: color-mix(in oklch, var(--text) var(--alpha-hover), transparent);
+        }
+        &:active {
+          background-color: color-mix(in oklch, var(--text) var(--alpha-focus), transparent);
+        }
+        h3 {
+          font-weight: 400;
         }
       }
     }
@@ -158,6 +159,11 @@
       height: 100%;
       width: 100%;
       border-radius: 0;
+      header {
+        button:last-child {
+          display: none;
+        }
+      }
       input {
         font-size: 1.2rem;
       }
@@ -167,7 +173,10 @@
 @media (min-width: 601px) {
   #search-section {
     dialog header {
-      padding-inline: 16px;
+      padding-inline: 24px 16px;
+      button:first-child {
+        display: none;
+      }
     }
     dialog::backdrop {
       transition-property: opacity, display, overlay;
@@ -270,3 +279,23 @@ html:active-view-transition-type(search-close) {
 }
 
 
+// Scroll animation
+#search-section {
+  h1 {
+    animation-timeline: view();
+    animation-name: title-entry;
+    animation-fill-mode: both;
+    animation-duration: 1ms;
+  }
+}
+
+@keyframes title-entry {
+  0%, 85% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-25px);
+  }
+}

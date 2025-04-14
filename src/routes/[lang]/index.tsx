@@ -10,6 +10,7 @@ import { langs } from "~/data";
 export default component$(() => {
   useStyles$(style);
   const { url, params } = useLocation();
+  const listbox = useSignal<HTMLElement>();
 
   const generationsResource = useGenerations();
   const search = useSignal('');
@@ -24,7 +25,7 @@ export default component$(() => {
   const preloadPokemon = $(async () => {
     if (allPokemon.value.length) return;
     const generations = await generationsResource.value;
-    const getAll = generations.map((g) => fetch(`${url.origin}/data/${params.lang}/generation/${g.id}.json`).then(res => res.json()));
+    const getAll = generations.map((g) => fetch(`${url.origin}/data/${params.lang}/generation/${g.id}.json`, { priority: 'low' }).then(res => res.json()));
     const matrix = await Promise.all(getAll);
     allPokemon.value = matrix.flat();
   });
@@ -33,7 +34,9 @@ export default component$(() => {
     const dialog = document.getElementById('search-box') as HTMLDialogElement;
     if ('startViewTransition' in document) document.startViewTransition({ types: ['search-open'], update: () => dialog.showModal() } as any);
     else dialog.showModal();
-    preloadPokemon();
+    queueMicrotask(() => {
+      preloadPokemon();
+    })
   });
 
   const close = $(() => {
@@ -42,10 +45,26 @@ export default component$(() => {
     else dialog.close();
   });
 
-  const clear = $(() => {
-    (document.getElementById('search-input') as HTMLInputElement)!.value = ''
+  const navigate = $((e: KeyboardEvent) => {
+    if (e.key === 'ArrowDown') {
+      const current = listbox.value?.querySelector<HTMLElement>(`[role="option"][aria-selected="true"]`);
+      if (current) current.removeAttribute('aria-selected');
+      const next = current?.nextElementSibling || listbox.value?.querySelector<HTMLElement>(`[role="option"]`);
+      next?.setAttribute('aria-selected', 'true');
+    }
+    if (e.key === 'ArrowUp') {
+      const current = listbox.value?.querySelector<HTMLElement>(`[role="option"][aria-selected="true"]`);
+      if (current) current.removeAttribute('aria-selected');
+      const next = current?.previousElementSibling || listbox.value?.querySelector<HTMLElement>(`[role="option"]:last-child`);
+      next?.setAttribute('aria-selected', 'true');
+    }
   });
 
+  const submit = $(() => {
+    const selected = listbox.value?.querySelector<HTMLElement>(`[role="option"][aria-selected="true"]`);
+    if (selected) selected.click();
+    else listbox.value?.querySelector<HTMLElement>(`[role="option"]`)?.click();
+  })
 
   return (
     <>
@@ -55,23 +74,23 @@ export default component$(() => {
           <span>Search</span>
         </button>
         <dialog id="search-box" onClick$={(e, el) => e.target === el ? close() : null}>
-          <div class="search-container">
+          <form class="search-container" onSubmit$={submit} preventdefault:submit>
             <header>
-              <button onClick$={close}>
+              <button type="button" onClick$={close}>
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
               </button>
               <div class="search-field">
                 <label for="search-input">Search</label>
-                <input id="search-input" type="search" placeholder="" autoFocus bind:value={search}/>
+                <input id="search-input" type="search" placeholder="" autoFocus bind:value={search} onKeyDown$={navigate}/>
               </div>
-              <button onClick$={clear}>
+              <button type="button" onClick$={close}>
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
               </button>
             </header>
             <hr />
-            <nav>
+            <nav role="listbox" ref={listbox}>
               {list.value.map((pokemon) => (
-                <a key={pokemon.id} href={`pokemon/${pokemon.id}`}>
+                <a role="option" key={pokemon.id} href={`pokemon/${pokemon.id}`}>
                   <PokemonImg pokemon={pokemon} width={40} height={40} />
                   <h3>{pokemon.name}</h3>
                 </a>
@@ -80,7 +99,7 @@ export default component$(() => {
             <div class="empty">
               <p>Nothing for now</p>
             </div>
-          </div>
+          </form>
         </dialog>
       </search>
       <main>
