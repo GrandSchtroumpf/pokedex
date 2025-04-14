@@ -123,7 +123,6 @@
       min-width: 50%;
       max-width: 90%;
       margin-inline: auto;
-      margin-bottom: 24px;
       gap: 16px;
     }
     .pokemon-index {
@@ -163,9 +162,12 @@
         text-transform: uppercase;
       }
     }
+    a {
+      align-self: center;
+    }
     .pokemon-img {
-      width: 300px;
-      height: 300px;
+      width: 375px;
+      height: 375px;
       align-self: center;
     }
     
@@ -177,10 +179,6 @@
     .previous, .next {
       display: none;
     }
-  }
-  
-  
-  @media (max-width: 900px) {
     .pokemon-page {
       article {
         width: 100%;
@@ -190,6 +188,16 @@
         inset-inline-end: 0;
         inset-block-start: unset;
         font-size: 5rem;
+      }
+    }
+  }
+  
+  @media (max-width: 400px) {
+    .pokemon-page {
+      .pokemon-img {
+        width: 200px;
+        height: 200px;
+        align-self: center;
       }
     }
   }
