@@ -3,7 +3,7 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background-color: oklch(30% 2% var(--hue));
+  background-color: var(--surface-high);
   border-radius: inherit;
 }
 @mixin animated-text {
@@ -11,7 +11,7 @@
   line-height: normal;
   height: unset;
   font-family: system-ui;
-  color: oklch(70% 2% var(--hue));
+  color: var(--text);
 }
 
 #search-section {
@@ -96,7 +96,7 @@
       }
       hr {
         border: none;
-        border-bottom: solid 1px oklch(60% 10% var(--hue));
+        border-bottom: solid 1px var(--divider);
         width: 100%;
         margin: 0;
       }
@@ -109,10 +109,10 @@
           gap: 16px;
           padding: 16px;
           &:hover {
-            background-color: oklch(35% 2% var(--hue));
+            background-color: color-mix(in oklch, var(--surface) var(--alpha-hover), transparent);
           }
           &:active {
-            background-color: oklch(37% 2% var(--hue));
+            background-color: color-mix(in oklch, var(--surface) var(--alpha-focus), transparent);
           }
           h3 {
             font-weight: 400;
@@ -122,13 +122,13 @@
     }
     .search-container:has(input:focus-visible) {
       hr {
-        border-color: oklch(60% 30% var(--hue))
+        border-color: var(--primary);
       }
     }
     .empty {
       flex: 1;
       display: none;
-      color: oklch(80% 10% var(--hue));
+      color: var(--disabled);
     }
     nav:empty {
       display: none;
@@ -172,7 +172,7 @@
       transition-property: opacity, display, overlay;
       transition-duration: 300ms;
       transition-behavior: allow-discrete;
-      background-color: oklch(10% 10% var(--hue) / 80%);
+      background-color: oklch(40% 5% var(--hue) / 80%);
       opacity: 0;
     }
     dialog[open]::backdrop {
@@ -194,7 +194,7 @@
   max-width: 1020px;
   margin: auto;
   & > a  {
-    border: solid 1px oklch(50% 20% var(--hue));
+    border: solid 1px var(--outline);
     border-radius: 8px;
     padding: 16px;
   }

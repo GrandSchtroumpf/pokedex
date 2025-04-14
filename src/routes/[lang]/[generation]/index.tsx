@@ -153,7 +153,7 @@ export default component$(() => {
     <main id="pokemon-list-page" >
       <header>
         <Link href=".." class="back">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
         </Link>
         <PokemonNav pokemons={pokemons}/>
         <LangPicker />
@@ -195,7 +195,7 @@ export const head: DocumentHead = ({ resolveValue, params, url }) => {
       {
         rel: 'icon',
         type: 'image/png',
-        href: `${url.origin}/imgs/pokemon/logo.png`,
+        href: `${url.origin}/imgs/logo.png`,
       }
     ],
     meta: [

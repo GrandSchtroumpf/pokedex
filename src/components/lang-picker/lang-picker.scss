@@ -4,7 +4,7 @@
   display: grid;
   place-items: center;
   border-radius: 24px;
-  border: solid 1px oklch(50% 10% var(--hue));
+  border: solid 1px var(--outline);
 }
 
 #lang-picker {
@@ -21,11 +21,17 @@
       text-align: center;
       padding: 16px;
       border-radius: 8px;
-      border: 1px solid oklch(50% 10% var(--hue));
+      border: 1px solid var(--outline);
+      &:hover {
+        background-color: color-mix(in oklch, var(--surface) var(--alpha-hover), transparent);
+      }
+      &:active {
+        background-color: color-mix(in oklch, var(--surface) var(--alpha-focus), transparent);
+      }
     }
   }
   &::backdrop {
-    background-color: oklch(10% 10% var(--hue) / 70%);
+    background-color: oklch(50% 10% var(--hue) / 80%);
     backdrop-filter: blur(20px) saturate(150%);
   }
 }

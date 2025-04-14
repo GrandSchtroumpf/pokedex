@@ -61,11 +61,11 @@
       border-radius: 4px;
     }
     & a:hover {
-      background-color: oklch(1 0 0 / 0.24);
+      background-color: var(--surface-lower);
     }
     & a[aria-current="page"] {
-      color: white;
-      text-shadow: 0 0 4px oklch(90% 0 0);
+      color: var(--text);
+      text-shadow: 0 0 6px var(--text);
     }
   }
   

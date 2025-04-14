@@ -58,14 +58,14 @@ export default component$(() => {
           <div class="search-container">
             <header>
               <button onClick$={close}>
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
               </button>
               <div class="search-field">
                 <label for="search-input">Search</label>
                 <input id="search-input" type="search" placeholder="" autoFocus bind:value={search}/>
               </div>
               <button onClick$={clear}>
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
               </button>
             </header>
             <hr />
@@ -112,7 +112,7 @@ export const head: DocumentHead = ({ params, url }) => {
       {
         rel: 'icon',
         type: 'image/png',
-        href: `${url.origin}/imgs/pokemon/logo.png`,
+        href: `${url.origin}/imgs/logo.png`,
       }
     ],
     meta: [
