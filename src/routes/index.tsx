@@ -25,12 +25,19 @@ export default component$(() => {
   )
 });
 
-export const head: DocumentHead = {
+export const head: DocumentHead = ({ url }) => ({
   title: "Pokedex",
+  links: [
+    {
+      rel: 'icon',
+      type: 'image/webp',
+      href: `${url.origin}/imgs/pokemon/unown/100w.webp`,
+    }
+  ],
   meta: [
     {
       name: "description",
       content: "A pokedex showcase",
     },
   ],
-};
+});

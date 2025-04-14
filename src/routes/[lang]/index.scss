@@ -75,6 +75,7 @@
           opacity: 0;
           cursor: text;
           @include animated-text;
+          color: var(--disabled);
         }
         input {
           grid-area: stack;

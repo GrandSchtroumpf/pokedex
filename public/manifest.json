@@ -1,9 +1,30 @@
 {
   "$schema": "https://json.schemastore.org/web-manifest-combined.json",
-  "name": "qwik-project-name",
-  "short_name": "Welcome to Qwik",
+  "name": "qwik-pokedex",
+  "short_name": "Pokedex",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#fff",
-  "description": "A Qwik project app."
+  "background_color": "#000",
+  "description": "Pokedex.",
+  "icons": [{
+    "src": "/imgs/pokemon/unown/100w.webp",
+    "sizes": "100x100",
+    "type": "image/webp",
+    "purpose": "any"
+  },{
+    "src": "/imgs/pokemon/unown/250w.webp",
+    "sizes": "250x250",
+    "type": "image/webp",
+    "purpose": "any"
+  },{
+    "src": "/imgs/pokemon/unown/500w.webp",
+    "sizes": "500x500",
+    "type": "image/webp",
+    "purpose": "any"
+  },{
+    "src": "/imgs/pokemon/unown/750w.webp",
+    "sizes": "750x750",
+    "type": "image/webp",
+    "purpose": "any"
+  }]
 }

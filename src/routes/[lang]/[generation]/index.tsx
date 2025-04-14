@@ -194,8 +194,8 @@ export const head: DocumentHead = ({ resolveValue, params, url }) => {
     links: [
       {
         rel: 'icon',
-        type: 'image/png',
-        href: `${url.origin}/imgs/logo.png`,
+        type: 'image/webp',
+        href: `${url.origin}/imgs/pokemon/unown/100w.webp`,
       }
     ],
     meta: [

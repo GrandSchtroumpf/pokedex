@@ -80,7 +80,7 @@ export const head: DocumentHead = ({ resolveValue, params, url }) => {
       {
         rel: 'icon',
         type: 'image/webp',
-        href: `${url.origin}/imgs/pokemon/${pokemon.name.toLowerCase()}/100w.webp`,
+        href: `${url.origin}/imgs/pokemon/${pokemon.imgName.toLowerCase()}/100w.webp`,
       }
     ],
     meta: [
@@ -102,7 +102,7 @@ export const head: DocumentHead = ({ resolveValue, params, url }) => {
       },
       {
         name: 'og:image',
-        content: `${url.origin}/imgs/pokemon/${pokemon.name.toLowerCase()}/500w.webp`,
+        content: `${url.origin}/imgs/pokemon/${pokemon.imgName.toLowerCase()}/500w.webp`,
       },
       {
         name: 'og:image:width',
