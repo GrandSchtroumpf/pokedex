@@ -35,6 +35,7 @@ interface PokemonPage {
 }
 
 const PokemonPage = component$<PokemonPage>(({ pokemon, eager }) => {
+  const { params } = useLocation();
   const color = types[pokemon.types[0]].color;
   const style = [
     cssColor(color),
@@ -43,7 +44,7 @@ const PokemonPage = component$<PokemonPage>(({ pokemon, eager }) => {
 
   return <section class="pokemon-page" aria-labelledby="pokemon-name" style={style}>
     <article>
-      <a href={`../pokemon/${pokemon.id}`}>
+      <a href={`/${params.lang}/pokemon/${pokemon.id}`}>
         <PokemonImg class="pokemon-img" pokemon={pokemon} eager={eager}/>
       </a>
       <div class="pokemon-profile">          
