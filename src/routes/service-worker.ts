@@ -10,31 +10,6 @@
 export declare const self: ServiceWorkerGlobalScope;
 
 
-let qwikCache: Cache;
-let cache: Cache;
-
-const fetchResponse = async (event: FetchEvent) => {
-  qwikCache ||= await caches.open("QwikModulePreload");
-  cache ||= await caches.open("Pokedex");
-
-  const req = event.request;
-  // Check cache
-  const cachedResponse = await caches.match(req);
-  if (cachedResponse) return cachedResponse;
-
-  // Else, use the preloaded response, if it's there
-  const response = await event.preloadResponse;
-  if (response) return response;
-
-  // Cache and return reponse
-  const res = await fetch(req);
-  if (req.url.includes("q-") && req.url.endsWith('.js')) {
-    qwikCache.put(req, res.clone());
-  } else {
-    cache.put(req, res.clone());
-  }
-  return res;
-}
 
 self.addEventListener("install", () => self.skipWaiting());
 
@@ -43,6 +18,31 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(self.registration.navigationPreload?.enable());
 });
 
-self.addEventListener("fetch", (event) => {
-  event.respondWith(fetchResponse(event));
-});
+// let qwikCache: Cache;
+// let cache: Cache;
+
+// const fetchResponse = async (event: FetchEvent) => {
+//   qwikCache ||= await caches.open("QwikModulePreload");
+//   cache ||= await caches.open("Pokedex");
+
+//   const req = event.request;
+//   // Check cache
+//   const cachedResponse = await caches.match(req);
+//   if (cachedResponse) return cachedResponse;
+
+//   // Else, use the preloaded response, if it's there
+//   const response = await event.preloadResponse;
+//   if (response) return response;
+
+//   // Cache and return reponse
+//   const res = await fetch(req);
+//   if (req.url.includes("q-") && req.url.endsWith('.js')) {
+//     qwikCache.put(req, res.clone());
+//   } else {
+//     cache.put(req, res.clone());
+//   }
+//   return res;
+// }
+// self.addEventListener("fetch", (event) => {
+//   event.respondWith(fetchResponse(event));
+// });
