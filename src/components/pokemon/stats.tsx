@@ -32,7 +32,6 @@ export const PokemonStats = component$<Props>(({ pokemon }) => {
     }
   }
   `);
-
   return (
     <article class="pokemon-stats">
       <h2>Stats</h2>

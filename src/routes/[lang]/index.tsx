@@ -1,6 +1,6 @@
 import { $, component$, Resource, useComputed$, useSignal, useStyles$ } from "@builder.io/qwik";
 import { useGenerations } from "~/hooks/useData";
-import type { StaticGenerateHandler} from "@builder.io/qwik-city";
+import type { DocumentHead, StaticGenerateHandler} from "@builder.io/qwik-city";
 import { Link, useLocation } from "@builder.io/qwik-city";
 import type { PokemonItem } from "~/model";
 import { PokemonImg } from "~/components/img/img";
@@ -102,4 +102,24 @@ export const onStaticGenerate: StaticGenerateHandler = async () => {
     params.push({ lang });
   }
   return { params };
+};
+
+// Now we can export a function that returns a DocumentHead object
+export const head: DocumentHead = ({ params, url }) => {
+  return {
+    title: `Pokedex`,
+    links: [
+      {
+        rel: 'icon',
+        type: 'image/png',
+        href: `${url.origin}/imgs/pokemon/logo.png`,
+      }
+    ],
+    meta: [
+      {
+        name: 'language',
+        content: params.lang,
+      },
+    ],
+  };
 };

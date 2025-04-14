@@ -1,11 +1,11 @@
 import { $, component$, createContextId, isServer, Resource, untrack, useContext, useContextProvider, useSignal, useStyles$, useTask$, useVisibleTask$ } from "@builder.io/qwik";
 import type { Signal } from "@builder.io/qwik";
-import type { StaticGenerateHandler} from "@builder.io/qwik-city";
-import { Link, useLocation, useNavigate } from "@builder.io/qwik-city";
+import type { DocumentHead, StaticGenerateHandler} from "@builder.io/qwik-city";
+import { Link, routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
 import { cssColor } from "~/components/color";
 import { generations, langs, types } from "~/data";
-import type { PokemonItem, TypeName } from "~/model";
+import type { Generation, PokemonItem, TypeName } from "~/model";
 import { usePokemonGeneration } from "~/hooks/useData";
 import { LangPicker } from "~/components/lang-picker/lang-picker";
 import style from './index.scss?inline';
@@ -20,6 +20,13 @@ const TypeItem = component$(({ name }: TypeItemProps) => {
     {name}
   </li>
 })
+
+// TODO: url this with MPA
+export const useGeneration = routeLoader$(async (requestEvent) => {
+  const { url, params } = requestEvent;
+  const res = await fetch(`${url.origin}/data/${params.lang}/generation/${params.generation}.json`);
+  return res.json() as Promise<Generation>;
+});
 
 
 interface PokemonPage {
@@ -177,4 +184,25 @@ export const onStaticGenerate: StaticGenerateHandler = async () => {
     }
   }
   return { params };
+};
+
+// Now we can export a function that returns a DocumentHead object
+export const head: DocumentHead = ({ resolveValue, params, url }) => {
+  const generation = resolveValue(useGeneration);
+  return {
+    title: `Pokedex - ${generation.name}`,
+    links: [
+      {
+        rel: 'icon',
+        type: 'image/png',
+        href: `${url.origin}/imgs/pokemon/logo.png`,
+      }
+    ],
+    meta: [
+      {
+        name: 'language',
+        content: params.lang,
+      },
+    ],
+  };
 };
