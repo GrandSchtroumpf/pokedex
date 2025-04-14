@@ -17,7 +17,7 @@
     border-radius: 4px;
     color: var(--text);
     cursor: pointer;
-    padding: 8px 16px;
+    padding: 16px;
     background-color: oklch(80% var(--chroma) var(--hue) / .12);
     &:hover {
       background-color: oklch(80% var(--chroma) var(--hue) / .24);

@@ -1,11 +1,11 @@
 import type { QwikJSX} from '@builder.io/qwik';
 import { component$ } from '@builder.io/qwik';
-import type { Pokemon } from '~/model/pokemon';
+import type { PokemonItem } from '~/model/pokemon';
 
 type Attributes<T extends keyof QwikJSX.IntrinsicElements> = QwikJSX.IntrinsicElements[T];
 
 interface PokemonImgProps extends Attributes<'img'> {
-  pokemon: Pokemon;
+  pokemon: PokemonItem;
   eager?: boolean;
 }
 

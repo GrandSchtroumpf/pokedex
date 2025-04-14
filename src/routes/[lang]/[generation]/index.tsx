@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
 import { cssColor } from "~/components/color";
 import { generations, langs, types } from "~/data";
-import type { Pokemon, TypeName } from "~/model";
+import type { PokemonItem, TypeName } from "~/model";
 import { usePokemonGeneration } from "~/hooks/useData";
 import { LangPicker } from "~/components/lang-picker/lang-picker";
 import style from './index.scss?inline';
@@ -23,10 +23,11 @@ const TypeItem = component$(({ name }: TypeItemProps) => {
 
 
 interface PokemonPage {
-  pokemon: Pokemon
+  pokemon: PokemonItem;
+  eager?: boolean;
 }
 
-const PokemonPage = component$(({ pokemon }: PokemonPage) => {
+const PokemonPage = component$<PokemonPage>(({ pokemon, eager }) => {
   const color = types[pokemon.types[0]].color;
   const style = [
     cssColor(color),
@@ -35,7 +36,7 @@ const PokemonPage = component$(({ pokemon }: PokemonPage) => {
 
   return <section class="pokemon-page" aria-labelledby="pokemon-name" style={style}>
     <article>
-      <PokemonImg class="pokemon-img" pokemon={pokemon} eager/>
+      <PokemonImg class="pokemon-img" pokemon={pokemon} eager={eager}/>
       <div class="pokemon-profile">          
         <ol class="type-list">
           {pokemon.types.map(type => (
@@ -90,7 +91,7 @@ const Next = component$(() => {
 
 
 interface PokemonNavProps {
-  pokemons: Pokemon[];
+  pokemons: PokemonItem[];
 }
 const PokemonNav = component$(({pokemons}: PokemonNavProps) => {
   const activeId = useContext(ActiveIdContext);
@@ -103,7 +104,7 @@ const PokemonNav = component$(({pokemons}: PokemonNavProps) => {
   </nav>
 })
 
-const keyframes = (pokemons: Pokemon[]) => `
+const keyframes = (pokemons: PokemonItem[]) => `
   @keyframes pokemon-colors {
     ${pokemons.map((p, i) => `${i / (pokemons.length - 1) * 100}% { background-color: oklch(25% 15% ${p.color.h});}`).join('')}
   }
@@ -153,9 +154,9 @@ export default component$(() => {
       <div class="pokemon-carousel">
         <Previous />
         <ul id="pokemon-list" class="main-nav" >
-          {pokemons.map(pokemon => (
+          {pokemons.map((pokemon, i) => (
             <li id={`pokemon-${pokemon.id}`} key={pokemon.id} data-target={activeId.value === pokemon.id}>
-              <PokemonPage pokemon={pokemon} />
+              <PokemonPage pokemon={pokemon} eager={i === 0} />
             </li>
           ))}
         </ul>

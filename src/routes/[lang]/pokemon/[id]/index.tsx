@@ -1,6 +1,6 @@
 import { component$, Resource, useResource$, useStyles$ } from "@builder.io/qwik";
-import type { StaticGenerateHandler} from "@builder.io/qwik-city";
-import { useLocation } from "@builder.io/qwik-city";
+import type { DocumentHead, StaticGenerateHandler} from "@builder.io/qwik-city";
+import { routeLoader$, useLocation } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
 import { Back } from "~/components/back";
 import type { TypeName } from "~/model/type";
@@ -19,7 +19,14 @@ const TypeItem = component$(({ name }: TypeItemProps) => {
   return <li class="type-item" title={name} style={`background-color: oklch(${l} ${c} ${h})`}>
     {name}
   </li>
-})
+});
+
+// TODO: url this with MPA
+export const usePokemon = routeLoader$(async (requestEvent) => {
+  const { url, params } = requestEvent;
+  const res = await fetch(`${url.origin}/data/${params.lang}/pokemon/${params.id}.json`);
+  return res.json() as Promise<Pokemon>;
+});
 
 export default component$(() => {
   useStyles$(style);
@@ -27,7 +34,7 @@ export default component$(() => {
   const pokemonResource = useResource$<Pokemon>(async () => {
     const res = await fetch(`${url.origin}/data/${params.lang}/pokemon/${params.id}.json`);
     return res.json();
-  })
+  });
 
   return <Resource value={pokemonResource} onResolved={(pokemon) => (
     <main id="pokemon-page" style={cssColor(types[pokemon.types[0]].color)}>
@@ -61,4 +68,50 @@ export const onStaticGenerate: StaticGenerateHandler = async () => {
     }
   }
   return { params };
+};
+
+ 
+// Now we can export a function that returns a DocumentHead object
+export const head: DocumentHead = ({ resolveValue, params, url }) => {
+  const pokemon = resolveValue(usePokemon);
+  return {
+    title: `Pokemon - ${pokemon.name}`,
+    links: [
+      {
+        rel: 'icon',
+        type: 'image/webp',
+        href: `${url.origin}/imgs/pokemon/${pokemon.name}/100w.webp`,
+      }
+    ],
+    meta: [
+      {
+        name: 'language',
+        content: params.lang,
+      },
+      {
+        name: 'description',
+        content: pokemon.flavorText,
+      },
+      {
+        name: 'id',
+        content: pokemon.id.toString(),
+      },
+      {
+        name: 'og:url',
+        content: `${url.origin}/${params.lang}/pokemon/${pokemon.id}`,
+      },
+      {
+        name: 'og:image',
+        content: `${url.origin}/imgs/pokemon/${pokemon.name}/500w.webp`,
+      },
+      {
+        name: 'og:image:width',
+        content: '500',
+      },
+      {
+        name: 'og:image:height',
+        content: '500',
+      },
+    ],
+  };
 };

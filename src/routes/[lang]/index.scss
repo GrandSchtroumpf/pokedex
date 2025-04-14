@@ -27,7 +27,7 @@
     cursor: text;
     width: 450px;
     max-width: calc(100dvw - 24px);
-    padding: 16px 8px;
+    padding: 16px;
     border-radius: 24px;
     isolation: isolate;
     &::before {
@@ -47,9 +47,7 @@
     padding: 0;
     position: relative;
     isolation: isolate;
-    &::backdrop {
-      background-color: oklch(10% 10% var(--hue) / 80%);
-    }
+
     &::before {
       @include animated-background;
     }
@@ -109,7 +107,7 @@
           display: flex;
           align-items: center;
           gap: 16px;
-          padding: 16px 8px;
+          padding: 16px;
           &:hover {
             background-color: oklch(35% 2% var(--hue));
           }
@@ -140,24 +138,49 @@
       place-items: center;
     }
   }
-  dialog:open {
+  dialog[open] {
     .search-container {
       input, button, .empty, hr, nav {
-        animation: fade 600ms 300ms backwards;
+        animation: fade 500ms 200ms backwards;
       }
     }
   }
 }
-#search-section:has(dialog:open) {
+#search-section:has(dialog[open]) {
   & > button {
     opacity: 0;
   }
 }
 @media (max-width: 600px) {
-  #search-section dialog {
-    height: 100%;
-    width: 100%;
-    border-radius: 0;
+  #search-section {
+    dialog {
+      height: 100%;
+      width: 100%;
+      border-radius: 0;
+      input {
+        font-size: 1.2rem;
+      }
+    }
+  }
+}
+@media (min-width: 601px) {
+  #search-section {
+    dialog header {
+      padding-inline: 16px;
+    }
+    dialog::backdrop {
+      transition-property: opacity, display, overlay;
+      transition-duration: 300ms;
+      transition-behavior: allow-discrete;
+      background-color: oklch(10% 10% var(--hue) / 80%);
+      opacity: 0;
+    }
+    dialog[open]::backdrop {
+      opacity: 1;
+      @starting-style {
+        opacity: 0;
+      }
+    }
   }
 }
 
@@ -173,7 +196,7 @@
   & > a  {
     border: solid 1px oklch(50% 20% var(--hue));
     border-radius: 8px;
-    padding: 16px 8px;
+    padding: 16px;
   }
 }
 
@@ -182,7 +205,7 @@
 // View Transition
 
 html:active-view-transition-type(search-open, search-close) {
-  #search-section dialog:open {
+  #search-section dialog[open] {
     &::before {
       view-transition-name: search-box;
     }
@@ -190,7 +213,7 @@ html:active-view-transition-type(search-open, search-close) {
       view-transition-name: search-input;
     }
   }
-  search:not(:has(dialog:open)) {
+  search:not(:has(dialog[open])) {
     & > button{
       &::before {
         view-transition-name: search-box;
@@ -208,7 +231,8 @@ html:active-view-transition-type(search-open, search-close) {
   &::view-transition-group(search-box),
   &::view-transition-group(search-input),
   &::view-transition-image-pair(search-box) {
-    animation-duration: 300ms;
+    animation-duration: 200ms;
+    animation-timing-function: ease-out;
   }
   
   &::view-transition-old(search-box),

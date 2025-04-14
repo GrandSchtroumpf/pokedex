@@ -2,7 +2,7 @@ import { $, component$, Resource, useComputed$, useSignal, useStyles$ } from "@b
 import { useGenerations } from "~/hooks/useData";
 import type { StaticGenerateHandler} from "@builder.io/qwik-city";
 import { Link, useLocation } from "@builder.io/qwik-city";
-import type { Pokemon } from "~/model";
+import type { PokemonItem } from "~/model";
 import { PokemonImg } from "~/components/img/img";
 import style from './index.scss?inline';
 import { langs } from "~/data";
@@ -13,7 +13,7 @@ export default component$(() => {
 
   const generationsResource = useGenerations();
   const search = useSignal('');
-  const allPokemon = useSignal<Pokemon[]>([]);
+  const allPokemon = useSignal<PokemonItem[]>([]);
 
   const list = useComputed$(() => {
     if (!search.value) return [];

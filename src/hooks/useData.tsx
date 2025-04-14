@@ -1,6 +1,6 @@
 import { useResource$ } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city"
-import type { Generation, Language, Pokemon } from "~/model";
+import type { Generation, Language, PokemonItem } from "~/model";
 
 interface DateSource {
   languages: Language[];
@@ -25,7 +25,7 @@ export function useGenerations() {
 
 export function usePokemonGeneration() {
   const { url, params } = useLocation();
-  return useResource$<Pokemon[]>(async () => {
+  return useResource$<PokemonItem[]>(async () => {
     const res = await fetch(`${url.origin}/data/${params.lang}/generation/${params.generation}.json`);
     return res.json();
   })

@@ -42,6 +42,27 @@ function toStats(stats: PokemonStat[]) {
   return record;
 }
 
+function toPokemonItem(
+  species: APISpecies,
+  pokemons: APIPokemon[],
+  shapes: Record<string, string>,
+  lang: string,
+) {
+  const { id, names, shape } = species;
+  const pokemon = pokemons.at(id - 1)!;
+  return {
+    id,
+    imgName: pokemon.name,
+    name: toText(names, 'name', lang),
+    shape: typeof shape !== 'undefined' ? shapes[shape.name] : '', // species have no shape
+    color: speciesColor[species.color.name as SpeciesColor],
+    types: pokemon.types.sort((a,b) => a.slot - b.slot).map(type => type.type.name as TypeName),
+    genus: toText(species.genera, 'genus', lang),
+    flavorText: toText(species.flavor_text_entries, 'flavor_text', lang),
+    formDescription: toText(species.form_descriptions, 'description', lang),
+  }
+}
+
 function toPokemon(
   species: APISpecies,
   pokemons: APIPokemon[],
@@ -60,7 +81,7 @@ function toPokemon(
     genus: toText(species.genera, 'genus', lang),
     flavorText: toText(species.flavor_text_entries, 'flavor_text', lang),
     formDescription: toText(species.form_descriptions, 'description', lang),
-    stats: toStats(pokemon.stats)
+    stats: toStats(pokemon.stats),
   }
 }
 
@@ -76,6 +97,7 @@ function toGeneration(genaration: APIGeneration, lang: string) {
 }
 
 export type Pokemon = ReturnType<typeof toPokemon>;
+export type PokemonItem = ReturnType<typeof toPokemonItem>;
 export type Language = ReturnType<typeof toLanguage>;
 export type Generation = ReturnType<typeof toGeneration>;
 
@@ -111,14 +133,16 @@ async function getPokemons() {
     const generationNames = generations.map((g) => toGeneration(g, lang));
     writes.push(writeData(`${lang}/generations`, generationNames));
 
-    const generationRecord: Record<string, Pokemon[]> = {};
+    const generationRecord: Record<string, PokemonItem[]> = {};
     const shapeRecord = toRecord(shapes, 'name', shape => toText(shape.names, 'name', lang));
     for (const p of species) {
-      const pokemon = toPokemon(p, pokemons, shapeRecord, lang);
       // Each pokemon
+      const pokemon = toPokemon(p, pokemons, shapeRecord, lang);
       writes.push(writeData(`${lang}/pokemon/${pokemon.id}`, pokemon));
+      // Pokemon in generation
+      const pokemonItem = toPokemonItem(p, pokemons, shapeRecord, lang);
       generationRecord[p.generation.name] ||= [];
-      generationRecord[p.generation.name].push(pokemon);
+      generationRecord[p.generation.name].push(pokemonItem);
     }
     // List of pokemon per generation
     for (const generation in generationRecord) {
@@ -158,7 +182,6 @@ function main() {
     getTypes(),
   ]);
 }
-
 
 
 main()
