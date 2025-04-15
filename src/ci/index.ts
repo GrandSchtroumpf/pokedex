@@ -56,7 +56,7 @@ function toPokemonItem(
     imgName: pokemon.name,
     name: toText(species?.names, 'name', lang),
     shape: typeof shape !== 'undefined' ? shapes[shape.name] : '', // species have no shape
-    color: color ? speciesColor[color] : 'black',
+    color: speciesColor[color || 'black'],
     types: pokemon.types.sort((a,b) => a.slot - b.slot).map(type => type.type.name as TypeName),
     genus: toText(species?.genera, 'genus', lang),
     flavorText: toText(species?.flavor_text_entries, 'flavor_text', lang),
