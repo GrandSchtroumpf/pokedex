@@ -6,6 +6,9 @@
   align-content: center;
   text-align: center;
   gap: 24px;
+  svg {
+    justify-self: center;
+  }
   nav {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));

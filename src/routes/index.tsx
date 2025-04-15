@@ -1,6 +1,7 @@
 import { component$, Resource, useResource$, useStyles$} from "@builder.io/qwik";
 import { useLocation, type DocumentHead } from "@builder.io/qwik-city";
 import type { Language } from "pokenode-ts";
+import { Logo } from "~/components/logo";
 import style from './index.scss?inline';
 
 export default component$(() => {
@@ -14,6 +15,7 @@ export default component$(() => {
   return (
     <main id="select-lang-page">
       <h1>Pokedex</h1>
+      <Logo width="100" height="100" />
       <Resource value={languagesResource} onResolved={(languages) => (
         <nav>
           {languages.map((language) => (

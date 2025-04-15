@@ -9,7 +9,7 @@ interface PokemonImgProps extends Attributes<'img'> {
   eager?: boolean;
 }
 
-const pokemonSizes = [100, 250, 500, 750];
+const pokemonSizes = [50, 100, 300, 600, 750];
 export const PokemonImg = component$(({ pokemon, eager, ...props }: PokemonImgProps) => {
   const {name, imgName} = pokemon;
   const src = `/imgs/pokemon/${imgName}/original.webp`;
@@ -27,6 +27,7 @@ export const PokemonImg = component$(({ pokemon, eager, ...props }: PokemonImgPr
     alt={name}
     width={150}
     height={150}
+    sizes={props.width ? `${props.width}px` : undefined}
     style={{ viewTransitionName: `--${imgName}-img--`, ['viewTransitionClass' as any]: 'pokemon-img' }}
     {...optimization}
     {...props}

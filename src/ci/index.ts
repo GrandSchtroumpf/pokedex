@@ -119,7 +119,7 @@ async function getPokemons() {
       continue;
     }
     writes.push(() => {
-      return optimizeImg({ url, sizes: [100, 250, 500, 750], folder: `pokemon/${p.name}` })
+      return optimizeImg({ url, sizes: [50, 100, 300, 600, 750], folder: `pokemon/${p.name}` })
     });
   }
 

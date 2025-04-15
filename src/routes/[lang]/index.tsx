@@ -70,11 +70,11 @@ export default component$(() => {
   return (
     <>
       <search id="search-section">
+        <Logo width="100" height="100" />
         <h1>Pokedex</h1>
         <button aria-controls="search-box" onClick$={open}>
           <span>Search</span>
         </button>
-        <Logo width="100" height="100" />
         <dialog id="search-box" onClick$={(e, el) => e.target === el ? close() : null}>
           <form class="search-container" onSubmit$={submit} preventdefault:submit>
             <header>
