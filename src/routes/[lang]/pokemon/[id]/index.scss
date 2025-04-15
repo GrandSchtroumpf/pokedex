@@ -44,8 +44,16 @@
       grid-template-areas: "previous next";
       .previous, .next {
         display: grid;
-        gap: 8px;
         justify-items: center;
+        border-radius: 8px;
+        border: 1px solid var(--text);
+        width: 90px;
+        height: 90px;
+        font-size: 0.9rem;
+        color: var(--text);
+        img {
+          place-self: center;
+        }
       }
       .previous {
         grid-area: previous;
