@@ -4,27 +4,27 @@
   "short_name": "Pokedex",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#000",
+  "background_color": "#020521",
   "description": "Pokedex.",
   "icons": [{
-    "src": "/imgs/pokemon/unown/100w.webp",
-    "sizes": "100x100",
-    "type": "image/webp",
+    "src": "/imgs/logo/original.svg",
+    "sizes": "1000x1000",
+    "type": "image/svg+xml",
     "purpose": "any"
   },{
-    "src": "/imgs/pokemon/unown/250w.webp",
-    "sizes": "250x250",
-    "type": "image/webp",
-    "purpose": "any"
-  },{
-    "src": "/imgs/pokemon/unown/500w.webp",
-    "sizes": "500x500",
-    "type": "image/webp",
-    "purpose": "any"
-  },{
-    "src": "/imgs/pokemon/unown/750w.webp",
+    "src": "/imgs/logo/750.jpg",
     "sizes": "750x750",
-    "type": "image/webp",
+    "type": "image/jpg",
+    "purpose": "any"
+  },{
+    "src": "/imgs/logo/500.jpg",
+    "sizes": "500x500",
+    "type": "image/jpg",
+    "purpose": "any"
+  },{
+    "src": "/imgs/logo/250.jpg",
+    "sizes": "250x250",
+    "type": "image/jpg",
     "purpose": "any"
   }]
 }

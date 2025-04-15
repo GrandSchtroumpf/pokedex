@@ -198,14 +198,26 @@ export const head: DocumentHead = ({ resolveValue, params, url }) => {
     links: [
       {
         rel: 'icon',
-        type: 'image/webp',
-        href: `${url.origin}/imgs/pokemon/unown/100w.webp`,
+        type: 'image/svg+xml',
+        href: `${url.origin}/imgs/logo/original.svg`,
       }
     ],
     meta: [
       {
         name: 'language',
         content: params.lang,
+      },
+      {
+        name: 'og:image',
+        content: `${url.origin}/imgs/logo/500.jpg`,
+      },
+      {
+        name: 'og:image:width',
+        content: '500',
+      },
+      {
+        name: 'og:image:height',
+        content: '500',
       },
     ],
   };
