@@ -1,4 +1,4 @@
-import { component$, Resource, useResource$, useStyles$ } from "@builder.io/qwik";
+import { component$, useStyles$ } from "@builder.io/qwik";
 import type { DocumentHead, StaticGenerateHandler} from "@builder.io/qwik-city";
 import { routeLoader$, useLocation } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
@@ -7,9 +7,9 @@ import type { TypeName } from "~/model/type";
 import type { Pokemon } from "~/model/pokemon";
 import { langs, pokemons, types } from '~/data';
 import { cssColor } from "~/components/color";
-import style from './index.scss?inline';
 import { PokemonStats } from "~/components/pokemon/stats";
 import { Logo } from "~/components/logo";
+import style from './index.scss?inline';
 
 interface TypeItemProps {
   name: TypeName;
@@ -22,22 +22,15 @@ const TypeItem = component$(({ name }: TypeItemProps) => {
   </li>
 });
 
-// TODO: url this with MPA
 export const usePokemon = routeLoader$(async (requestEvent) => {
   const { url, params } = requestEvent;
   const res = await fetch(`${url.origin}/data/${params.lang}/pokemon/${params.id}.json`);
   return res.json() as Promise<Pokemon>;
 });
 
-export default component$(() => {
-  useStyles$(style);
-  const { url, params } = useLocation();
-  const pokemonResource = useResource$<Pokemon>(async () => {
-    const res = await fetch(`${url.origin}/data/${params.lang}/pokemon/${params.id}.json`);
-    return res.json();
-  });
-
-  return <Resource value={pokemonResource} onResolved={(pokemon) => (
+const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
+  const { params } = useLocation();
+  return (
     <main id="pokemon-page" style={cssColor(types[pokemon.types[0]].color)}>
       <Back class="btn back" href={`/${params.lang}`}>
         <Logo width="24" height="24" />
@@ -61,7 +54,13 @@ export default component$(() => {
         <PokemonStats pokemon={pokemon} />
       </section>
     </main>
-  )} />
+  )
+})
+
+export default component$(() => {
+  useStyles$(style);
+  const pokemon = usePokemon();
+  return <Content pokemon={pokemon.value} />
 });
 
 export const onStaticGenerate: StaticGenerateHandler = async () => {
