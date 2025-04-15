@@ -4,8 +4,9 @@ import type { DocumentHead, StaticGenerateHandler} from "@builder.io/qwik-city";
 import { useLocation } from "@builder.io/qwik-city";
 import type { PokemonItem } from "~/model";
 import { PokemonImg } from "~/components/img/img";
-import style from './index.scss?inline';
 import { langs } from "~/data";
+import { Logo } from "~/components/logo";
+import style from './index.scss?inline';
 
 export default component$(() => {
   useStyles$(style);
@@ -73,6 +74,7 @@ export default component$(() => {
         <button aria-controls="search-box" onClick$={open}>
           <span>Search</span>
         </button>
+        <Logo width="100" height="100" />
         <dialog id="search-box" onClick$={(e, el) => e.target === el ? close() : null}>
           <form class="search-container" onSubmit$={submit} preventdefault:submit>
             <header>

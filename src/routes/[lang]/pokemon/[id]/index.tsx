@@ -9,6 +9,7 @@ import { langs, pokemons, types } from '~/data';
 import { cssColor } from "~/components/color";
 import style from './index.scss?inline';
 import { PokemonStats } from "~/components/pokemon/stats";
+import { Logo } from "~/components/logo";
 
 interface TypeItemProps {
   name: TypeName;
@@ -38,7 +39,10 @@ export default component$(() => {
 
   return <Resource value={pokemonResource} onResolved={(pokemon) => (
     <main id="pokemon-page" style={cssColor(types[pokemon.types[0]].color)}>
-      <Back class="btn back" href={`/${params.lang}`}>Pokedex</Back>
+      <Back class="btn back" href={`/${params.lang}`}>
+        <Logo width="24" height="24" />
+        <span>Pokedex</span>
+      </Back>
       <section aria-labelledby="pokemon-name">
         <article>
           <PokemonImg pokemon={pokemon} eager />

@@ -9,6 +9,7 @@ import type { Generation, PokemonItem, TypeName } from "~/model";
 import { usePokemonGeneration } from "~/hooks/useData";
 import { LangPicker } from "~/components/lang-picker/lang-picker";
 import style from './index.scss?inline';
+import { Logo } from "~/components/logo";
 
 interface TypeItemProps {
   name: TypeName;
@@ -155,8 +156,8 @@ export default component$(() => {
     <>
     <main id="pokemon-list-page" >
       <header>
-        <a href={`/${params.lang}`} class="back">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
+        <a href={`/${params.lang}`} class="back" aria-label="Back to pokedex">
+          <Logo width="40" height="40"/>
         </a>
         <PokemonNav pokemons={pokemons}/>
         <LangPicker />
