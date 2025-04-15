@@ -27,7 +27,7 @@ export const PokemonImg = component$(({ pokemon, eager, ...props }: PokemonImgPr
     alt={name}
     width={150}
     height={150}
-    style={{ viewTransitionName: `--${imgName}--`, ['viewTransitionClass' as any]: 'pokemon-img' }}
+    style={{ viewTransitionName: `--${imgName}-img--`, ['viewTransitionClass' as any]: 'pokemon-img' }}
     {...optimization}
     {...props}
   />;

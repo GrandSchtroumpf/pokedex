@@ -1,6 +1,7 @@
 #pokemon-page {
   min-height: 100dvh;
   padding: 16px;
+  padding-bottom: 80px;
   box-sizing: border-box;
   --primary: oklch(var(--lum) var(--chroma) var(--hue));
   --text: oklch(1 var(--chroma) var(--hue));
@@ -16,17 +17,18 @@
 
   .back {
     place-self: start;
-    border: 1px solid oklch(60% var(--chroma) var(--hue));
-    border-radius: 4px;
+    border-radius: 28px;
+    background-color: var(--surface-high);
     color: var(--text);
+    border: solid 1px var(--text);
     cursor: pointer;
-    padding: 16px;
-    background-color: oklch(80% var(--chroma) var(--hue) / .12);
+    padding: 16px 24px;
+    font-size: 1.1rem;
     &:hover {
-      background-color: oklch(80% var(--chroma) var(--hue) / .24);
+      background-color: color-mix(in oklch, var(--text) var(--alpha-hover), var(--surface-high));
     }
     &:active {
-      background-color: oklch(80% var(--chroma) var(--hue) / .32);
+      background-color: color-mix(in oklch, var(--text) var(--alpha-focus), var(--surface-high));
     }
   }
 
@@ -113,6 +115,12 @@
 
 @media (max-width: 900px) {
   #pokemon-page {
+    .back {
+      position: fixed;
+      z-index: 1;
+      inset-block-end: 24px;
+      inset-inline-end: 24px;
+    }
     article {
       width: 100%;
       flex-direction: column;
@@ -124,49 +132,3 @@
     }
   }
 }
-
-
-// @supports (animation-timeline: view()) {
-//   @media (prefers-reduced-motion: no-preference) {
-//     #pokemon-page img {
-//       view-transition-name: pokemon-img;
-//     }
-//     #pokemon-page .pokemon-profile {
-//       view-transition-name: pokemon-profile;
-//     }
-//     #pokemon-page #pokemon-stats {
-//       view-transition-name: pokemon-stats;
-//     }
-
-//     ::view-transition-old(main) {
-//       --scale: 0.98;
-//       animation:
-//         scale 0.3s reverse both,
-//         fade 0.3s reverse both;
-//     }
-
-//     ::view-transition-new(pokemon-img),
-//     ::view-transition-new(pokemon-profile),
-//     ::view-transition-new(pokemon-stats) {
-//       --scale: 0.9;
-//       --translate: 5vh;
-//       --ease-out: cubic-bezier(0.25, 1, 0.5, 1); // sine-out
-//       animation: 
-//         slide-up 0.3s var(--delay) var(--ease-out) both,
-//         fade 0.3s var(--delay) var(--ease-out) both;
-//     }
-//     ::view-transition-new(pokemon-img) {
-//       --scale: 1.5;
-//       --delay: 900ms;
-//       animation: 
-//         scale 0.4s var(--delay) var(--ease-out) both,
-//         fade 0.4s var(--delay) var(--ease-out) both;
-//     }
-//     ::view-transition-new(pokemon-profile) {
-//       --delay: 950ms;
-//     }
-//     ::view-transition-new(pokemon-stats) {
-//       --delay: 1000ms;
-//     }
-//   }
-// }

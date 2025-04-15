@@ -219,7 +219,6 @@
 
 
 // View Transition
-
 html:active-view-transition-type(search-open, search-close) {
   #search-section dialog[open] {
     &::before {
@@ -239,7 +238,6 @@ html:active-view-transition-type(search-open, search-close) {
       }
     }
   }
-
   &::view-transition-image-pair(search-box) {
     overflow: clip;
     animation-name: clipping;
@@ -280,22 +278,24 @@ html:active-view-transition-type(search-close) {
 
 
 // Scroll animation
-#search-section {
-  h1 {
-    animation-timeline: view();
-    animation-name: title-entry;
-    animation-fill-mode: both;
-    animation-duration: 1ms;
+@supports (animation-timeline: view()) {
+  #search-section {
+    h1 {
+      animation-timeline: view();
+      animation-name: title-entry;
+      animation-fill-mode: both;
+      animation-duration: 1ms;
+    }
   }
-}
-
-@keyframes title-entry {
-  0%, 85% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-25px);
+  
+  @keyframes title-entry {
+    0%, 85% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-25px);
+    }
   }
 }
