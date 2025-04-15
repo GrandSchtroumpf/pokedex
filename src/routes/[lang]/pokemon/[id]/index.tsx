@@ -37,6 +37,20 @@ const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
         <span>Pokedex</span>
       </Back>
       <section aria-labelledby="pokemon-name">
+        <header>
+          {pokemon.previous && (
+            <a class="previous" href={`/${params.lang}/pokemon/${pokemon.previous.id}`}>
+              <PokemonImg pokemon={pokemon.previous} width="40" height="40"/>
+              {pokemon.previous.name}
+            </a>
+          )}
+          {pokemon.next && (
+            <a class="next" href={`/${params.lang}/pokemon/${pokemon.next.id}`}>
+              <PokemonImg pokemon={pokemon.next} width="40" height="40" />
+              {pokemon.next.name}
+            </a>
+          )}
+        </header>
         <article>
           <PokemonImg pokemon={pokemon} eager />
           <div class="pokemon-profile">          

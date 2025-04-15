@@ -5,10 +5,12 @@ import type {
   PokemonShape as APIShape,
   Type as APIType,
   Generation as APIGeneration,
-  Language as APILanguage
+  Language as APILanguage,
+  EvolutionChain as APIEvolution,
+  EvolutionDetail as APIEvolutionDetail,
 } from 'pokenode-ts';
 
-export { APIPokemon, APIType, APIResource, APISpecies, APIGeneration, APILanguage };
+export { APIPokemon, APIType, APIResource, APISpecies, APIShape, APIGeneration, APILanguage, APIEvolution, APIEvolutionDetail };
 
 const baseUrl = `https://pokeapi.co/api/v2`;
 
@@ -19,6 +21,7 @@ interface API {
   pokemon: APIPokemon;
   'pokemon-species': APISpecies;
   'pokemon-shape': APIShape;
+  'evolution-chain': APIEvolution;
 }
 
 export type Endpoints = Extract<keyof API, string>;
