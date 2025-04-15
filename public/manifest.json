@@ -11,20 +11,5 @@
     "sizes": "1000x1000",
     "type": "image/svg+xml",
     "purpose": "any"
-  },{
-    "src": "/imgs/logo/750.jpg",
-    "sizes": "750x750",
-    "type": "image/jpg",
-    "purpose": "any"
-  },{
-    "src": "/imgs/logo/500.jpg",
-    "sizes": "500x500",
-    "type": "image/jpg",
-    "purpose": "any"
-  },{
-    "src": "/imgs/logo/250.jpg",
-    "sizes": "250x250",
-    "type": "image/jpg",
-    "purpose": "any"
   }]
 }
