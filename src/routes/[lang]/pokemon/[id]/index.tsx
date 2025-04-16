@@ -1,4 +1,4 @@
-import { component$, useStyles$ } from "@builder.io/qwik";
+import { component$, useStyles$, useTask$ } from "@builder.io/qwik";
 import type { DocumentHead, StaticGenerateHandler} from "@builder.io/qwik-city";
 import { routeLoader$, useLocation } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
@@ -9,6 +9,7 @@ import { langs, pokemons, types } from '~/data';
 import { cssColor } from "~/components/color";
 import { PokemonStats } from "~/components/pokemon/stats";
 import { Logo } from "~/components/logo";
+import { useSpeculativeRules } from "~/hooks/useSpeculative";
 import style from './index.scss?inline';
 
 interface TypeItemProps {
@@ -73,7 +74,16 @@ const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
 
 export default component$(() => {
   useStyles$(style);
+  const { url } = useLocation();
   const pokemon = usePokemon();
+  const rules = useSpeculativeRules();
+
+  useTask$(() => {
+    const { id, previous, next } = pokemon.value;
+    const urls = [previous, next].filter((p) => !!p).map((p) => url.href.replace(id.toString(), p.id.toString()));
+    rules.push({ type: 'prefetch', urls, source: 'list' });
+  });
+
   return <Content pokemon={pokemon.value} />
 });
 

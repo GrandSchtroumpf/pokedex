@@ -1,21 +1,33 @@
-import { $, component$, Resource, useComputed$, useSignal, useStyles$ } from "@builder.io/qwik";
-import { useGenerations } from "~/hooks/useData";
+import { $, component$, useComputed$, useSignal, useStyles$, useTask$ } from "@builder.io/qwik";
 import type { DocumentHead, StaticGenerateHandler} from "@builder.io/qwik-city";
-import { useLocation } from "@builder.io/qwik-city";
-import type { PokemonItem } from "~/model";
+import { routeLoader$, useLocation } from "@builder.io/qwik-city";
+import type { PokemonItem, Generation } from "~/model";
 import { PokemonImg } from "~/components/img/img";
 import { langs } from "~/data";
 import { Logo } from "~/components/logo";
 import style from './index.scss?inline';
+import { useSpeculativeRules } from "~/hooks/useSpeculative";
+import { Anchor } from "~/components/anchor";
+
+export const useGenerations = routeLoader$(async ({ url, params }) => {
+  const res = await fetch(`${url.origin}/data/${params.lang}/generations.json`);
+  return res.json() as Promise<Generation[]>;
+})
 
 export default component$(() => {
   useStyles$(style);
   const { url, params } = useLocation();
+  const rules = useSpeculativeRules();
   const listbox = useSignal<HTMLElement>();
 
-  const generationsResource = useGenerations();
+  const generations = useGenerations();
   const search = useSignal('');
   const allPokemon = useSignal<PokemonItem[]>([]);
+
+  useTask$(() => {
+    const urls = generations.value.map((g) => `/${params.lang}/${g.id}`);
+    rules.push({ type: 'prefetch', urls, source: 'list', eagerness: 'moderate' });
+  });
 
   const list = useComputed$(() => {
     if (!search.value) return [];
@@ -25,8 +37,7 @@ export default component$(() => {
 
   const preloadPokemon = $(async () => {
     if (allPokemon.value.length) return;
-    const generations = await generationsResource.value;
-    const getAll = generations.map((g) => fetch(`${url.origin}/data/${params.lang}/generation/${g.id}.json`, { priority: 'low' }).then(res => res.json()));
+    const getAll = generations.value.map((g) => fetch(`${url.origin}/data/${params.lang}/generation/${g.id}.json`, { priority: 'low' }).then(res => res.json()));
     const matrix = await Promise.all(getAll);
     allPokemon.value = matrix.flat();
   });
@@ -92,10 +103,10 @@ export default component$(() => {
             <hr />
             <nav role="listbox" ref={listbox}>
               {list.value.map((pokemon) => (
-                <a role="option" key={pokemon.id} href={`/${params.lang}/pokemon/${pokemon.id}`}>
+                <Anchor role="option" key={pokemon.id} href={`/${params.lang}/pokemon/${pokemon.id}`}>
                   <PokemonImg pokemon={pokemon} width={40} height={40} />
                   <h3>{pokemon.name}</h3>
-                </a>
+                </Anchor>
               ))}
             </nav>
             <div class="empty">
@@ -105,19 +116,25 @@ export default component$(() => {
         </dialog>
       </search>
       <main>
-        <Resource value={generationsResource} onResolved={(generations) => (
-          <nav class="generation-list">
-            {generations.map((generation) => (
-              <a key={generation.id} href={`/${params.lang}/${generation.id}`}>
-                {generation.name}
-              </a>
-            ))}
-          </nav>
-        )} />
+        <GenerationList generations={generations.value} />
       </main>
     </>
   )
 });
+
+const GenerationList = component$<{ generations: Generation[] }>(({ generations }) => {
+  const { params } = useLocation();
+  return (
+    <nav class="generation-list">
+      {generations.map((generation) => (
+        <a key={generation.id} href={`/${params.lang}/${generation.id}`}>
+          {generation.name}
+        </a>
+      ))}
+    </nav>
+  )
+})
+
 
 export const onStaticGenerate: StaticGenerateHandler = async () => {
   const params: {lang: string}[] = [];

@@ -8,8 +8,9 @@ import { generations, langs, types } from "~/data";
 import type { Generation, PokemonItem, TypeName } from "~/model";
 import { usePokemonGeneration } from "~/hooks/useData";
 import { LangPicker } from "~/components/lang-picker/lang-picker";
-import style from './index.scss?inline';
 import { Logo } from "~/components/logo";
+import { Anchor } from "~/components/anchor";
+import style from './index.scss?inline';
 
 interface TypeItemProps {
   name: TypeName;
@@ -45,13 +46,13 @@ const PokemonPage = component$<PokemonPage>(({ pokemon, eager }) => {
 
   return <section class="pokemon-page" aria-labelledby="pokemon-name" style={style}>
     <article>
-      <a href={`/${params.lang}/pokemon/${pokemon.id}`}>
+      <Anchor href={`/${params.lang}/pokemon/${pokemon.id}`}>
         <PokemonImg class="pokemon-img" pokemon={pokemon} eager={eager} sizes="(max-width: 400px) 200px, 375px" />
-      </a>
+      </Anchor>
       <div class="pokemon-profile">          
         <ol class="type-list">
           {pokemon.types.map(type => (
-          <TypeItem key={type} name={type}/>
+            <TypeItem key={type} name={type}/>
           ))}
         </ol>
         <h1 class="pokemon-name">{pokemon.name}</h1>
