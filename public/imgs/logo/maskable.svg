@@ -1,0 +1,25 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient-blue" gradientTransform="rotate(80)">
+      <stop offset="80%" stop-color="#101b3b" />      
+      <stop offset="100%" stop-color="#020521" />
+    </linearGradient>
+    <linearGradient id="gradient-red" gradientTransform="rotate(45)">
+      <stop offset="0%" stop-color="#ff4b55" />
+      <stop offset="100%" stop-color="#462f6b" />
+    </linearGradient>
+    <linearGradient id="gradient-white" gradientTransform="rotate(45)">
+      <stop offset="0%" stop-color="#eee3e1" />
+      <stop offset="100%" stop-color="#67a0c2" />
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="100" height="100" rx="14" fill="url(#gradient-blue)" />
+
+  <g transform="translate(50, 50), scale(1.3)">
+    <circle cx="0" cy="0" r="25" fill="url(#gradient-red)"  />
+    <path d="M -25,0 A 1 1 0 0 0 25,0" fill="url(#gradient-white)" />
+    <rect x="-30" y="-3.5" width="60" height="7" fill="#101b3b"/>
+    <circle cx="0" cy="0" r="10" fill="url(#gradient-white)" stroke="#101b3b" stroke-width="3" />
+    <circle cx="0" cy="0" r="5" fill="url(#gradient-white)" stroke="#101b3b" />
+  </g>
+</svg>

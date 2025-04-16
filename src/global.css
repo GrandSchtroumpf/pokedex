@@ -38,7 +38,7 @@
   color-scheme: dark light;
   --chroma: 0.01;
 
-  --lum-0: 100%;
+  --lum-0: 98%;
   --lum-1: 95%;
   --lum-2: 93%;
   --lum-3: 92%;
@@ -127,9 +127,7 @@
   --text: oklch(20% var(--chroma) var(--hue));
   --text-variant: oklch(40% var(--chroma) var(--hue));
 
-  --background-dim: var(--surface-4);
-  --background: var(--surface-2);
-  --background-bright: var(--surface-0);
+  --background: var(--surface-0);
   --background-blur: none;
   
   --overlay: var(--surface-4);
@@ -170,6 +168,7 @@ html {
   -o-tab-size: 4;
   tab-size: 4;
   font-family: system-ui;
+  background-color: var(--background);
 }
 
 body {
