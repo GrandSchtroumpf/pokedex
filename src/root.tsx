@@ -2,7 +2,6 @@ import { component$, Slot } from "@builder.io/qwik";
 import {
   QwikCityProvider,
   RouterOutlet,
-  ServiceWorkerRegister,
   useLocation,
 } from "@builder.io/qwik-city";
 import { RouterHead } from "./components/router-head/router-head";
@@ -36,7 +35,7 @@ export default component$(() => {
       </head>
       <Body>
         <RouterOutlet />
-        <ServiceWorkerRegister />
+        {/* <ServiceWorkerRegister /> */}
         <SpeculativeRulesScript />
       </Body>
     </QwikCityProvider>
