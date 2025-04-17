@@ -1,4 +1,4 @@
-import { $, component$, useComputed$, useSignal, useStyles$, useTask$ } from "@builder.io/qwik";
+import { $, component$, isServer, useSignal, useStyles$, useTask$ } from "@builder.io/qwik";
 import type { DocumentHead, StaticGenerateHandler} from "@builder.io/qwik-city";
 import { routeLoader$, useLocation } from "@builder.io/qwik-city";
 import type { PokemonItem, Generation } from "~/model";
@@ -11,12 +11,15 @@ import { Anchor } from "~/components/anchor";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { cwd } from "node:process";
+import SearchWorker from './search.worker?worker';
 
 export const useGenerations = routeLoader$(async ({ params }) => {
   const path = join(cwd(), 'public/data', params.lang, 'generations.json');
   const res = await readFile(path, { encoding: 'utf-8' });
   return JSON.parse(res) as Generation[];
-})
+});
+
+const workers: { current?: Worker } = {};
 
 export default component$(() => {
   useStyles$(style);
@@ -26,33 +29,48 @@ export default component$(() => {
 
   const generations = useGenerations();
   const search = useSignal('');
-  const allPokemon = useSignal<PokemonItem[]>([]);
 
   useTask$(() => {
     const urls = generations.value.map((g) => `/${params.lang}/${g.id}`);
     rules.push({ type: 'prefetch', urls, source: 'list', eagerness: 'moderate' });
   });
 
-  const list = useComputed$(() => {
-    if (!search.value) return [];
-    const input = search.value.toLowerCase();
-    return allPokemon.value.filter((p) => p.name.toLowerCase().includes(input));
-  })
-
-  const preloadPokemon = $(async () => {
-    if (allPokemon.value.length) return;
-    const getAll = generations.value.map((g) => fetch(`${url.origin}/data/${params.lang}/generation/${g.id}.json`, { priority: 'low' }).then(res => res.json()));
-    const matrix = await Promise.all(getAll);
-    allPokemon.value = matrix.flat();
+  useTask$(({ cleanup }) => {
+    cleanup(() => {
+      workers.current?.terminate();
+      delete workers.current;
+    });
   });
+  
+  const list = useSignal<PokemonItem[]>([]);
+  useTask$(({ track, cleanup }) => {
+    const input = track(search);
+    if (isServer) return;
+    if (!workers.current) {
+      workers.current ||= new SearchWorker();
+      const urls = generations.value.map((g) => `${url.origin}/data/${params.lang}/generation/${g.id}.json`)
+      workers.current.postMessage({ type: 'init', urls });
+    } else if (input) {
+      const handler = (e: MessageEvent<PokemonItem[]>) => {
+        list.value = e.data;
+      }
+      workers.current.addEventListener('message', handler);
+      workers.current.postMessage({ type: 'search', input })
+      cleanup(() => workers.current?.removeEventListener('message', handler))
+    } else {
+      if (!input) list.value = [];
+    }
+  })
 
   const open = $(() => {
     const dialog = document.getElementById('search-box') as HTMLDialogElement;
     if ('startViewTransition' in document) document.startViewTransition({ types: ['search-open'], update: () => dialog.showModal() } as any);
     else dialog.showModal();
-    queueMicrotask(() => {
-      preloadPokemon();
-    })
+    if (!workers.current) {
+      workers.current = new SearchWorker();
+      const urls = generations.value.map((g) => `${url.origin}/data/${params.lang}/generation/${g.id}.json`)
+      workers.current.postMessage({ type: 'init', urls });
+    }
   });
 
   const close = $(() => {
