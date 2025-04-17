@@ -61,7 +61,7 @@ export default component$(() => {
     } else {
       if (!input) list.value = [];
     }
-  })
+  });
 
   const open = $(() => {
     const dialog = document.getElementById('search-box') as HTMLDialogElement;
@@ -74,8 +74,14 @@ export default component$(() => {
     }
   });
 
+  const startWriting = $((e: KeyboardEvent) => {
+    if (e.key.length === 1 && e.key.match(/[\p{Letter}\p{Mark}\s]+/gu)) {
+      open();
+      search.value = e.key;
+    }
+  });
+
   const close = $(() => {
-    search.value = '';
     const dialog = document.getElementById('search-box') as HTMLDialogElement;
     if ('startViewTransition' in document) document.startViewTransition({ types: ['search-close'], update: () => dialog.close() } as any);
     else dialog.close();
@@ -87,12 +93,14 @@ export default component$(() => {
       if (current) current.removeAttribute('aria-selected');
       const next = current?.nextElementSibling || listbox.value?.querySelector<HTMLElement>(`[role="option"]`);
       next?.setAttribute('aria-selected', 'true');
+      next?.scrollIntoView({ behavior: 'smooth', inline: 'center' });
     }
     if (e.key === 'ArrowUp') {
       const current = listbox.value?.querySelector<HTMLElement>(`[role="option"][aria-selected="true"]`);
       if (current) current.removeAttribute('aria-selected');
       const next = current?.previousElementSibling || listbox.value?.querySelector<HTMLElement>(`[role="option"]:last-child`);
       next?.setAttribute('aria-selected', 'true');
+      next?.scrollIntoView({ behavior: 'smooth', inline: 'center' });
     }
   });
 
@@ -107,20 +115,20 @@ export default component$(() => {
       <search id="search-section">
         <Logo width="100" height="100" />
         <h1>Pokedex</h1>
-        <button aria-controls="search-box" onClick$={open}>
+        <button aria-controls="search-box" onClick$={open} onKeyDown$={startWriting}>
           <span>Search</span>
         </button>
-        <dialog id="search-box" onClick$={(e, el) => e.target === el ? close() : null}>
+        <dialog id="search-box" onClick$={(e, el) => e.target === el ? close() : null} onClose$={() => search.value = ''}>
           <form class="search-container" onSubmit$={submit} preventdefault:submit>
             <header>
-              <button type="button" onClick$={close}>
+              <button type="button" onClick$={close} aria-label="Close searchbox">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
               </button>
               <div class="search-field">
                 <label for="search-input">Search</label>
-                <input id="search-input" type="search" placeholder="" autoFocus bind:value={search} onKeyDown$={navigate}/>
+                <input id="search-input" type="search" placeholder="" autoFocus bind:value={search} onKeyDown$={navigate} autocomplete="off" />
               </div>
-              <button type="button" onClick$={close}>
+              <button type="button" onClick$={close} aria-label="Close searchbox">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
               </button>
             </header>

@@ -15,6 +15,7 @@ export const Anchor = component$<PropsOf<'a'>>((props) => {
   })
   useOn('mouseenter', prefetch);
   useOn('touchstart', prefetch);
+  useOn('focus', prefetch);
 
   const href = useComputed$(() => {
     if (!props.href) return;
