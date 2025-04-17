@@ -65,7 +65,7 @@ const Previous = component$(() => {
     nav(url);
   });
 
-  return <button class={['previous']} onClick$={previous}>
+  return <button class={['previous']} onClick$={previous} aria-label="Previous pokemon">
     <svg width="50" height="50" viewBox="0 0 24 24" aria-hidden>
       <path d="M17.51 3.87L15.73 2.1 5.84 12l9.9 9.9 1.77-1.77L9.38 12l8.13-8.13z"/>
     </svg>
@@ -81,7 +81,7 @@ const Next = component$(() => {
     nav(url);
   });
 
-  return <button class={['next']} onClick$={next}>
+  return <button class={['next']} onClick$={next} aria-label="Next pokemon">
     <svg width="50" height="50" viewBox="0 0 24 24" aria-hidden>
       <polygon points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12"/>
     </svg>

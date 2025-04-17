@@ -18,18 +18,17 @@ export const PokemonTypes = component$<Props>(({ types, ...props }) => {
       padding: calc(var(--size, 8px) / 2) var(--size, 8px);
       color: white;
       text-transform: uppercase;
+      background-color: oklch(var(--color-lightness) var(--color-chroma) var(--hue));
+      color: oklch(var(--on-color-lightness) 0% var(--hue));
     }
   `)
   return (
     <ol {...props} data-pokemon-types>
-      {types.map(type => {
-        const { l, c, h } = typeRecord[type].color;
-        return (
-          <li key={type} class="type-item" title={type} style={`background-color: oklch(${l} ${c} ${h})`}>
-            {type}
-          </li>
-        )
-      })}
+      {types.map(type => (
+        <li key={type} class="type-item" title={type} style={{ '--hue': typeRecord[type].color.h }}>
+          {type}
+        </li>
+      ))}
     </ol>
   )
 })

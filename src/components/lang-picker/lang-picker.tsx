@@ -14,7 +14,7 @@ export const LangPicker = component$(() => {
   });
   return (
     <>
-      <button id="current-lang" onClick$={open}>
+      <button id="current-lang" aria-label="Select another lang" onClick$={open}>
         {params.lang}
       </button>
       <dialog id="lang-picker" onClick$={(e, el) => e.target === el ? el.close() : null}>
