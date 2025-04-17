@@ -10,6 +10,9 @@ import { cssColor } from "~/components/color";
 import { PokemonStats } from "~/components/pokemon/stats";
 import { Logo } from "~/components/logo";
 import { useSpeculativeRules } from "~/hooks/useSpeculative";
+import { readFile } from "node:fs/promises";
+import { cwd } from "node:process";
+import { join } from "node:path";
 import style from './index.scss?inline';
 
 interface TypeItemProps {
@@ -23,10 +26,10 @@ const TypeItem = component$(({ name }: TypeItemProps) => {
   </li>
 });
 
-export const usePokemon = routeLoader$(async (requestEvent) => {
-  const { url, params } = requestEvent;
-  const res = await fetch(`${url.origin}/data/${params.lang}/pokemon/${params.id}.json`);
-  return res.json() as Promise<Pokemon>;
+export const usePokemon = routeLoader$(async ({ params }) => {
+  const path = join(cwd(), 'public/data', params.lang, 'pokemon', `${params.id}.json`);
+  const text = await readFile(path, { encoding: 'utf-8' });
+  return JSON.parse(text) as Pokemon;
 });
 
 const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {

@@ -11,6 +11,9 @@ import { LangPicker } from "~/components/lang-picker/lang-picker";
 import { Logo } from "~/components/logo";
 import { Anchor } from "~/components/anchor";
 import style from './index.scss?inline';
+import { join } from "node:path";
+import { cwd } from "node:process";
+import { readFile } from "node:fs/promises";
 
 interface TypeItemProps {
   name: TypeName;
@@ -23,11 +26,10 @@ const TypeItem = component$(({ name }: TypeItemProps) => {
   </li>
 })
 
-// TODO: url this with MPA
-export const useGeneration = routeLoader$(async (requestEvent) => {
-  const { url, params } = requestEvent;
-  const res = await fetch(`${url.origin}/data/${params.lang}/generations.json`);
-  return res.json() as Promise<Generation[]>;
+export const useGeneration = routeLoader$(async ({ params }) => {
+  const path = join(cwd(), 'public/data', params.lang, 'generations.json');
+  const res = await readFile(path, { encoding: 'utf-8' });
+  return JSON.parse(res) as Generation[];
 });
 
 

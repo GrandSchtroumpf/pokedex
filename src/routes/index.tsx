@@ -1,16 +1,21 @@
-import { component$, Resource, useResource$, useStyles$} from "@builder.io/qwik";
-import { useLocation, type DocumentHead } from "@builder.io/qwik-city";
+import { component$, Resource, useStyles$} from "@builder.io/qwik";
+import { routeLoader$, type DocumentHead } from "@builder.io/qwik-city";
 import type { Language } from "pokenode-ts";
 import { Logo } from "~/components/logo";
 import style from './index.scss?inline';
+import { join } from "node:path";
+import { cwd } from "node:process";
+import { readFile } from "node:fs/promises";
+
+export const useLanguages = routeLoader$(async () => {
+  const path = join(cwd(), 'public/data/en/languages.json');
+  const res = await readFile(path, { encoding: 'utf-8' });
+  return JSON.parse(res) as Language[];
+})
 
 export default component$(() => {
   useStyles$(style);
-  const { url } = useLocation();
-  const languagesResource =  useResource$<Language[]>(async () => {
-    const res = await fetch(`${url.origin}/data/en/languages.json`);
-    return res.json();
-  })
+  const languagesResource =  useLanguages();
 
   return (
     <main id="select-lang-page">

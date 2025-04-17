@@ -8,10 +8,14 @@ import { Logo } from "~/components/logo";
 import style from './index.scss?inline';
 import { useSpeculativeRules } from "~/hooks/useSpeculative";
 import { Anchor } from "~/components/anchor";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+import { cwd } from "node:process";
 
-export const useGenerations = routeLoader$(async ({ url, params }) => {
-  const res = await fetch(`${url.origin}/data/${params.lang}/generations.json`);
-  return res.json() as Promise<Generation[]>;
+export const useGenerations = routeLoader$(async ({ params }) => {
+  const path = join(cwd(), 'public/data', params.lang, 'generations.json');
+  const res = await readFile(path, { encoding: 'utf-8' });
+  return JSON.parse(res) as Generation[];
 })
 
 export default component$(() => {

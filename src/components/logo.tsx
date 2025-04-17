@@ -62,7 +62,6 @@ export const Logo = component$<PropsOf<'svg'>>((props) => {
         <rect x="-30" y="-3" width="60" height="6" fill="#101b3b"/>
         <circle cx="0" cy="0" r="10" fill="url(#gradient-white)" stroke="#101b3b" stroke-width="3" />
         <circle class="center" cx="0" cy="0" r="5" fill="url(#gradient-white)" stroke="#101b3b"/>
-
       </g>
     </svg>
   )
