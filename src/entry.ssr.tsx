@@ -18,12 +18,14 @@ import { manifest } from "@qwik-client-manifest";
 import Root from "./root";
 
 export default function (opts: RenderToStreamOptions) {
+  const lang = opts.serverData?.qwikcity.params.lang || 'en';
   return renderToStream(<Root />, {
     manifest,
     ...opts,
     // Use container attributes to set attributes on the html tag.
     containerAttributes: {
       ...opts.containerAttributes,
+      lang: lang
     },
     prefetchStrategy: {
       implementation: {

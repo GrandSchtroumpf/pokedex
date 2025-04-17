@@ -5,16 +5,15 @@ import { PokemonImg } from "~/components/img/img";
 import { Back } from "~/components/back";
 import type { Pokemon } from "~/model/pokemon";
 import { langs, pokemons, types } from '~/data';
-import { cssColor } from "~/components/color";
 import { PokemonStats } from "~/components/pokemon/stats";
 import { Logo } from "~/components/logo";
 import { readFile } from "node:fs/promises";
 import { cwd } from "node:process";
 import { join } from "node:path";
-import style from './index.scss?inline';
 import { PokemonEvolution } from "~/components/pokemon/evolution";
 import { PokemonTypes } from "~/components/pokemon/types";
 import { Anchor } from "~/components/anchor";
+import style from './index.scss?inline';
 
 export const usePokemon = routeLoader$(async ({ params }) => {
   const path = join(cwd(), 'public/data', params.lang, 'pokemon', `${params.id}.json`);
@@ -25,7 +24,7 @@ export const usePokemon = routeLoader$(async ({ params }) => {
 const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
   const { params } = useLocation();
   return (
-    <main id="pokemon-page" style={cssColor(types[pokemon.types[0]].color)}>
+    <main id="pokemon-page" class="theme" style={{ '--hue': types[pokemon.types[0]].color.h }}>
       <Back class="btn back" href={`/${params.lang}`}>
         <Logo width="24" height="24" />
         <span>Pokedex</span>

@@ -1,5 +1,5 @@
 import { $, component$, isServer, useSignal, useStyles$, useTask$ } from "@builder.io/qwik";
-import type { DocumentHead, StaticGenerateHandler} from "@builder.io/qwik-city";
+import type { DocumentHead, StaticGenerateHandler } from "@builder.io/qwik-city";
 import { routeLoader$, useLocation } from "@builder.io/qwik-city";
 import type { PokemonItem, Generation } from "~/model";
 import { PokemonImg } from "~/components/img/img";
@@ -191,6 +191,10 @@ export const head: DocumentHead = ({ params, url }) => {
       }
     ],
     meta: [
+      {
+        name: "description",
+        content: "A pokedex showcase",
+      },
       {
         name: 'language',
         content: params.lang,

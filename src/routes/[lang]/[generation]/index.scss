@@ -90,6 +90,9 @@
     scroll-snap-type: inline mandatory;
     overflow: auto;
     scroll-behavior: smooth;
+    background-image: linear-gradient(to bottom, oklch(var(--lum-0) 10% var(--hue)), transparent 30%);
+
+
     &::-webkit-scrollbar {
       border-color: transparent;
     }
@@ -109,11 +112,7 @@
   .pokemon-page {
     width: 100%;
     padding: 16px;
-    box-sizing: border-box;
-    --primary: oklch(var(--lum) var(--chroma) var(--hue));
-    --text: oklch(1 var(--chroma) var(--hue));
-    --secondary-text: oklch(1 0.1 var(--hue));
-  
+    box-sizing: border-box;  
     accent-color: var(--primary);
   
     article {
@@ -132,7 +131,7 @@
       inset-block-start: 24px;
       font-size: 15rem;
       font-weight: bold;
-      color: oklch(1 var(--chroma) var(--hue) / 0.12);
+      color: color-mix(in oklch, var(--text) 12%, transparent);
     }
     .pokemon-profile {
       display: flex;
@@ -140,12 +139,12 @@
       gap: 8px;
       flex: 1;
       h1 {
-        color: var(--text);
+        color: var(--primary);
         text-transform: uppercase;
         font-size: 2rem;
       }
       .description {
-        color: var(--secondary-text);
+        color: var(--text-variant);
       }
       .type-list {
         display: flex;

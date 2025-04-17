@@ -3,7 +3,6 @@ import type { Signal } from "@builder.io/qwik";
 import type { DocumentHead, StaticGenerateHandler} from "@builder.io/qwik-city";
 import { routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
-import { cssColor } from "~/components/color";
 import { generations, langs, types } from "~/data";
 import type { Generation, PokemonItem } from "~/model";
 import { usePokemonGeneration } from "~/hooks/useData";
@@ -31,12 +30,12 @@ interface PokemonPage {
 const PokemonPage = component$<PokemonPage>(({ pokemon, eager }) => {
   const { params } = useLocation();
   const color = types[pokemon.types[0]].color;
-  const style = [
-    cssColor(color),
-    `--timeline-name: --pokemon-${pokemon.id}`
-  ].join(';');
+  const style = {
+    '--hue': color.h,
+    '--timeline-name': `--pokemon-${pokemon.id}`,
+  }
 
-  return <section class="pokemon-page" aria-labelledby="pokemon-name" style={style}>
+  return <section class="pokemon-page theme" aria-labelledby="pokemon-name" style={style}>
     <article>
       <Anchor href={`/${params.lang}/pokemon/${pokemon.id}`}>
         <PokemonImg class="pokemon-img" pokemon={pokemon} eager={eager} sizes="(max-width: 400px) 200px, 375px" />
@@ -106,7 +105,7 @@ const PokemonNav = component$(({pokemons}: PokemonNavProps) => {
 
 const keyframes = (pokemons: PokemonItem[]) => `
   @keyframes pokemon-colors {
-    ${pokemons.map((p, i) => `${i / (pokemons.length - 1) * 100}% { background-color: oklch(25% 15% ${p.color.h});}`).join('')}
+    ${pokemons.map((p, i) => `${i / (pokemons.length - 1) * 100}% {background-color: oklch(var(--lum-2) 15% ${p.color.h});}`).join('')}
   }
 `;
 
@@ -193,6 +192,10 @@ export const head: DocumentHead = ({ resolveValue, params, url }) => {
       }
     ],
     meta: [
+      {
+        name: "description",
+        content: `List of the pokemons of ${params.generation}`,
+      },
       {
         name: 'language',
         content: params.lang,
