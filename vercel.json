@@ -13,22 +13,37 @@
   "redirects": [
     {
       "source": "/",
-      "has": [
-        { "type": "header", "key": "x-vercel-ip-country", "value": "GB" },
-        { "type": "header", "key": "x-vercel-ip-country", "value": "US" },
-        { "type": "header", "key": "x-vercel-ip-country", "value": "CA" },
-        { "type": "header", "key": "x-vercel-ip-country", "value": "IN" }
-      ],
+      "has": [{ "type": "header", "key": "x-vercel-ip-country", "value": "GB" }],
       "destination": "/en",
       "permanent": false
     },
     {
       "source": "/",
-      "has": [
-        { "type": "header", "key": "x-vercel-ip-country", "value": "FR" },
-        { "type": "header", "key": "x-vercel-ip-country", "value": "BE" },
-        { "type": "header", "key": "x-vercel-ip-country", "value": "LU" }
-      ],
+      "has": [{ "type": "header", "key": "x-vercel-ip-country", "value": "US" }],
+      "destination": "/en",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "header", "key": "x-vercel-ip-country", "value": "CA" }],
+      "destination": "/en",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "header", "key": "x-vercel-ip-country", "value": "FR" }],
+      "destination": "/fr",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "header", "key": "x-vercel-ip-country", "value": "BE" }],
+      "destination": "/fr",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "header", "key": "x-vercel-ip-country", "value": "LU" }],
       "destination": "/fr",
       "permanent": false
     },
