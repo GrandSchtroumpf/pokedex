@@ -7,8 +7,9 @@ onmessage = async ({ data }) => {
   } else if (data.type === 'search') {
     const { input } = data;
     const pokemons = await fetchPokemons;
+    const source = input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     const result = pokemons
-      .filter((p) => p.name.toLowerCase().includes(input))
+      .filter((p) => p.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(source))
       .sort((a, b) => Number(b.name.toLowerCase().startsWith(input)) - Number(a.name.toLowerCase().startsWith(input)));
     postMessage(result);
   }

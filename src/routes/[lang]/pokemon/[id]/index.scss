@@ -38,6 +38,8 @@
 
   section {
     place-self: center;
+    display: grid;
+    gap: 24px;
     header {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -100,20 +102,6 @@
     }
     .description {
       color: var(--secondary-text);
-    }
-    .type-list {
-      display: flex;
-      gap: 8px;
-      list-style: none;
-      padding-left: 0;
-      margin-block: 0;
-    }
-    
-    .type-item {
-      border-radius: 4px;
-      padding: 4px 8px;
-      color: white;
-      text-transform: uppercase;
     }
   }
 

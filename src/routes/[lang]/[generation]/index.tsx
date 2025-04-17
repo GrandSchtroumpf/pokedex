@@ -5,7 +5,7 @@ import { routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
 import { cssColor } from "~/components/color";
 import { generations, langs, types } from "~/data";
-import type { Generation, PokemonItem, TypeName } from "~/model";
+import type { Generation, PokemonItem } from "~/model";
 import { usePokemonGeneration } from "~/hooks/useData";
 import { LangPicker } from "~/components/lang-picker/lang-picker";
 import { Logo } from "~/components/logo";
@@ -14,17 +14,7 @@ import style from './index.scss?inline';
 import { join } from "node:path";
 import { cwd } from "node:process";
 import { readFile } from "node:fs/promises";
-
-interface TypeItemProps {
-  name: TypeName;
-}
-const TypeItem = component$(({ name }: TypeItemProps) => {
-  const type = types[name];
-  const { l, c, h } = type.color;
-  return <li class="type-item" title={name} style={`background-color: oklch(${l} ${c} ${h})`}>
-    {name}
-  </li>
-})
+import { PokemonTypes } from "~/components/pokemon/types";
 
 export const useGeneration = routeLoader$(async ({ params }) => {
   const path = join(cwd(), 'public/data', params.lang, 'generations.json');
@@ -52,11 +42,7 @@ const PokemonPage = component$<PokemonPage>(({ pokemon, eager }) => {
         <PokemonImg class="pokemon-img" pokemon={pokemon} eager={eager} sizes="(max-width: 400px) 200px, 375px" />
       </Anchor>
       <div class="pokemon-profile">          
-        <ol class="type-list">
-          {pokemon.types.map(type => (
-            <TypeItem key={type} name={type}/>
-          ))}
-        </ol>
+        <PokemonTypes types={pokemon.types} />
         <h1 class="pokemon-name">{pokemon.name}</h1>
         <h2 class="genus">{pokemon.shape} - {pokemon.genus}</h2>
         <p class="description">{pokemon.flavorText}</p>

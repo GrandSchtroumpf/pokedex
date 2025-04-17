@@ -189,7 +189,7 @@ dialog {
   padding: 0;
   background-color: transparent;
 }
-ul {
+ul, ol {
   margin-block: 0;
   padding-left: 0;
   list-style: none;
@@ -237,10 +237,14 @@ a {
   types: page-transition;
 }
 
-html:active-view-transition-type(page-transition) {
-  &::view-transition-new(.pokemon-img):only-child,
-  &::view-transition-old(.pokemon-img):only-child {
-    display: none;
+
+&::view-transition-new(.pokemon-img):only-child,
+&::view-transition-old(.pokemon-img):only-child {
+  display: none;
+  animation: none;
+}
+html:not(:active-view-transition-type(page-transition)) {
+  &::view-transition-group(.pokemon-img) {
     animation: none;
   }
 }

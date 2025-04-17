@@ -1,30 +1,20 @@
-import { component$, useStyles$, useTask$ } from "@builder.io/qwik";
+import { component$, useStyles$ } from "@builder.io/qwik";
 import type { DocumentHead, StaticGenerateHandler} from "@builder.io/qwik-city";
 import { routeLoader$, useLocation } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
 import { Back } from "~/components/back";
-import type { TypeName } from "~/model/type";
 import type { Pokemon } from "~/model/pokemon";
 import { langs, pokemons, types } from '~/data';
 import { cssColor } from "~/components/color";
 import { PokemonStats } from "~/components/pokemon/stats";
 import { Logo } from "~/components/logo";
-import { useSpeculativeRules } from "~/hooks/useSpeculative";
 import { readFile } from "node:fs/promises";
 import { cwd } from "node:process";
 import { join } from "node:path";
 import style from './index.scss?inline';
-
-interface TypeItemProps {
-  name: TypeName;
-}
-const TypeItem = component$(({ name }: TypeItemProps) => {
-  const type = types[name];
-  const { l, c, h } = type.color;
-  return <li class="type-item" title={name} style={`background-color: oklch(${l} ${c} ${h})`}>
-    {name}
-  </li>
-});
+import { PokemonEvolution } from "~/components/pokemon/evolution";
+import { PokemonTypes } from "~/components/pokemon/types";
+import { Anchor } from "~/components/anchor";
 
 export const usePokemon = routeLoader$(async ({ params }) => {
   const path = join(cwd(), 'public/data', params.lang, 'pokemon', `${params.id}.json`);
@@ -43,26 +33,22 @@ const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
       <section aria-labelledby="pokemon-name">
         <header>
           {pokemon.previous && (
-            <a class="previous" href={`/${params.lang}/pokemon/${pokemon.previous.id}`}>
+            <Anchor class="previous" href={`/${params.lang}/pokemon/${pokemon.previous.id}`}>
               <PokemonImg pokemon={pokemon.previous} width="40" height="40"/>
               {pokemon.previous.name}
-            </a>
+            </Anchor>
           )}
           {pokemon.next && (
-            <a class="next" href={`/${params.lang}/pokemon/${pokemon.next.id}`}>
+            <Anchor class="next" href={`/${params.lang}/pokemon/${pokemon.next.id}`}>
               <PokemonImg pokemon={pokemon.next} width="40" height="40" />
               {pokemon.next.name}
-            </a>
+            </Anchor>
           )}
         </header>
         <article>
           <PokemonImg pokemon={pokemon} eager />
           <div class="pokemon-profile">          
-            <ol class="type-list">
-              {pokemon.types.map(type => (
-              <TypeItem key={type} name={type}/>
-              ))}
-            </ol>
+            <PokemonTypes types={pokemon.types} />
             <h1 id="pokemon-name">{pokemon.name}</h1>
             <h2 class="genus">{pokemon.shape} - {pokemon.genus}</h2>
             <p class="description">{pokemon.flavorText}</p>
@@ -70,6 +56,7 @@ const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
           </div>
         </article>
         <PokemonStats pokemon={pokemon} />
+        <PokemonEvolution evolutions={pokemon.evolution} />
       </section>
     </main>
   )
@@ -77,15 +64,7 @@ const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
 
 export default component$(() => {
   useStyles$(style);
-  const { url } = useLocation();
   const pokemon = usePokemon();
-  const rules = useSpeculativeRules();
-
-  useTask$(() => {
-    const { id, previous, next } = pokemon.value;
-    const urls = [previous, next].filter((p) => !!p).map((p) => url.href.replace(id.toString(), p.id.toString()));
-    rules.push({ type: 'prefetch', urls, source: 'list' });
-  });
 
   return <Content pokemon={pokemon.value} />
 });

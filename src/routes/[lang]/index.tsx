@@ -12,6 +12,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { cwd } from "node:process";
 import SearchWorker from './search.worker?worker';
+import { PokemonTypes } from "~/components/pokemon/types";
 
 export const useGenerations = routeLoader$(async ({ params }) => {
   const path = join(cwd(), 'public/data', params.lang, 'generations.json');
@@ -74,6 +75,7 @@ export default component$(() => {
   });
 
   const close = $(() => {
+    search.value = '';
     const dialog = document.getElementById('search-box') as HTMLDialogElement;
     if ('startViewTransition' in document) document.startViewTransition({ types: ['search-close'], update: () => dialog.close() } as any);
     else dialog.close();
@@ -127,7 +129,10 @@ export default component$(() => {
               {list.value.map((pokemon) => (
                 <Anchor role="option" key={pokemon.id} href={`/${params.lang}/pokemon/${pokemon.id}`}>
                   <PokemonImg pokemon={pokemon} width={40} height={40} />
-                  <h3>{pokemon.name}</h3>
+                  <hgroup>
+                    <h3>{pokemon.name}</h3>
+                    <PokemonTypes class="types" types={pokemon.types} />
+                  </hgroup>
                 </Anchor>
               ))}
             </nav>

@@ -7,10 +7,11 @@ type Attributes<T extends keyof QwikJSX.IntrinsicElements> = QwikJSX.IntrinsicEl
 interface PokemonImgProps extends Attributes<'img'> {
   pokemon: PokemonItem;
   eager?: boolean;
+  noViewTransition?: boolean;
 }
 
 const pokemonSizes = [50, 100, 300, 600, 750];
-export const PokemonImg = component$(({ pokemon, eager, ...props }: PokemonImgProps) => {
+export const PokemonImg = component$(({ pokemon, eager, noViewTransition, ...props }: PokemonImgProps) => {
   const {name, imgName} = pokemon;
   const src = `/imgs/pokemon/${imgName}/original.webp`;
   const srcset = pokemonSizes.map(size => `/imgs/pokemon/${imgName}/${size}w.webp ${size}w`).join(', ');
@@ -20,6 +21,8 @@ export const PokemonImg = component$(({ pokemon, eager, ...props }: PokemonImgPr
     loading: eager ? 'eager' : 'lazy',
   } as const;
   
+  const style = noViewTransition ? {} : { viewTransitionName: `--${imgName}-img--`, ['viewTransitionClass' as any]: 'pokemon-img' }
+
   return <img
     title={name}
     src={src}
@@ -28,7 +31,7 @@ export const PokemonImg = component$(({ pokemon, eager, ...props }: PokemonImgPr
     width={150}
     height={150}
     sizes={props.width ? `${props.width}px` : undefined}
-    style={{ viewTransitionName: `--${imgName}-img--`, ['viewTransitionClass' as any]: 'pokemon-img' }}
+    style={style}
     {...optimization}
     {...props}
   />;

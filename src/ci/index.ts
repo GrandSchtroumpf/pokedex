@@ -100,11 +100,9 @@ function toEvolution(chain: ChainLink, itemsMap: Map<string, PokemonItem>) {
   const matrix: (Evolution | null)[][] = [];
 
   function traverse(node: ChainLink, depth: number, position: number) {
-    if (!matrix[depth]) {
-      matrix[depth] = [];
-    }
+    matrix[depth] ||= [];
     matrix[depth][position] = {
-      pokemon: itemsMap.get(node.species.name)!,
+      pokemon: itemsMap.get(node.species.name),
       details: toEvolutionDetails(node.evolution_details),
     };
 
@@ -144,7 +142,7 @@ export type Language = ReturnType<typeof toLanguage>;
 export type Generation = ReturnType<typeof toGeneration>;
 export type EvolutionDetails = ReturnType<typeof toEvolutionDetails>;
 export type Evolution = {
-  pokemon: PokemonItem;
+  pokemon?: PokemonItem;
   details: EvolutionDetails;
 };
 
@@ -203,8 +201,9 @@ async function getPokemons() {
     const evolutionMap = new Map<string, (Evolution | null)[][]>();
     for (const evolution of evolutions) {
       const matrix = toEvolution(evolution.chain, pokemonItems);
-      const pokemons = new Set(matrix.flat().filter(t => !!t).map((t) => t.pokemon.name))
+      const pokemons = new Set(matrix.flat().map((t) => t?.pokemon?.imgName));
       for (const pokemon of pokemons) {
+        if (!pokemon) continue;
         evolutionMap.set(pokemon, matrix);
       }
     }
@@ -212,7 +211,8 @@ async function getPokemons() {
     for (const pokemon of pokemonMap.values()) {
       const currentGen = speciesMap.get(pokemon.name)?.generation.name;
       const getNameByIndex = (index: number) => {
-        const name = pokemons[index - 1]?.name;
+        if (!pokemons[index - 1]) return;
+        const name = pokemons[index - 1].name;
         const previousGen = speciesMap.get(name)?.generation.name;
         if (previousGen !== currentGen) return;
         return name;
