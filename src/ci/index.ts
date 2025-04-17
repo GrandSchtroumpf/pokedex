@@ -68,7 +68,7 @@ function toPokemon(
   pokemon: APIPokemon,
   items: Map<string, PokemonItem>,
   position: { previous?: string, next?: string },
-  evolution: Evolution | undefined,
+  evolution: (Evolution | null)[][] | undefined,
 ) {
   const item = items.get(pokemon.name)!
   return {
@@ -97,19 +97,45 @@ function toEvolutionDetails(details: APIEvolutionDetail[]) {
 
 // TODO: return evolution as a table
 function toEvolution(chain: ChainLink, itemsMap: Map<string, PokemonItem>) {
-  const pokemons: string[] = [chain.species.name];
-  const root: Evolution = {
-    pokemon: itemsMap.get(chain.species.name)!,
-    details: toEvolutionDetails(chain.evolution_details),
-    next: []
-  };
-  for (const next of chain.evolves_to) {
-    const result = toEvolution(next, itemsMap);
-    pokemons.push(...result.pokemons);
-    root.next.push(result.root);
+  const matrix: (Evolution | null)[][] = [];
+
+  function traverse(node: ChainLink, depth: number, position: number) {
+    if (!matrix[depth]) {
+      matrix[depth] = [];
+    }
+    matrix[depth][position] = {
+      pokemon: itemsMap.get(node.species.name)!,
+      details: toEvolutionDetails(node.evolution_details),
+    };
+
+    if (node.evolves_to.length) {
+      const childrenCount = node.evolves_to.length;
+      const startPosition = position;
+      for (let i = 0; i < childrenCount; i++) {
+        const child = node.evolves_to[i];
+        // Calculate the relative horizontal position of the child
+        // This is a simplified way to try and distribute children somewhat evenly.
+        // A more robust solution might require pre-calculating the width of subtrees.
+        let childPosition = startPosition;
+        if (childrenCount > 1) {
+          // Attempt to place children in the next available slots
+          let offset = 0;
+          while (matrix[depth + 1] && matrix[depth + 1][childPosition + offset] !== undefined) {
+            offset++;
+          }
+          childPosition += offset;
+        }
+
+        traverse(child, depth + 1, childPosition);
+      }
+    }
   }
-  return { pokemons, root };
-  
+
+  traverse(chain, 0, 0);
+
+  // Normalize the matrix to have consistent row lengths (fill with null)
+  const maxRowLength = Math.max(...matrix.map(row => row.length));
+  return matrix.map(row => row.concat(Array(maxRowLength - row.length).fill(null)));
 }
 
 export type Pokemon = ReturnType<typeof toPokemon>;
@@ -120,7 +146,6 @@ export type EvolutionDetails = ReturnType<typeof toEvolutionDetails>;
 export type Evolution = {
   pokemon: PokemonItem;
   details: EvolutionDetails;
-  next: Evolution[];
 };
 
 async function getPokemons() {
@@ -175,11 +200,12 @@ async function getPokemons() {
     }
 
 
-    const evolutionMap = new Map<string, Evolution>();
+    const evolutionMap = new Map<string, (Evolution | null)[][]>();
     for (const evolution of evolutions) {
-      const { pokemons, root } = toEvolution(evolution.chain, pokemonItems);
+      const matrix = toEvolution(evolution.chain, pokemonItems);
+      const pokemons = new Set(matrix.flat().filter(t => !!t).map((t) => t.pokemon.name))
       for (const pokemon of pokemons) {
-        evolutionMap.set(pokemon, root);
+        evolutionMap.set(pokemon, matrix);
       }
     }
 

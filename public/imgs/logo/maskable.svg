@@ -15,11 +15,11 @@
   </defs>
   <rect x="0" y="0" width="100" height="100" rx="14" fill="url(#gradient-blue)" />
 
-  <g transform="translate(50, 50), scale(1.3)">
-    <circle cx="0" cy="0" r="25" fill="url(#gradient-red)"  />
-    <path d="M -25,0 A 1 1 0 0 0 25,0" fill="url(#gradient-white)" />
-    <rect x="-30" y="-3.5" width="60" height="7" fill="#101b3b"/>
+  <g class="pokeball" transform="translate(50, 50), scale(1.3)">
+    <path class="top" d="M 25,0 A 1 1 0 0 0 -25,0" fill="url(#gradient-red)" />
+    <path class="down" d="M -25,0 A 1 1 0 0 0 25,0" fill="url(#gradient-white)" />
+    <rect x="-30" y="-3" width="60" height="6" fill="#101b3b"/>
     <circle cx="0" cy="0" r="10" fill="url(#gradient-white)" stroke="#101b3b" stroke-width="3" />
-    <circle cx="0" cy="0" r="5" fill="url(#gradient-white)" stroke="#101b3b" />
+    <circle class="center" cx="0" cy="0" r="5" fill="url(#gradient-white)" stroke="#101b3b"/>
   </g>
 </svg>
