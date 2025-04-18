@@ -6,17 +6,33 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    gap: 16px;
     [role="row"] {
       display: flex;
       justify-content: space-around;
+      gap: 8px;
+    }
+    [role="cell"] {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
     }
     [role="cell"]:only-child {
       position: sticky;
       top: 0;
     }
+    .evolution-details {
+      display: flex;
+      li {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+      }
+    }
     a {
       display: grid;
-      gap: 8px;
+      gap: 4px;
       place-items: center;
     }
   }
@@ -28,6 +44,7 @@
       [role="row"] {
         justify-content: start;
         flex-direction: column;
+        align-items: end;
       }
     }
   }

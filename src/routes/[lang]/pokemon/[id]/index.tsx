@@ -13,6 +13,7 @@ import { PokemonEvolution } from "~/components/pokemon/evolution";
 import { PokemonTypes } from "~/components/pokemon/types";
 import { Anchor } from "~/components/anchor";
 import style from './index.scss?inline';
+import { PokemonGeneration } from "~/components/pokemon/generation";
 
 export const usePokemon = routeLoader$(async ({ params }) => {
   const path = join(cwd(), 'public/data', params.lang, 'pokemon', `${params.id}.json`);
@@ -64,7 +65,11 @@ const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
           <PokemonImg pokemon={pokemon} eager />
           <div class="pokemon-profile">          
             <PokemonTypes types={pokemon.types} />
-            <h1 id="pokemon-name">{pokemon.name}</h1>
+            <hgroup>
+              <PokemonGeneration generation={pokemon.generation} />
+              <span role="separator">•</span>
+              <h1 id="pokemon-name">{pokemon.name}</h1>
+            </hgroup>
             <h2 class="genus">{pokemon.genus}</h2>
             <p class="description">{pokemon.flavorText}</p>
             <p class="pokemon-index">#{pokemon.id}</p>

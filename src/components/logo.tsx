@@ -4,7 +4,7 @@ import { component$, useStyles$ } from "@builder.io/qwik"
 export const Logo = component$<PropsOf<'svg'>>((props) => {
   useStyles$(`
     #app-logo {
-      view-transition-name: main-logo;
+      view-transition-name: app-logo;
     }
     #app-logo .light, #app-logo .center {
       transition: filter 300ms, fill 100ms;
@@ -24,7 +24,7 @@ export const Logo = component$<PropsOf<'svg'>>((props) => {
 
   `)
   return (
-    <svg id="app-logo" viewBox="0 0 100 100" {...props}>
+    <svg id="app-logo" viewBox="0 0 100 100" {...props} data-app-logo>
       <style>
       </style>
       <defs>

@@ -59,6 +59,7 @@ function toPokemonItem(
     color: speciesColor[color || 'black'],
     types: pokemon.types.sort((a,b) => a.slot - b.slot).map(type => type.type.name as TypeName),
     genus: toText(species?.genera, 'genus', lang),
+    generation: species?.generation.name,
     flavorText: toText(species?.flavor_text_entries, 'flavor_text', lang),
     formDescription: toText(species?.form_descriptions, 'description', lang),
   }
@@ -91,11 +92,33 @@ function toGeneration(generation: APIGeneration, lang: string) {
   return { id: generation.name, name: toText(generation.names, 'name', lang) }
 }
 
+const detailTrigger = {
+  'level-up': (detail: APIEvolutionDetail) => ({ trigger: 'level-up' as const, value: detail.min_level }),
+  'trade': () => ({ trigger: 'trade' as const, value: undefined }),
+  'use-item': () => ({ trigger: 'use-item' as const, value: undefined }),
+  'shed': () => ({ trigger: 'shed' as const, value: undefined }),
+  'spin': () => ({ trigger: 'shed' as const, value: undefined }),
+  'tower-of-darkness': () => ({ trigger: 'tower-of-darkness' as const, value: undefined }),
+  'tower-of-waters': () => ({ trigger: 'tower-of-waters' as const, value: undefined }),
+  'three-critical-hits': () => ({ trigger: 'three-critical-hits' as const, value: undefined }),
+  'take-damage': () => ({ trigger: 'take-damage' as const, value: undefined }),
+  'other': () => ({ trigger: 'other' as const, value: undefined }),
+  'agile-style-move': () => ({ trigger: 'agile-style-move' as const, value: undefined }),
+  'strong-style-move': () => ({ trigger: 'strong-style-move' as const, value: undefined }),
+  'recoil-damage': () => ({ trigger: 'recoil-damage' as const, value: undefined }),
+}
 function toEvolutionDetails(details: APIEvolutionDetail[]) {
-  return details.map((v) => v.trigger.name);
+  return details.map((v) => {
+    const trigger = v.trigger.name as keyof typeof detailTrigger;
+    if (!(trigger in detailTrigger)) {
+      console.warn(trigger + ' is not detailTrigger record');
+      return { trigger, value: undefined };
+    } else {
+      return detailTrigger[trigger](v);
+    }
+  });
 }
 
-// TODO: return evolution as a table
 function toEvolution(chain: ChainLink, itemsMap: Map<string, PokemonItem>) {
   const matrix: (Evolution | null)[][] = [];
 
@@ -140,10 +163,10 @@ export type Pokemon = ReturnType<typeof toPokemon>;
 export type PokemonItem = ReturnType<typeof toPokemonItem>;
 export type Language = ReturnType<typeof toLanguage>;
 export type Generation = ReturnType<typeof toGeneration>;
-export type EvolutionDetails = ReturnType<typeof toEvolutionDetails>;
+export type EvolutionDetails = ReturnType<typeof toEvolutionDetails>[number];
 export type Evolution = {
   pokemon?: PokemonItem;
-  details: EvolutionDetails;
+  details: EvolutionDetails[];
 };
 
 async function getPokemons() {

@@ -38,7 +38,24 @@ const PokemonPage = component$<PokemonPage>(({ pokemon, eager }) => {
     '--timeline-name': `--pokemon-${pokemon.id}`,
   }
 
-  return <section class="pokemon-page theme" aria-labelledby="pokemon-name" style={style}>
+  const swipe = $((startEvent: TouchEvent) => {
+    const start = startEvent.touches[0].clientY;
+    let delta = 0;
+    const move = (moveEvent: TouchEvent) => {
+      delta = start - moveEvent.touches[0].clientY;
+    }
+    document.addEventListener('touchmove', move)
+    document.addEventListener('touchend', () => {
+      const ratio =  delta / window.innerHeight;
+      if (delta > 0 && ratio > 0.15) {
+        location.pathname = `/${params.lang}/pokemon/${pokemon.id}`;
+      }
+      document.removeEventListener('touchmove', move)
+    }, { once: true });
+  })
+
+
+  return <section class="pokemon-page theme" aria-labelledby="pokemon-name" style={style} onTouchStart$={swipe}>
     <article>
       <Anchor href={`/${params.lang}/pokemon/${pokemon.id}`}>
         <PokemonImg class="pokemon-img" pokemon={pokemon} eager={eager} sizes="(max-width: 400px) 200px, 375px" />

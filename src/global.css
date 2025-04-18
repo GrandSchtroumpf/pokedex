@@ -243,8 +243,22 @@ a {
   display: none;
   animation: none;
 }
+&::view-transition-old(.meter):only-child {
+  display: none;
+  animation: none;
+}
 html:not(:active-view-transition-type(page-transition)) {
+  &::view-transition-group(app-logo),
   &::view-transition-group(.pokemon-img) {
     animation: none;
+  }
+}
+
+@keyframes viewport-transition {
+  0%, 100% {
+    view-transition-name: none;
+  }
+  1%, 99% {
+    view-transition-name: var(--view-transition-name);
   }
 }

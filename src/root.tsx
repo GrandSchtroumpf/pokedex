@@ -1,22 +1,13 @@
-import { component$, Slot } from "@builder.io/qwik";
+import { component$ } from "@builder.io/qwik";
 import {
   QwikCityProvider,
   RouterOutlet,
-  useLocation,
 } from "@builder.io/qwik-city";
 import { RouterHead } from "./components/router-head/router-head";
 import { SpeculativeRulesScript, useSpeculativeRulesProvider } from "./hooks/useSpeculative";
 
 import "./global.css";
 
-const Body = component$(() => {
-  const { params } = useLocation();
-  return (
-    <body lang={params.lang || 'en'}>
-      <Slot/>
-    </body>
-  );
-})
 
 export default component$(() => {
   useSpeculativeRulesProvider();
@@ -33,11 +24,11 @@ export default component$(() => {
         <link rel="manifest" href="/manifest.json" />
         <RouterHead />
       </head>
-      <Body>
+      <body>
         <RouterOutlet />
         {/* <ServiceWorkerRegister /> */}
         <SpeculativeRulesScript />
-      </Body>
+      </body>
     </QwikCityProvider>
   );
 });

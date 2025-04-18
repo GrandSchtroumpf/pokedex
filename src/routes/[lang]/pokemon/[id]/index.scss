@@ -20,13 +20,6 @@
     display: flex;
     align-items: center;
     gap: 8px;
-
-    &:hover {
-      background-color: color-mix(in oklch, var(--text) var(--alpha-hover), var(--surface-high));
-    }
-    &:active {
-      background-color: color-mix(in oklch, var(--text) var(--alpha-focus), var(--surface-high));
-    }
   }
 
   section {
@@ -43,7 +36,7 @@
         display: grid;
         justify-items: center;
         border-radius: 8px;
-        border: 1px solid var(--text);
+        border: 1px solid var(--outline);
         width: 90px;
         height: 90px;
         font-size: 0.9rem;
@@ -90,6 +83,12 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    hgroup {
+      display: flex;
+      gap: 8px;
+      font-size: 1.2rem;
+      align-items: center;
+    }
     h1 {
       color: var(--primary);
       text-transform: uppercase;
@@ -151,6 +150,15 @@
       inset-inline-end: 0;
       inset-block-start: unset;
       font-size: 5rem;
+    }
+  }
+}
+@media (max-width: 400px) {
+  #pokemon-page {
+    article img {
+      width: 200px;
+      height: 200px;
+      align-self: center;
     }
   }
 }

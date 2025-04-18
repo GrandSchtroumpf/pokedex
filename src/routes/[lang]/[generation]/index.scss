@@ -191,7 +191,7 @@
       .pokemon-index {
         inset-inline-end: 0;
         inset-block-start: -5rem;
-        font-size: 10rem;
+        font-size: 7rem;
       }
     }
   }
@@ -199,8 +199,8 @@
   @media (max-width: 400px) {
     .pokemon-page {
       .pokemon-img {
-        width: 200px;
-        height: 200px;
+        width: 300px;
+        height: 300px;
         align-self: center;
       }
     }

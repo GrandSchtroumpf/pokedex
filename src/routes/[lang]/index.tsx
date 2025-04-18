@@ -14,13 +14,13 @@ import { cwd } from "node:process";
 import SearchWorker from './search.worker?worker';
 import { PokemonTypes } from "~/components/pokemon/types";
 
+const workers: { current?: Worker } = {};
+
 export const useGenerations = routeLoader$(async ({ params }) => {
   const path = join(cwd(), 'public/data', params.lang, 'generations.json');
   const res = await readFile(path, { encoding: 'utf-8' });
   return JSON.parse(res) as Generation[];
 });
-
-const workers: { current?: Worker } = {};
 
 export default component$(() => {
   useStyles$(style);
