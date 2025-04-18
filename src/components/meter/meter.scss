@@ -2,24 +2,36 @@
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
-  border: 4px solid var(--meter-inset-color, white);
-  outline: 1px solid var(--meter-value-color, white);
+  border: 2px solid var(--text);
   border-radius: 16px;
   height: 16px;
   width: 100%;
+
 }
 .meter::after {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: 4px;
   border-radius: inherit;
-  background-color: var(--meter-value-color, white);
+  background-color: var(--meter-value-color, var(--text));
   width: var(--percent, 0%);
+
 }
-// .meter:hover {
-//   box-shadow: 0 0 6px var(--meter-value-color, white);
-//   outline-color: white;
-//   &::after {
-//     background-color: white;
-//   }
-// }
+@media (min-width: 600px) {
+  .meter {
+    view-transition-name: var(--view-transition-meter);
+    view-transition-class: meter;
+  }
+  .meter::after {
+    view-transition-name: var(--view-transition-percent);
+    view-transition-class: meter;
+  }
+}
+html:active-view-transition-type(page-transition) {
+  &::view-transition-new(.meter),
+  &::view-transition-old(.meter) {
+    height: 100%;
+    width: 100%;
+    animation: none;
+  }
+}

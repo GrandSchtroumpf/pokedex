@@ -3,6 +3,9 @@ import { component$, useStyles$ } from "@builder.io/qwik"
 
 export const Logo = component$<PropsOf<'svg'>>((props) => {
   useStyles$(`
+    #app-logo {
+      view-transition-name: main-logo;
+    }
     #app-logo .light, #app-logo .center {
       transition: filter 300ms, fill 100ms;
     }

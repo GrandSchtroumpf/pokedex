@@ -1,8 +1,7 @@
-import { component$, useStyles$ } from "@builder.io/qwik";
+import { $, component$, useStyles$ } from "@builder.io/qwik";
 import type { DocumentHead, StaticGenerateHandler} from "@builder.io/qwik-city";
 import { routeLoader$, useLocation } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
-import { Back } from "~/components/back";
 import type { Pokemon } from "~/model/pokemon";
 import { langs, pokemons, types } from '~/data';
 import { PokemonStats } from "~/components/pokemon/stats";
@@ -23,12 +22,29 @@ export const usePokemon = routeLoader$(async ({ params }) => {
 
 const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
   const { params } = useLocation();
+  const swipe = $((startEvent: TouchEvent) => {
+    const start = startEvent.touches[0].clientX;
+    let delta = 0;
+    const move = (moveEvent: TouchEvent) => {
+      delta = start - moveEvent.touches[0].clientX;
+    }
+    document.addEventListener('touchmove', move)
+    document.addEventListener('touchend', () => {
+      const ratio =  delta / window.innerWidth;
+      if (delta < 0 && ratio < -0.15 && pokemon.previous) {
+        location.pathname = `/${params.lang}/pokemon/${pokemon.previous.id}`;
+      } else if (delta > 0 && ratio > 0.15 && pokemon.next) {
+        location.pathname = `/${params.lang}/pokemon/${pokemon.next.id}`;
+      }
+      document.removeEventListener('touchmove', move)
+    }, { once: true });
+  })
+
   return (
     <main id="pokemon-page" class="theme" style={{ '--hue': types[pokemon.types[0]].color.h }}>
-      <Back class="btn back" href={`/${params.lang}`}>
-        <Logo width="24" height="24" />
-        <span>Pokedex</span>
-      </Back>
+      <Anchor class="btn back" href={`/${params.lang}`} aria-label="Home">
+        <Logo width="40" height="40" />
+      </Anchor>
       <section aria-labelledby="pokemon-name">
         <header>
           {pokemon.previous && (
@@ -44,7 +60,7 @@ const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
             </Anchor>
           )}
         </header>
-        <article>
+        <article onTouchStart$={swipe}>
           <PokemonImg pokemon={pokemon} eager />
           <div class="pokemon-profile">          
             <PokemonTypes types={pokemon.types} />

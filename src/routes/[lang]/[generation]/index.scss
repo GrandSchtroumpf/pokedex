@@ -1,12 +1,12 @@
 #pokemon-list-page {
-  display: grid;
-  grid-template-rows: auto 1fr;
-  min-height: 100dvh;
+  display: flex;
+  height: 100dvh;
   header {
     overflow: auto;
     display: flex;
     align-items: center;
     padding-inline: 16px;
+    gap: 8px;
   }
   .previous, .next {
     position: absolute;
@@ -73,6 +73,7 @@
     position: relative;
     overflow: auto;
     display: grid;
+    flex: 1;
   }
   .pokemon-carousel:has(li:first-child[data-target]) .previous {
     display: none;
@@ -90,7 +91,7 @@
     scroll-snap-type: inline mandatory;
     overflow: auto;
     scroll-behavior: smooth;
-    background-image: linear-gradient(to bottom, oklch(var(--lum-0) 10% var(--hue)), transparent 30%);
+    background-image: linear-gradient(var(--gradient-direction), oklch(var(--lum-0) 10% var(--hue)), transparent 40%);
 
 
     &::-webkit-scrollbar {
@@ -153,13 +154,6 @@
         padding-left: 0;
         margin-block: 0;
       }
-      
-      .type-item {
-        border-radius: 4px;
-        padding: 4px 8px;
-        color: white;
-        text-transform: uppercase;
-      }
     }
     a {
       align-self: center;
@@ -172,9 +166,20 @@
     
   }
   
-  
+  @media (min-width: 901px) {
+    --gradient-direction: to bottom;
+    flex-direction: column;
+    header {
+      flex-direction: row;
+    }
+  }
   
   @media (max-width: 900px) {
+    --gradient-direction: to top;
+    flex-direction: column-reverse;
+    header {
+      flex-direction: row-reverse;
+    }
     .previous, .next {
       display: none;
     }
@@ -185,8 +190,8 @@
       }
       .pokemon-index {
         inset-inline-end: 0;
-        inset-block-start: unset;
-        font-size: 5rem;
+        inset-block-start: -5rem;
+        font-size: 10rem;
       }
     }
   }

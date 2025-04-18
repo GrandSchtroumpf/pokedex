@@ -39,7 +39,7 @@ export const PokemonStats = component$<Props>(({ pokemon }) => {
         {Object.entries(pokemon.stats).map(([key, stat]) => (
         <li key={key}>
           <span>{key}</span>
-          <Meter max={255} value={stat.value} />
+          <Meter max={255} value={stat.value} viewTransitionName={`${key}-stats`} />
           <span>{stat.value}</span>
         </li>
         ))}

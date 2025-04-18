@@ -5,22 +5,18 @@
   box-sizing: border-box;
 
   background-image: linear-gradient(
-    in oklab to bottom,
+    in oklab var(--gradient-direction),
     oklch(var(--lum-0) 15% var(--hue)),
     oklch(var(--lum-4) 15% var(--hue))
   );
+  background-attachment: fixed;
   accent-color: var(--primary);
   display: grid;
   grid-template-rows: auto 1fr;
+  gap: 16px;
 
   .back {
     place-self: start;
-    border-radius: 24px;
-    background-color: var(--surface-high);
-    color: var(--text);
-    cursor: pointer;
-    padding: 8px 16px;
-    font-size: 1.1rem;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -34,9 +30,11 @@
   }
 
   section {
-    place-self: center;
+    place-self: start center;
     display: grid;
     gap: 24px;
+    width: 100%;
+    max-width: 1020px;
     header {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -128,9 +126,14 @@
   }
 }
 
-
+@media (min-width: 901px) {
+  #pokemon-page {
+    --gradient-direction: to bottom;
+  }
+}
 @media (max-width: 900px) {
   #pokemon-page {
+    --gradient-direction: to top;
     .back {
       position: fixed;
       z-index: 1;

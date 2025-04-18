@@ -5,8 +5,6 @@ import { routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
 import { generations, langs, types } from "~/data";
 import type { Generation, PokemonItem } from "~/model";
-import { usePokemonGeneration } from "~/hooks/useData";
-import { LangPicker } from "~/components/lang-picker/lang-picker";
 import { Logo } from "~/components/logo";
 import { Anchor } from "~/components/anchor";
 import style from './index.scss?inline';
@@ -19,6 +17,11 @@ export const useGeneration = routeLoader$(async ({ params }) => {
   const path = join(cwd(), 'public/data', params.lang, 'generations.json');
   const res = await readFile(path, { encoding: 'utf-8' });
   return JSON.parse(res) as Generation[];
+});
+export const usePokemonList = routeLoader$(async ({ params }) => {
+  const path = join(cwd(), 'public/data', params.lang, 'generation', `${params.generation}.json`);
+  const res = await readFile(path, { encoding: 'utf-8' });
+  return JSON.parse(res) as PokemonItem[];
 });
 
 
@@ -67,7 +70,7 @@ const Previous = component$(() => {
 
   return <button class={['previous']} onClick$={previous} aria-label="Previous pokemon">
     <svg width="50" height="50" viewBox="0 0 24 24" aria-hidden>
-      <path d="M17.51 3.87L15.73 2.1 5.84 12l9.9 9.9 1.77-1.77L9.38 12l8.13-8.13z"/>
+      <path d="M17.51 3.87L15.73 2.1 5.84 12l9.9 9.9 1.77-1.77L9.38 12l8.13-8.13z" fill="currentColor"/>
     </svg>
   </button>
 })
@@ -83,7 +86,7 @@ const Next = component$(() => {
 
   return <button class={['next']} onClick$={next} aria-label="Next pokemon">
     <svg width="50" height="50" viewBox="0 0 24 24" aria-hidden>
-      <polygon points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12"/>
+      <polygon points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12" fill="currentColor"/>
     </svg>
   </button>
 })
@@ -116,7 +119,7 @@ export default component$(() => {
   const activeId = useSignal(Number(initialId));
   useContextProvider(ActiveIdContext, activeId);
 
-  const pokemonResource = usePokemonGeneration();
+  const pokemonList = usePokemonList();
 
   useTask$(({ track }) => {
     const id = track(activeId);
@@ -140,15 +143,13 @@ export default component$(() => {
     cleanup(() => observer.disconnect());
   });
 
-  return <Resource value={pokemonResource} onResolved={(pokemons) => (
-    <>
+  return <Resource value={pokemonList} onResolved={(pokemons) => (
     <main id="pokemon-list-page" >
       <header>
         <a href={`/${params.lang}`} class="back" aria-label="Back to pokedex">
           <Logo width="40" height="40"/>
         </a>
         <PokemonNav pokemons={pokemons}/>
-        <LangPicker />
       </header>
       <div class="pokemon-carousel">
         <Previous />
@@ -163,7 +164,6 @@ export default component$(() => {
       </div>
       <style dangerouslySetInnerHTML={keyframes(pokemons)}></style>
     </main>
-    </>
   )} />
 })
 

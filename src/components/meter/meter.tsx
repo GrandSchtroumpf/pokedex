@@ -5,6 +5,7 @@ interface MeterProps {
   value: number;
   min?: number;
   max?: number;
+  viewTransitionName?: string;
 }
 export const Meter = component$((props: MeterProps) => {
   useStyles$(styles);
@@ -12,7 +13,12 @@ export const Meter = component$((props: MeterProps) => {
   const max = props.max ?? 100;
   const value = props.value;
   const percent = Math.round(100 * value / (max - min))
-  return <div style={`--percent: ${percent}%`}
+  return <div
+    style={{
+      '--percent': `${percent}%`,
+      '--view-transition-meter': props.viewTransitionName + '-meter',
+      '--view-transition-percent': props.viewTransitionName + '-percent'
+    }}
     class="meter"
     role="meter"
     aria-valuemin={min}

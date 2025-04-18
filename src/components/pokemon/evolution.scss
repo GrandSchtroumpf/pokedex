@@ -1,7 +1,34 @@
-table[data-pokemon-evolution] {
-  a {
-    display: grid;
-    gap: 8px;
-    place-items: center;
+[data-pokemon-evolution] {
+  container-type: inline-size;
+  display: grid;
+  justify-content: center;
+  [role="rowgroup"] {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    [role="row"] {
+      display: flex;
+      justify-content: space-around;
+    }
+    [role="cell"]:only-child {
+      position: sticky;
+      top: 0;
+    }
+    a {
+      display: grid;
+      gap: 8px;
+      place-items: center;
+    }
+  }
+}
+@container (width > 90vw) {
+  [data-pokemon-evolution] {
+    [role="rowgroup"] {
+      flex-direction: row;
+      [role="row"] {
+        justify-content: start;
+        flex-direction: column;
+      }
+    }
   }
 }

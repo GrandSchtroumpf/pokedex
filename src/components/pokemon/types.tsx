@@ -16,10 +16,9 @@ export const PokemonTypes = component$<Props>(({ types, ...props }) => {
     [data-pokemon-types] > li {
       border-radius: 4px;
       padding: calc(var(--size, 8px) / 2) var(--size, 8px);
-      color: white;
+      color: black;
       text-transform: uppercase;
-      background-color: oklch(var(--color-lightness) var(--color-chroma) var(--hue));
-      color: oklch(var(--on-color-lightness) 0% var(--hue));
+      background-color: oklch(75% 60% var(--hue));
     }
   `)
   return (
