@@ -65,7 +65,7 @@ const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
           <div class="pokemon-profile">          
             <PokemonTypes types={pokemon.types} />
             <h1 id="pokemon-name">{pokemon.name}</h1>
-            <h2 class="genus">{pokemon.shape} - {pokemon.genus}</h2>
+            <h2 class="genus">{pokemon.genus}</h2>
             <p class="description">{pokemon.flavorText}</p>
             <p class="pokemon-index">#{pokemon.id}</p>
           </div>

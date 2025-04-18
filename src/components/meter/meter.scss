@@ -6,7 +6,6 @@
   border-radius: 16px;
   height: 16px;
   width: 100%;
-
 }
 .meter::after {
   content: "";
@@ -15,17 +14,10 @@
   border-radius: inherit;
   background-color: var(--meter-value-color, var(--text));
   width: var(--percent, 0%);
-
-}
-@media (min-width: 600px) {
-  .meter {
-    view-transition-name: var(--view-transition-meter);
-    view-transition-class: meter;
-  }
-  .meter::after {
-    view-transition-name: var(--view-transition-percent);
-    view-transition-class: meter;
-  }
+  view-transition-name: var(--view-transition-percent);
+  view-transition-class: meter;
+  animation-timeline: scroll(block root);
+  animation-name: view-transition-name;
 }
 html:active-view-transition-type(page-transition) {
   &::view-transition-new(.meter),
@@ -33,5 +25,13 @@ html:active-view-transition-type(page-transition) {
     height: 100%;
     width: 100%;
     animation: none;
+  }
+}
+@keyframes view-transition-name {
+  0% {
+    view-transition-name: var(--view-transition-percent);
+  }
+  1%, 100% {
+    view-transition-name: none;
   }
 }

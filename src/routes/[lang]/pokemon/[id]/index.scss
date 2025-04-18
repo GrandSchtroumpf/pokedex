@@ -144,6 +144,9 @@
       width: 100%;
       flex-direction: column;
     }
+    .description {
+      min-height: 3lh;
+    }
     .pokemon-index {
       inset-inline-end: 0;
       inset-block-start: unset;
