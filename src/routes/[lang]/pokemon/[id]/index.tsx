@@ -3,7 +3,7 @@ import type { DocumentHead, StaticGenerateHandler} from "@builder.io/qwik-city";
 import { routeLoader$, useLocation } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
 import type { Pokemon } from "~/model/pokemon";
-import { langs, pokemons, types } from '~/data';
+import { langs, types } from '~/data';
 import { PokemonStats } from "~/components/pokemon/stats";
 import { Logo } from "~/components/logo";
 import { readFile } from "node:fs/promises";
@@ -101,8 +101,13 @@ export default component$(() => {
 export const onStaticGenerate: StaticGenerateHandler = async () => {
   const params: {lang: string, id: string}[] = [];
   for (const lang of langs) {
-    for (const id of pokemons) {
-      params.push({ lang, id: id.toString() })
+    // Pokemons
+    for (let i = 1; i <= 1025; i++) {
+      params.push({ lang, id: i.toString() })
+    }
+    // Forms
+    for (let i = 10_001; i <= 10_277; i++) {
+      params.push({ lang, id: i.toString() })
     }
   }
   return { params };
