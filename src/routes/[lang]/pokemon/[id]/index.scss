@@ -41,7 +41,7 @@
         height: 90px;
         font-size: 0.9rem;
         color: var(--text);
-        img {
+        .pokemon-img {
           place-self: center;
         }
       }
@@ -65,7 +65,7 @@
     margin-inline: auto;
     margin-bottom: 24px;
     gap: 16px;
-    img {
+    .pokemon-img {
       width: 300px;
       height: 300px;
       align-self: center;
@@ -155,7 +155,7 @@
 }
 @media (max-width: 400px) {
   #pokemon-page {
-    article img {
+    article .pokemon-img {
       width: 200px;
       height: 200px;
       align-self: center;

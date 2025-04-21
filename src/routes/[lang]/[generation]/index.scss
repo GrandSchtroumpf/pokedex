@@ -57,15 +57,15 @@
     }
     & a {
       flex-shrink: 0;
-      padding: 16px;
-      border-radius: 4px;
+      padding: 8px;
+      transition: scale 0.2s ease-out;
     }
     & a:hover {
-      background-color: var(--surface-lower);
+      scale: 1.2;
     }
     & a[aria-current="page"] {
-      color: var(--text);
-      text-shadow: 0 0 6px var(--text);
+      scale: 1.2;
+      border-color: var(--text);
     }
   }
   

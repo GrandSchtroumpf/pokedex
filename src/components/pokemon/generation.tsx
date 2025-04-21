@@ -1,9 +1,10 @@
 import { component$ } from "@builder.io/qwik";
 import { Anchor } from "../anchor";
 import { useLocation } from "@builder.io/qwik-city";
+import type { Pokemon } from "~/model";
 
 interface Props {
-  generation?: string;
+  pokemon: Pokemon;
 }
 
 const symbols = {
@@ -18,12 +19,12 @@ const symbols = {
   'generation-ix': '九',
 }
 
-export const PokemonGeneration = component$<Props>(({ generation }) => {
+export const PokemonGeneration = component$<Props>(({ pokemon }) => {
   const { params } = useLocation();
-  if (!generation) return;
+  if (!pokemon.generation) return;
   return (
-    <Anchor data-pokemon-generation href={`/${params.lang}/${generation}`}>
-      {symbols[generation as keyof typeof symbols]}
+    <Anchor data-pokemon-generation href={`/${params.lang}/${pokemon.generation}#pokemon-${pokemon.id}`}>
+      {symbols[pokemon.generation as keyof typeof symbols]}
     </Anchor>
   )
 })

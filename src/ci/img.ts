@@ -1,5 +1,5 @@
 import { existsSync } from "node:fs";
-import { mkdir, readdir, unlink,  } from "node:fs/promises";
+import { mkdir, readdir } from "node:fs/promises";
 import { join } from "node:path";
 import { cwd } from "node:process";
 import sharp from "sharp";
@@ -35,12 +35,16 @@ export async function optimizeImg({ folder, url, sizes }: OptimizeImgConfig) {
   if (!files.includes('original.webp')) {
     operations.push((buffer: ArrayBuffer) => sharp(buffer).toFormat('webp').toFile(join(path, `original.webp`)));
   }
-  for (const width of sizes) {
-    if (files.includes(`${width}w.webp`)) continue;
-    operations.push((buffer: ArrayBuffer) => sharp(buffer).toFormat('webp').resize({ width }).toFile(join(path, `${width}w.webp`)));
+  if (!files.includes('original.avif')) {
+    operations.push((buffer: ArrayBuffer) => sharp(buffer).toFormat('avif').toFile(join(path, `original.avif`)));
   }
-  for (const width of [250, 500]) {
-    if (files.includes(`${width}w.webp`)) unlink(join(path, `${width}w.webp`));
+  for (const width of sizes) {
+    if (!files.includes(`${width}w.webp`)) {
+      operations.push((buffer: ArrayBuffer) => sharp(buffer).toFormat('webp').resize({ width }).toFile(join(path, `${width}w.webp`)));
+    }
+    if (!files.includes(`${width}w.avif`)) {
+      operations.push((buffer: ArrayBuffer) => sharp(buffer).toFormat('avif').resize({ width }).toFile(join(path, `${width}w.avif`)));
+    }
   }
   if (!operations.length) return;
   

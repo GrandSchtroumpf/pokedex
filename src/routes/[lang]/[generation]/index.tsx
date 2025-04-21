@@ -117,7 +117,7 @@ const PokemonNav = component$(({pokemons}: PokemonNavProps) => {
   return <nav class="pokemon-nav" aria-label="Select a pokemon">
     {pokemons.map(p => (
     <a id={`link-${p.id}`} key={p.id} href={`#pokemon-${p.id}`} aria-current={activeId.value === p.id ? 'page' : undefined}>
-      {p.name}
+      <PokemonImg pokemon={p} noViewTransition width="40" height="40"/>
     </a>
     ))}
   </nav>

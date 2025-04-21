@@ -13,8 +13,8 @@ interface PokemonImgProps extends Attributes<'img'> {
 const pokemonSizes = [50, 100, 300, 600, 750];
 export const PokemonImg = component$(({ pokemon, eager, noViewTransition, ...props }: PokemonImgProps) => {
   const {name, imgName} = pokemon;
-  const src = `/imgs/pokemon/${imgName}/original.webp`;
-  const srcset = pokemonSizes.map(size => `/imgs/pokemon/${imgName}/${size}w.webp ${size}w`).join(', ');
+  const src = `/imgs/pokemon/${imgName}/original.avif`;
+  const srcset = pokemonSizes.map(size => `/imgs/pokemon/${imgName}/${size}w.avif ${size}w`).join(', ');
   const optimization = {
     decoding: eager ? 'sync' : 'async',
     fetchpriority: eager ? 'high' : 'low',

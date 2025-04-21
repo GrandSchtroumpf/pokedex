@@ -62,11 +62,11 @@ const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
           )}
         </header>
         <article onTouchStart$={swipe}>
-          <PokemonImg pokemon={pokemon} eager />
+          <PokemonImg class="pokemon-img" pokemon={pokemon} eager />
           <div class="pokemon-profile">          
             <PokemonTypes types={pokemon.types} />
             <hgroup>
-              <PokemonGeneration generation={pokemon.generation} />
+              <PokemonGeneration pokemon={pokemon} />
               <span role="separator">•</span>
               <h1 id="pokemon-name">{pokemon.name}</h1>
             </hgroup>
