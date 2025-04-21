@@ -125,7 +125,7 @@ const PokemonNav = component$(({pokemons}: PokemonNavProps) => {
 
 const keyframes = (pokemons: PokemonItem[]) => `
   @keyframes pokemon-colors {
-    ${pokemons.map((p, i) => `${i / (pokemons.length - 1) * 100}% {background-color: oklch(var(--lum-2) 15% ${p.color.h});}`).join('')}
+    ${pokemons.map((p, i) => `${i / (pokemons.length - 1) * 100}% {background-color: oklch(var(--lum-2) 15% ${types[p.types[0]].color.h});}`).join('')}
   }
 `;
 
