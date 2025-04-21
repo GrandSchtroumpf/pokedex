@@ -113,10 +113,10 @@ export default component$(() => {
     else listbox.value?.querySelector<HTMLElement>(`[role="option"]`)?.click();
   });
 
-  const setViewTransition = $((event: Event, el: HTMLElement) => {
+  const beforeNavigate = $((event: Event, el: HTMLElement) => {
     const img = (el.firstElementChild as HTMLElement);
     img.style.viewTransitionName = img.dataset.viewTransitionName!;
-  })
+  });
 
   return (
     <>
@@ -143,7 +143,7 @@ export default component$(() => {
             <hr />
             <nav role="listbox" ref={listbox}>
               {list.value.map((pokemon) => (
-                <Anchor role="option" key={pokemon.id} href={`/${params.lang}/pokemon/${pokemon.id}`} onClick$={setViewTransition}>
+                <Anchor role="option" key={pokemon.id} href={`/${params.lang}/pokemon/${pokemon.id}`} onClick$={beforeNavigate}>
                   <PokemonImg pokemon={pokemon} width={40} height={40} noViewTransition />
                   <hgroup>
                     <h3>{pokemon.name}</h3>

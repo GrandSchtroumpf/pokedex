@@ -50,14 +50,18 @@ const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
         <header>
           {pokemon.previous && (
             <Anchor class="previous" href={`/${params.lang}/pokemon/${pokemon.previous.id}`}>
+              <svg aria-label="next" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
+                <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/>
+              </svg>
               <PokemonImg pokemon={pokemon.previous} width="40" height="40"/>
-              {pokemon.previous.name}
             </Anchor>
           )}
           {pokemon.next && (
             <Anchor class="next" href={`/${params.lang}/pokemon/${pokemon.next.id}`}>
               <PokemonImg pokemon={pokemon.next} width="40" height="40" />
-              {pokemon.next.name}
+              <svg aria-label="previous" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
+                <path d="m560-240-56-58 142-142H160v-80h486L504-662l56-58 240 240-240 240Z"/>
+              </svg>
             </Anchor>
           )}
         </header>

@@ -1,6 +1,5 @@
 #pokemon-page {
   min-height: 100dvh;
-  padding: 16px;
   padding-bottom: 80px;
   box-sizing: border-box;
 
@@ -14,6 +13,7 @@
   display: grid;
   grid-template-rows: auto 1fr;
   gap: 16px;
+  padding: 16px;
 
   .back {
     place-self: start;
@@ -33,13 +33,9 @@
       grid-template-columns: 1fr 1fr;
       grid-template-areas: "previous next";
       .previous, .next {
-        display: grid;
-        justify-items: center;
-        border-radius: 8px;
-        border: 1px solid var(--outline);
-        width: 90px;
-        height: 90px;
-        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
         color: var(--text);
         .pokemon-img {
           place-self: center;
@@ -57,6 +53,7 @@
   }
 
   article {
+    padding: 16px;
     position: relative;
     display: flex;
     width: 900px;
@@ -65,11 +62,11 @@
     margin-inline: auto;
     margin-bottom: 24px;
     gap: 16px;
-    .pokemon-img {
-      width: 300px;
-      height: 300px;
-      align-self: center;
-    }
+  }
+  .pokemon-img {
+    width: 300px;
+    height: 300px;
+    align-self: center;
   }
   .pokemon-index {
     z-index: -1;

@@ -238,15 +238,22 @@ a {
 }
 
 
-&::view-transition-new(.pokemon-img):only-child,
-&::view-transition-old(.pokemon-img):only-child {
+::view-transition-new(.pokemon-img):only-child,
+::view-transition-old(.pokemon-img):only-child {
   display: none;
   animation: none;
 }
-&::view-transition-old(.meter):only-child {
+::view-transition-old(.meter):only-child {
   display: none;
   animation: none;
 }
+html:active-view-transition-type(page-transition) {
+  &::view-transition-new(.pokemon-img),
+  &::view-transition-old(.pokemon-img) {
+    animation: none;
+  }
+}
+
 html:not(:active-view-transition-type(page-transition)) {
   &::view-transition-group(app-logo),
   &::view-transition-group(.pokemon-img) {
