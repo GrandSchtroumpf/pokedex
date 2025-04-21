@@ -24,15 +24,15 @@
     "qwik": "qwik"
   },
   "devDependencies": {
-    "@builder.io/qwik": "https://pkg.pr.new/@builder.io/qwik@23ed7db",
-    "@builder.io/qwik-city": "https://pkg.pr.new/@builder.io/qwik-city@23ed7db",
+    "@builder.io/qwik": "https://pkg.pr.new/@builder.io/qwik@465483f",
+    "@builder.io/qwik-city": "https://pkg.pr.new/@builder.io/qwik-city@465483f",
     "@digitak/esrun": "^3.2.24",
     "@types/eslint": "8.44.1",
     "@types/node": "20.4.5",
     "@typescript-eslint/eslint-plugin": "6.2.0",
     "@typescript-eslint/parser": "6.2.0",
     "eslint": "8.45.0",
-    "eslint-plugin-qwik": "https://pkg.pr.new/eslint-plugin-qwik@23ed7db",
+    "eslint-plugin-qwik": "https://pkg.pr.new/eslint-plugin-qwik@465483f",
     "lightningcss": "1.29.3",
     "pokenode-ts": "^1.20.0",
     "prettier": "3.0.0",
@@ -43,5 +43,5 @@
     "vite": "6.2.6",
     "vite-tsconfig-paths": "5.1.4"
   },
-  "packageManager": "pnpm@10.8.0"
+  "packageManager": "pnpm@10.9.0+sha512.0486e394640d3c1fb3c9d43d49cf92879ff74f8516959c235308f5a8f62e2e19528a65cdc2a3058f587cde71eba3d5b56327c8c33a97e4c4051ca48a10ca2d5f"
 }

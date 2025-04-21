@@ -5,14 +5,15 @@ import type { PokemonItem, Generation } from "~/model";
 import { PokemonImg } from "~/components/img/img";
 import { langs } from "~/data";
 import { Logo } from "~/components/logo";
-import style from './index.scss?inline';
 import { useSpeculativeRules } from "~/hooks/useSpeculative";
-import { Anchor } from "~/components/anchor";
+import { PokemonAnchor } from "~/components/anchor";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { cwd } from "node:process";
-import SearchWorker from './search.worker?worker';
 import { PokemonTypes } from "~/components/pokemon/types";
+import SearchWorker from './search.worker?worker';
+import style from './index.scss?inline';
+import { PokemonName } from "~/components/pokemon/name";
 
 const workers: { current?: Worker } = {};
 
@@ -143,13 +144,15 @@ export default component$(() => {
             <hr />
             <nav role="listbox" ref={listbox}>
               {list.value.map((pokemon) => (
-                <Anchor role="option" key={pokemon.id} href={`/${params.lang}/pokemon/${pokemon.id}`} onClick$={beforeNavigate}>
+                <PokemonAnchor role="option" key={pokemon.id} pokemon={pokemon} onClick$={beforeNavigate}>
                   <PokemonImg pokemon={pokemon} width={40} height={40} noViewTransition />
                   <hgroup>
-                    <h3>{pokemon.name}</h3>
+                    <h3>
+                      <PokemonName pokemon={pokemon} />
+                    </h3>
                     <PokemonTypes class="types" types={pokemon.types} />
                   </hgroup>
-                </Anchor>
+                </PokemonAnchor>
               ))}
             </nav>
             <div class="empty">

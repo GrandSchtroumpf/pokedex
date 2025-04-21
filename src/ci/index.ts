@@ -1,5 +1,5 @@
 import type { ChainLink, PokemonStat } from "pokenode-ts";
-import type { APIPokemon, APISpecies, APIResource, APILanguage, APIGeneration, APIEvolution, APIEvolutionDetail } from "./api";
+import type { APIPokemon, APISpecies, APIResource, APILanguage, APIGeneration, APIEvolution, APIEvolutionDetail, APIPokemonForm } from "./api";
 import type { TypeName, SpeciesColor } from "./colors";
 import { getAll } from "./api";
 import { speciesColor, typeColors } from "./colors";
@@ -44,24 +44,28 @@ function toStats(stats: PokemonStat[]) {
 }
 
 function toPokemonItem(
-  species: APISpecies | undefined,
   pokemon: APIPokemon,
+  speciesMap: Map<string, APISpecies>,
+  formMap: Map<string, APIPokemonForm>,
   shapes: Record<string, string>,
   lang: string,
 ) {
-  const shape = species?.shape;
-  const color = species?.color.name as SpeciesColor | null;
+  const species = speciesMap.get(pokemon.species.name)!;
+  const form = formMap.get(pokemon.forms[0].name);
+  const shape = species.shape;
+  const color = species.color.name as SpeciesColor | null;
   return {
     id: pokemon.id,
     imgName: pokemon.name,
-    name: toText(species?.names, 'name', lang),
+    name: toText(species.names, 'name', lang),
+    formName: toText(form?.form_names, 'name', lang),
     shape: typeof shape !== 'undefined' ? shapes[shape.name] : '', // species have no shape
     color: speciesColor[color || 'black'],
     types: pokemon.types.sort((a,b) => a.slot - b.slot).map(type => type.type.name as TypeName),
-    genus: toText(species?.genera, 'genus', lang),
-    generation: species?.generation.name,
-    flavorText: toText(species?.flavor_text_entries, 'flavor_text', lang),
-    formDescription: toText(species?.form_descriptions, 'description', lang),
+    genus: toText(species.genera, 'genus', lang),
+    generation: species.generation.name,
+    flavorText: toText(species.flavor_text_entries, 'flavor_text', lang),
+    formDescription: toText(species.form_descriptions, 'description', lang),
   }
 }
 
@@ -70,14 +74,19 @@ function toPokemon(
   items: Map<string, PokemonItem>,
   position: { previous?: string, next?: string },
   evolution: (Evolution | null)[][] | undefined,
+  species: APISpecies
 ) {
   const item = items.get(pokemon.name)!
+  const varieties = species.varieties.length > 1
+    ? species.varieties.map((v) => items.get(v.pokemon.name)!)
+    : [];
   return {
     ...item,
     previous: items.get(position.previous || ''),
     next: items.get(position.next || ''),
     evolution,
     stats: toStats(pokemon.stats),
+    varieties,
   }
 }
 
@@ -172,13 +181,14 @@ export type Evolution = {
 async function getPokemons() {
   const writes: (() => Promise<any>)[] = [];
 
-  const [pokemons, species, shapes, languages, generations, evolutions] = await Promise.all([
+  const [pokemons, species, shapes, languages, generations, evolutions, forms] = await Promise.all([
     getAll('pokemon'),
     getAll('pokemon-species'),
     getAll('pokemon-shape'),
     getAll('language'),
     getAll('generation'),
     getAll('evolution-chain'),
+    getAll('pokemon-form')
   ]);
 
   // RAW
@@ -194,6 +204,10 @@ async function getPokemons() {
   for (const specie of species) {
     speciesMap.set(specie.name, specie);
   }
+  const formMap = new Map<string, APIPokemonForm>();
+  for (const form of forms) {
+    formMap.set(form.name, form);
+  }
 
   // Langes
   for (const lang of langs) {
@@ -202,18 +216,17 @@ async function getPokemons() {
     const pokemonItems = new Map<string, PokemonItem>();
   
     for (const pokemon of pokemonMap.values()) {
-      const species = speciesMap.get(pokemon.name);
-      if (!species) console.warn(`No species found for ${pokemon.name}`);
       const item = toPokemonItem(
-        species,
         pokemon,
+        speciesMap,
+        formMap,
         shapeRecord,
         lang
       );
       pokemonItems.set(pokemon.name, item);
-
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      const generationName = species?.generation.name;
+      
+      const species = speciesMap.get(pokemon.species.name)!;
+      const generationName = species.generation.name;
       if (generationName) {
         generationRecord[generationName] ||= [];
         generationRecord[generationName].push(item);
@@ -232,13 +245,14 @@ async function getPokemons() {
     }
 
     for (const pokemon of pokemonMap.values()) {
-      const currentGen = speciesMap.get(pokemon.name)?.generation.name;
+      const species = speciesMap.get(pokemon.species.name)!;
+      const currentGen = species.generation.name;
       const getNameByIndex = (index: number) => {
         if (!pokemons[index - 1]) return;
-        const name = pokemons[index - 1].name;
-        const previousGen = speciesMap.get(name)?.generation.name;
+        const p = pokemons[index - 1];
+        const previousGen = speciesMap.get(p.species.name)?.generation.name;
         if (previousGen !== currentGen) return;
-        return name;
+        return p.name;
       }
       const position = {
         previous: getNameByIndex(pokemon.id - 1),
@@ -248,7 +262,8 @@ async function getPokemons() {
         pokemon,
         pokemonItems,
         position,
-        evolutionMap.get(pokemon.name)
+        evolutionMap.get(pokemon.name),
+        species,
       );
       writes.push(writeData(`${lang}/pokemon/${pokemon.id}`, full));
     }

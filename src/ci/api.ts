@@ -8,9 +8,11 @@ import type {
   Language as APILanguage,
   EvolutionChain as APIEvolution,
   EvolutionDetail as APIEvolutionDetail,
+  Move as APIMove,
+  PokemonForm as APIPokemonForm,
 } from 'pokenode-ts';
 
-export { APIPokemon, APIType, APIResource, APISpecies, APIShape, APIGeneration, APILanguage, APIEvolution, APIEvolutionDetail };
+export { APIPokemon, APIType, APIResource, APISpecies, APIShape, APIGeneration, APILanguage, APIEvolution, APIEvolutionDetail, APIMove, APIPokemonForm };
 
 const baseUrl = `https://pokeapi.co/api/v2`;
 
@@ -22,6 +24,8 @@ interface API {
   'pokemon-species': APISpecies;
   'pokemon-shape': APIShape;
   'evolution-chain': APIEvolution;
+  move: APIMove;
+  'pokemon-form': APIPokemonForm;
 }
 
 export type Endpoints = Extract<keyof API, string>;

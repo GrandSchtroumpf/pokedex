@@ -1,7 +1,7 @@
 import type { PropsOf} from "@builder.io/qwik";
 import { component$, useStyles$ } from "@builder.io/qwik";
 import type { Evolution, EvolutionDetails } from "~/ci";
-import { Anchor } from "../anchor";
+import { PokemonAnchor } from "../anchor";
 import { PokemonImg } from "../img/img";
 import style from './evolution.scss?inline';
 
@@ -21,10 +21,10 @@ export const PokemonEvolution = component$<Props>(({ evolutions, ...props }) => 
               const pokemon = col.pokemon;
               return (
                 <div key={i + '-' + j} role="cell">
-                  <Anchor href={`../${pokemon.id}`}>
+                  <PokemonAnchor pokemon={pokemon}>
                     <PokemonImg pokemon={pokemon} width="100" height="100" noViewTransition/>
                     {pokemon.name}
-                  </Anchor>
+                  </PokemonAnchor>
                   <PokemonEvolutionDetails details={col.details} />
                 </div>
               )
