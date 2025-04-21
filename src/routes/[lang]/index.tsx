@@ -27,6 +27,7 @@ export default component$(() => {
   const { url, params } = useLocation();
   const rules = useSpeculativeRules();
   const listbox = useSignal<HTMLElement>();
+  const logo = useSignal<SVGSVGElement>();
 
   const generations = useGenerations();
   const search = useSignal('');
@@ -72,6 +73,7 @@ export default component$(() => {
       const urls = generations.value.map((g) => `${url.origin}/data/${params.lang}/generation/${g.id}.json`)
       workers.current.postMessage({ type: 'init', urls });
     }
+    if (logo.value) logo.value.style.viewTransitionName = 'none';
   });
 
   const startWriting = $((e: KeyboardEvent) => {
@@ -85,6 +87,7 @@ export default component$(() => {
     const dialog = document.getElementById('search-box') as HTMLDialogElement;
     if ('startViewTransition' in document) document.startViewTransition({ types: ['search-close'], update: () => dialog.close() } as any);
     else dialog.close();
+    if (logo.value) logo.value.style.viewTransitionName = 'app-logo';
   });
 
   const navigate = $((e: KeyboardEvent) => {
@@ -108,12 +111,17 @@ export default component$(() => {
     const selected = listbox.value?.querySelector<HTMLElement>(`[role="option"][aria-selected="true"]`);
     if (selected) selected.click();
     else listbox.value?.querySelector<HTMLElement>(`[role="option"]`)?.click();
+  });
+
+  const setViewTransition = $((event: Event, el: HTMLElement) => {
+    const img = (el.firstElementChild as HTMLElement);
+    img.style.viewTransitionName = img.dataset.viewTransitionName!;
   })
 
   return (
     <>
       <search id="search-section">
-        <Logo width="100" height="100" />
+        <Logo ref={logo} width="100" height="100" />
         <h1>Pokedex</h1>
         <button aria-controls="search-box" onClick$={open} onKeyDown$={startWriting}>
           <span>Search</span>
@@ -135,8 +143,8 @@ export default component$(() => {
             <hr />
             <nav role="listbox" ref={listbox}>
               {list.value.map((pokemon) => (
-                <Anchor role="option" key={pokemon.id} href={`/${params.lang}/pokemon/${pokemon.id}`}>
-                  <PokemonImg pokemon={pokemon} width={40} height={40} />
+                <Anchor role="option" key={pokemon.id} href={`/${params.lang}/pokemon/${pokemon.id}`} onClick$={setViewTransition}>
+                  <PokemonImg pokemon={pokemon} width={40} height={40} noViewTransition />
                   <hgroup>
                     <h3>{pokemon.name}</h3>
                     <PokemonTypes class="types" types={pokemon.types} />

@@ -62,7 +62,7 @@ const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
           )}
         </header>
         <article onTouchStart$={swipe}>
-          <PokemonImg class="pokemon-img" pokemon={pokemon} eager />
+          <PokemonImg class="pokemon-img" pokemon={pokemon} eager sizes="(max-width: 400px) 300px, 375px" />
           <div class="pokemon-profile">          
             <PokemonTypes types={pokemon.types} />
             <hgroup>

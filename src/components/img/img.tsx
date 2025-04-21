@@ -35,5 +35,6 @@ export const PokemonImg = component$(({ pokemon, eager, noViewTransition, ...pro
     {...optimization}
     {...props}
     data-pokemon-img
+    data-view-transition-name={`--${imgName}-img--`}
   />;
 })

@@ -90,7 +90,6 @@
     width: 100%;
     scroll-snap-type: inline mandatory;
     overflow: auto;
-    scroll-behavior: smooth;
     background-image: linear-gradient(var(--gradient-direction), oklch(var(--lum-0) 10% var(--hue)), transparent 40%);
 
 
