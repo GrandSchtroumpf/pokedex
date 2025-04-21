@@ -27,10 +27,8 @@ export default function (opts: RenderToStreamOptions) {
       ...opts.containerAttributes,
       lang: lang
     },
-    prefetchStrategy: {
-      implementation: {
-        maxPreloads: 0
-      }
+    preloader: {
+      ssrPreloads: 0
     }
   });
 }
