@@ -247,6 +247,12 @@ a {
   display: none;
   animation: none;
 }
+
+::view-transition-old(app-logo),
+::view-transition-new(app-logo) {
+  animation: none;
+}
+
 html:active-view-transition-type(page-transition) {
   &::view-transition-new(.pokemon-img),
   &::view-transition-old(.pokemon-img) {
