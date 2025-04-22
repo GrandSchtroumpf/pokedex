@@ -1,22 +1,16 @@
-import { component$, useStyles$ } from "@builder.io/qwik";
+import { component$, PropsOf } from "@builder.io/qwik";
 import type { Pokemon } from "~/model"
 import { PokemonImg } from "../img/img";
 import { PokemonAnchor } from "../anchor";
 
-interface Props {
+interface Props extends PropsOf<'nav'> {
   pokemon: Pokemon;
 }
 
-export const PokemonVariety = component$<Props>(({ pokemon }) => {
-  useStyles$(`
-    [data-pokemon-variety] {
-      display: flex;
-      gap: 8px;
-    }
-  `)
+export const PokemonVariety = component$<Props>(({ pokemon, ...props }) => {
   if (!pokemon.varieties.length) return;
   return (
-    <nav aria-label="Varieties of this pokemon" data-pokemon-variety>
+    <nav {...props} aria-label="Varieties of this pokemon" data-pokemon-variety>
       {pokemon.varieties.map((item) => {
         if (item.id === pokemon.id) return;
         return (

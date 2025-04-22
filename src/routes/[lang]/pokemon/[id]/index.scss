@@ -27,7 +27,7 @@
     display: grid;
     gap: 24px;
     width: 100%;
-    max-width: 1020px;
+    max-width: 1920px;
     header {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -61,13 +61,23 @@
     min-width: 60%;
     max-width: 90%;
     margin-inline: auto;
-    margin-bottom: 24px;
     gap: 16px;
+    isolation: isolate;
+  }
+  .images {
+    display: flex;
+    flex-direction: row-reverse;
+    place-self: center;
   }
   .pokemon-img {
     width: 300px;
     height: 300px;
     align-self: center;
+  }
+  .pokemon-varieties {
+    display: grid;
+    align-content: start;
+    gap: 8px;
   }
   .pokemon-index {
     z-index: -1;
@@ -126,6 +136,9 @@
 @media (min-width: 901px) {
   #pokemon-page {
     --gradient-direction: to bottom;
+    .images {
+      gap: 16px;
+    }
   }
 }
 @media (max-width: 900px) {
@@ -146,6 +159,7 @@
     }
     .pokemon-index {
       inset-inline-end: 0;
+      inset-block-end: 24px;
       inset-block-start: unset;
       font-size: 5rem;
     }
@@ -153,10 +167,20 @@
 }
 @media (max-width: 400px) {
   #pokemon-page {
-    article .pokemon-img {
-      width: 200px;
-      height: 200px;
-      align-self: center;
+    article {
+      .images {
+        flex-direction: column;
+      }
+      .pokemon-varieties {
+        grid-auto-flow: column;
+      }
+      .pokemon-img {
+        width: 200px;
+        height: 200px;
+      }
+      .pokemon-img:only-child {
+        margin-bottom: 64px;
+      }
     }
   }
 }

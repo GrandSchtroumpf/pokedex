@@ -262,7 +262,7 @@ async function getPokemons() {
         pokemon,
         pokemonItems,
         position,
-        evolutionMap.get(pokemon.name),
+        evolutionMap.get(pokemon.species.name),
         species,
       );
       writes.push(writeData(`${lang}/pokemon/${pokemon.id}`, full));

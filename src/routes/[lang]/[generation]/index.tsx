@@ -12,6 +12,7 @@ import { join } from "node:path";
 import { cwd } from "node:process";
 import { readFile } from "node:fs/promises";
 import { PokemonTypes } from "~/components/pokemon/types";
+import { PokemonName } from "~/components/pokemon/name";
 
 export const useGeneration = routeLoader$(async ({ params }) => {
   const path = join(cwd(), 'public/data', params.lang, 'generations.json');
@@ -55,20 +56,22 @@ const PokemonPage = component$<PokemonPage>(({ pokemon, eager }) => {
   })
 
 
-  return <section class="pokemon-page theme" aria-labelledby="pokemon-name" style={style} onTouchStart$={swipe}>
-    <article>
+  return <>
+    <article class="pokemon-page theme" aria-labelledby="pokemon-name" style={style} onTouchStart$={swipe}>
       <Anchor href={`/${params.lang}/pokemon/${pokemon.id}`}>
         <PokemonImg class="pokemon-img" pokemon={pokemon} eager={eager} sizes="(max-width: 400px) 200px, 375px" />
       </Anchor>
       <div class="pokemon-profile">          
         <PokemonTypes types={pokemon.types} />
-        <h1 class="pokemon-name">{pokemon.name}</h1>
+        <h1 class="pokemon-name">
+          <PokemonName pokemon={pokemon} />
+        </h1>
         <h2 class="genus">{pokemon.shape} - {pokemon.genus}</h2>
         <p class="description">{pokemon.flavorText}</p>
-        <p class="pokemon-index">#{pokemon.id}</p>
       </div>
+      <p class="pokemon-index">#{pokemon.id}</p>
     </article>
-  </section>
+  </>
 })
 
 

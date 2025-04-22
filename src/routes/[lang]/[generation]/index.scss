@@ -110,20 +110,18 @@
   
   }
   .pokemon-page {
-    width: 100%;
     padding: 16px;
     box-sizing: border-box;  
     accent-color: var(--primary);
-  
-    article {
-      position: relative;
-      display: flex;
-      width: 900px;
-      min-width: 50%;
-      max-width: 90%;
-      margin-inline: auto;
-      gap: 16px;
-    }
+    position: relative;
+    display: flex;
+    width: 900px;
+    min-width: 50%;
+    max-width: 90%;
+    margin-inline: auto;
+    gap: 16px;
+    isolation: isolate;
+
     .pokemon-index {
       z-index: -1;
       position: absolute;
@@ -141,7 +139,7 @@
       h1 {
         color: var(--primary);
         text-transform: uppercase;
-        font-size: 2rem;
+        font-size: 1.8rem;
       }
       .description {
         color: var(--text-variant);
@@ -183,10 +181,8 @@
       display: none;
     }
     .pokemon-page {
-      article {
-        width: 100%;
-        flex-direction: column;
-      }
+      width: 100%;
+      flex-direction: column;
       .pokemon-index {
         inset-inline-end: 0;
         inset-block-start: -5rem;

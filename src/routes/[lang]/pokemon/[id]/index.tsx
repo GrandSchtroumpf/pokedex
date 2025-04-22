@@ -15,7 +15,6 @@ import { Anchor } from "~/components/anchor";
 import { PokemonGeneration } from "~/components/pokemon/generation";
 import { PokemonVariety } from "~/components/pokemon/variety";
 import style from './index.scss?inline';
-import { PokemonName } from "~/components/pokemon/name";
 
 export const usePokemon = routeLoader$(async ({ params }) => {
   const path = join(cwd(), 'public/data', params.lang, 'pokemon', `${params.id}.json`);
@@ -68,21 +67,21 @@ const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
           )}
         </header>
         <article onTouchStart$={swipe}>
-          <PokemonImg class="pokemon-img" pokemon={pokemon} eager sizes="(max-width: 400px) 300px, 375px" />
+          <div class="images">
+            <PokemonImg class="pokemon-img" pokemon={pokemon} eager sizes="(max-width: 400px) 300px, 375px" />
+            <PokemonVariety pokemon={pokemon} class="pokemon-varieties" />
+          </div>
           <div class="pokemon-profile">    
             <PokemonTypes types={pokemon.types} />
             <hgroup>
               <PokemonGeneration pokemon={pokemon} />
               <span role="separator">•</span>
-              <h1 id="pokemon-name">
-                <PokemonName pokemon={pokemon} />
-              </h1>
+              <h1 id="pokemon-name">{pokemon.name}</h1>
             </hgroup>
-            <PokemonVariety pokemon={pokemon} />
-            <h2 class="genus">{pokemon.genus}</h2>
+            <h2 class="genus">{pokemon.formName || pokemon.genus}</h2>
             <p class="description">{pokemon.flavorText}</p>
-            <p class="pokemon-index">#{pokemon.id}</p>
           </div>
+          <p class="pokemon-index">#{pokemon.id}</p>
         </article>
         <PokemonStats pokemon={pokemon} />
         <PokemonEvolution evolutions={pokemon.evolution} />
