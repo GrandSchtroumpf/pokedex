@@ -15,7 +15,7 @@ export const PokemonVariety = component$<Props>(({ pokemon, ...props }) => {
         if (item.id === pokemon.id) return;
         return (
           <PokemonAnchor pokemon={item} key={item.id}>
-            <PokemonImg pokemon={item} width="60" height="60" noViewTransition={item.id === pokemon.id} />
+            <PokemonImg pokemon={item} width="60" height="60" noViewTransition={pokemon.varieties.length > 5} />
           </PokemonAnchor>
         )})}
     </nav>
