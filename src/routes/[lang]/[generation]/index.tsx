@@ -1,4 +1,4 @@
-import { $, component$, createContextId, isServer, Resource, untrack, useContext, useContextProvider, useSignal, useStyles$, useTask$, useVisibleTask$ } from "@builder.io/qwik";
+import { $, component$, createContextId, isServer, untrack, useContext, useContextProvider, useSignal, useStyles$, useTask$, useVisibleTask$ } from "@builder.io/qwik";
 import type { Signal } from "@builder.io/qwik";
 import type { DocumentHead, StaticGenerateHandler} from "@builder.io/qwik-city";
 import { routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
@@ -139,7 +139,7 @@ export default component$(() => {
   const activeId = useSignal(Number(initialId));
   useContextProvider(ActiveIdContext, activeId);
 
-  const pokemonList = usePokemonList();
+  const pokemons = usePokemonList();
 
   useTask$(({ track }) => {
     const id = track(activeId);
@@ -163,18 +163,18 @@ export default component$(() => {
     cleanup(() => observer.disconnect());
   });
 
-  return <Resource value={pokemonList} onResolved={(pokemons) => (
+  return (
     <main id="pokemon-list-page" >
       <header>
         <a href={`/${params.lang}`} class="back" aria-label="Back to pokedex">
           <Logo width="40" height="40"/>
         </a>
-        <PokemonNav pokemons={pokemons}/>
+        <PokemonNav pokemons={pokemons.value}/>
       </header>
       <div class="pokemon-carousel">
         <Previous />
         <ul id="pokemon-list" class="main-nav" >
-          {pokemons.map((pokemon, i) => (
+          {pokemons.value.map((pokemon, i) => (
             <li id={`pokemon-${pokemon.id}`} key={pokemon.id} data-target={activeId.value === pokemon.id}>
               <PokemonPage pokemon={pokemon} eager={i === 0} />
             </li>
@@ -182,9 +182,9 @@ export default component$(() => {
         </ul>
         <Next />
       </div>
-      <style dangerouslySetInnerHTML={keyframes(pokemons)}></style>
+      <style dangerouslySetInnerHTML={keyframes(pokemons.value)}></style>
     </main>
-  )} />
+  )
 })
 
 

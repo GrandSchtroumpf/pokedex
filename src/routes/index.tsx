@@ -1,4 +1,4 @@
-import { component$, Resource, useStyles$} from "@builder.io/qwik";
+import { component$, useStyles$} from "@builder.io/qwik";
 import { routeLoader$, type DocumentHead } from "@builder.io/qwik-city";
 import type { Language } from "pokenode-ts";
 import { Logo } from "~/components/logo";
@@ -15,19 +15,17 @@ export const useLanguages = routeLoader$(async () => {
 
 export default component$(() => {
   useStyles$(style);
-  const languagesResource =  useLanguages();
+  const languages =  useLanguages();
 
   return (
     <main id="select-lang-page">
       <h1>Pokedex</h1>
       <Logo width="100" height="100" />
-      <Resource value={languagesResource} onResolved={(languages) => (
-        <nav>
-          {languages.map((language) => (
-            <a key={language.id} href={`/${language.id}`}>{language.name}</a>
-          ))}
-        </nav>
-      )} />
+      <nav>
+        {languages.value.map((language) => (
+          <a key={language.id} href={`/${language.id}`}>{language.name}</a>
+        ))}
+      </nav>
     </main>
   )
 });
