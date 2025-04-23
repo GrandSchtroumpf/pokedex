@@ -69,7 +69,7 @@ const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
         <article onTouchStart$={swipe}>
           <div class="images">
             <PokemonImg class="pokemon-img" pokemon={pokemon} eager sizes="(max-width: 400px) 300px, 375px" />
-            <PokemonVariety pokemon={pokemon} class="pokemon-varieties" />
+            <PokemonVariety pokemon={pokemon} class="pokemon-varieties" stoppropagation:touchstart />
           </div>
           <div class="pokemon-profile">    
             <PokemonTypes types={pokemon.types} />

@@ -248,16 +248,15 @@ a {
   animation: none;
 }
 
+::view-transition-new(app-logo),
 ::view-transition-old(app-logo),
-::view-transition-new(app-logo) {
+::view-transition-new(.pokemon-img),
+::view-transition-old(.pokemon-img) {
   animation: none;
 }
 
-html:active-view-transition-type(page-transition) {
-  &::view-transition-new(.pokemon-img),
-  &::view-transition-old(.pokemon-img) {
-    animation: none;
-  }
+::view-transition-group(app-logo) {
+  animation-duration: 300ms;
 }
 
 html:not(:active-view-transition-type(page-transition)) {

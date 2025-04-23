@@ -1,4 +1,5 @@
-import { component$, PropsOf } from "@builder.io/qwik";
+import type { PropsOf } from "@builder.io/qwik";
+import { component$ } from "@builder.io/qwik";
 import type { Pokemon } from "~/model"
 import { PokemonImg } from "../img/img";
 import { PokemonAnchor } from "../anchor";
