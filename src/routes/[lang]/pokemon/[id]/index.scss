@@ -72,6 +72,7 @@
   .pokemon-varieties {
     display: grid;
     align-content: start;
+    justify-content: start;
     gap: 8px;
     overflow-y: auto;
     height: 300px;

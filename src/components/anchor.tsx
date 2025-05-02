@@ -35,6 +35,7 @@ interface Props extends PropsOf<'a'> {
 
 export const PokemonAnchor = component$<Props>(({ pokemon, ...props }) => {
   const { url, params } = useLocation();
+
   const href = useComputed$(() => {
     return `${url.origin}/${params.lang}/pokemon/${pokemon.id}`;
   });

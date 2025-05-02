@@ -201,6 +201,7 @@ input,button {
 a {
   text-decoration: none;
   color: inherit;
+  line-height: 1rem;
 }
 
 @keyframes scale {

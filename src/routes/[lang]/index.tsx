@@ -14,6 +14,7 @@ import { PokemonTypes } from "~/components/pokemon/types";
 import SearchWorker from './search.worker?worker';
 import style from './index.scss?inline';
 import { PokemonName } from "~/components/pokemon/name";
+import { GenerationSection, LazyGenerationSection } from "~/components/generation/generation";
 
 const workers: { current?: Worker } = {};
 
@@ -21,6 +22,18 @@ export const useGenerations = routeLoader$(async ({ params }) => {
   const path = join(cwd(), 'public/data', params.lang, 'generations.json');
   const res = await readFile(path, { encoding: 'utf-8' });
   return JSON.parse(res) as Generation[];
+});
+
+export const usePokemonByGeneration = routeLoader$(async (req) => {
+  const generations = await req.resolveValue(useGenerations);
+  const pokemons: Record<string, PokemonItem[]> = {};
+  const getAll = generations.map(async (g) => {
+    const path = join(cwd(), 'public/data', req.params.lang, 'generation', `${g.id}.json`);
+    const res = await readFile(path, { encoding: 'utf-8' });
+    pokemons[g.id] = JSON.parse(res) as PokemonItem[];
+  });
+  await Promise.all(getAll);
+  return pokemons;
 });
 
 export default component$(() => {
@@ -31,6 +44,7 @@ export default component$(() => {
   const logo = useSignal<SVGSVGElement>();
 
   const generations = useGenerations();
+  const pokemonRecord = usePokemonByGeneration();
   const search = useSignal('');
 
   useTask$(() => {
@@ -163,6 +177,13 @@ export default component$(() => {
       </search>
       <main>
         <GenerationList generations={generations.value} />
+        {generations.value.map((generation, i) => {
+          if (i === 0) {
+            return <GenerationSection key={generation.id} generation={generation} pokemons={pokemonRecord.value[generation.id]} />
+          } else {
+            return <LazyGenerationSection key={generation.id} generation={generation} pokemons={pokemonRecord.value[generation.id]} />
+          }
+        })}
       </main>
     </>
   )

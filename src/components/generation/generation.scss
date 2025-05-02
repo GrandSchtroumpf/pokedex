@@ -1,0 +1,29 @@
+@use 'sass:math';
+
+$max: 2500;
+$step: 100;
+$cardSize: 100;
+
+[data-generation-section] {
+  padding: 24px 16px;
+  display: grid;
+  gap: 16px;
+  margin: auto;
+  width: fit-content;
+
+  nav {
+    --rows: round(up, calc(var(--size) / var(--columns)), 1);
+    display: grid;
+    grid-template-columns: repeat(var(--columns), #{$cardSize}px);
+    grid-template-rows: repeat(var(--rows), #{$cardSize}px);
+    gap: 16px;
+  }
+  @for $i from 400 through $max {
+    @if ($i) % $step == 0 {
+      @media (min-width: #{$i}px) and (max-width: #{$i + $step - 1}px) {
+        --columns: #{math.ceil(math.div($i, 132))};
+      }
+    }
+  }
+}
+
