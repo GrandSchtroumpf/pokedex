@@ -48,11 +48,13 @@ export const PokemonAnchor = component$<Props>(({ pokemon, ...props }) => {
     prefetch.rel = 'prefetch';
     prefetch.href = href.value;
     document.head.appendChild(prefetch);
-    const preload = document.createElement('link');
-    preload.rel = 'preload';
-    preload.href = `${url.origin}/imgs/pokemon/${pokemon.imgName}/600w.avif`;
-    preload.as = 'image';
-    document.head.appendChild(preload);
+    if (pokemon.imgName) {
+      const preload = document.createElement('link');
+      preload.rel = 'preload';
+      preload.href = `${url.origin}/imgs/pokemon/${pokemon.imgName}/600w.avif`;
+      preload.as = 'image';
+      document.head.appendChild(preload);
+    }
   });
   useOn('mouseenter', prefetch);
   useOn('touchstart', prefetch);
