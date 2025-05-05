@@ -30,10 +30,10 @@ export const GenerationSection = component$<Props>(({ generation, pokemons, ...p
 
 export const LazyGenerationSection = component$<Props>(({ generation, pokemons, ...props }) => {
   useStyles$(style);
-  const { url } = useLocation();
+  const { url, params } = useLocation();
   const templateId = useId();
   const targetId = useId();
-  const baseUrl = `${url.origin}/pokemon`;
+  const baseUrl = `${url.origin}/${params.lang}/pokemon`;
   useOn('qvisible', $(() => {
     const template = document.getElementById(templateId) as HTMLTemplateElement;
     const target = document.getElementById(targetId) as HTMLElement;
