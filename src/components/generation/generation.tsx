@@ -3,6 +3,7 @@ import { component$, useId, useStyles$, $, useOn } from "@builder.io/qwik";
 import type { PokemonItem, Generation } from "~/model";
 import { PokemonAnchor } from "../anchor";
 import { PokemonImg } from "../img/img";
+import { useLocation } from "@builder.io/qwik-city";
 import style from './generation.scss?inline';
 
 interface Props extends PropsOf<'section'> {
@@ -29,8 +30,10 @@ export const GenerationSection = component$<Props>(({ generation, pokemons, ...p
 
 export const LazyGenerationSection = component$<Props>(({ generation, pokemons, ...props }) => {
   useStyles$(style);
+  const { url } = useLocation();
   const templateId = useId();
   const targetId = useId();
+  const baseUrl = `${url.origin}/pokemon`;
   useOn('qvisible', $(() => {
     const template = document.getElementById(templateId) as HTMLTemplateElement;
     const target = document.getElementById(targetId) as HTMLElement;
@@ -43,7 +46,7 @@ export const LazyGenerationSection = component$<Props>(({ generation, pokemons, 
       <template id={templateId}>
         {/** Try to understand why it's not working */}
         {pokemons.filter(p => !p.formName).map((pokemon) => (
-          <a key={pokemon.id} href={`./pokemon/${pokemon.id}`} style={{ '--translate-y': `${Math.random() * 300}px`, '--scale': Math.random() / 3}}>
+          <a key={pokemon.id} href={`${baseUrl}/${pokemon.id}`} style={{ '--translate-y': `${Math.random() * 400}px`, '--scale': Math.random() / 4}}>
             <PokemonImg pokemon={pokemon} width="100" height="100" noViewTransition />
           </a>
         ))}
