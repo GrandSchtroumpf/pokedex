@@ -10,7 +10,7 @@ interface PokemonImgProps extends Attributes<'img'> {
   noViewTransition?: boolean;
 }
 
-const pokemonSizes = [50, 100, 300, 600, 750];
+const pokemonSizes = [50, 100, 200, 300, 600, 750];
 export const PokemonImg = component$(({ pokemon, eager, noViewTransition, ...props }: PokemonImgProps) => {
   const {name, imgName} = pokemon;
   const src = `/imgs/pokemon/${imgName}/original.avif`;

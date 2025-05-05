@@ -14,7 +14,7 @@ export const GenerationSection = component$<Props>(({ generation, pokemons, ...p
   useStyles$(style);
   return (
     <section {...props} data-generation-section>
-      <h3>{generation.name}</h3>
+      <h2>{generation.name}</h2>
       <nav style={{'--size': pokemons.filter(p => !p.formName).length}}>
         {pokemons.filter(p => !p.formName).map((pokemon) => (
           <PokemonAnchor key={pokemon.id} pokemon={pokemon} style={{ '--translate-y': `${Math.random() * 400}px`, '--scale': Math.random() / 4}}>
@@ -38,7 +38,7 @@ export const LazyGenerationSection = component$<Props>(({ generation, pokemons, 
   }));
   return (
     <section {...props} data-generation-section>
-      <h3>{generation.name}</h3>
+      <h2>{generation.name}</h2>
       <nav id={targetId} style={{'--size': pokemons.filter(p => !p.formName).length}}></nav>
       <template id={templateId}>
         {/** Try to understand why it's not working */}
