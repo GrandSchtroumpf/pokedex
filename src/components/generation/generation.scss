@@ -18,6 +18,13 @@ $cardSize: 100;
     grid-template-rows: repeat(var(--rows), #{$cardSize}px);
     gap: 16px;
   }
+
+  a {
+    animation-timeline: view(block);
+    animation-name: pokemon-list-entry;
+    animation-timing-function: var(--ease-back-out);
+  }
+
   @for $i from 400 through $max {
     @if ($i) % $step == 0 {
       @media (min-width: #{$i}px) and (max-width: #{$i + $step - 1}px) {
@@ -30,3 +37,13 @@ $cardSize: 100;
   }
 }
 
+@keyframes pokemon-list-entry {
+  0% {
+    transform: translateY(var(--translate-y, 0)) scale(var(--scale, 0));
+    opacity: 0.2;
+  }
+  50% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
