@@ -11,10 +11,10 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { cwd } from "node:process";
 import { PokemonTypes } from "~/components/pokemon/types";
-import SearchWorker from './search.worker?worker';
-import style from './index.scss?inline';
 import { PokemonName } from "~/components/pokemon/name";
 import { GenerationSection, LazyGenerationSection } from "~/components/generation/generation";
+import SearchWorker from './search.worker?worker';
+import style from './index.scss?inline';
 
 const workers: { current?: Worker } = {};
 

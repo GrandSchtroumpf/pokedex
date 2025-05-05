@@ -21,9 +21,12 @@ $cardSize: 100;
   @for $i from 400 through $max {
     @if ($i) % $step == 0 {
       @media (min-width: #{$i}px) and (max-width: #{$i + $step - 1}px) {
-        --columns: #{math.ceil(math.div($i, 132))};
+        --columns: #{math.ceil(math.div($i, 140))};
       }
     }
+  }
+  @media (max-width: 400px) {
+    --columns: 3;
   }
 }
 

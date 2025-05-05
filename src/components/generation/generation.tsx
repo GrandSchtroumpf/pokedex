@@ -1,5 +1,5 @@
 import type { PropsOf} from "@builder.io/qwik";
-import { component$, useId, useStyles$, useVisibleTask$ } from "@builder.io/qwik";
+import { component$, useId, useStyles$, $, useOn } from "@builder.io/qwik";
 import type { PokemonItem, Generation } from "~/model";
 import { PokemonAnchor } from "../anchor";
 import { PokemonImg } from "../img/img";
@@ -18,7 +18,7 @@ export const GenerationSection = component$<Props>(({ generation, pokemons, ...p
       <nav style={{'--size': pokemons.length}}>
         {pokemons.map((pokemon) => (
           <PokemonAnchor key={pokemon.id} pokemon={pokemon}>
-            <PokemonImg pokemon={pokemon} width="100" height="100" />
+            <PokemonImg pokemon={pokemon} width="100" height="100" noViewTransition />
           </PokemonAnchor>
         ))}
       </nav>
@@ -30,21 +30,21 @@ export const LazyGenerationSection = component$<Props>(({ generation, pokemons, 
   useStyles$(style);
   const templateId = useId();
   const targetId = useId();
-  // eslint-disable-next-line qwik/no-use-visible-task
-  useVisibleTask$(() => {
+  useOn('qvisible', $(() => {
     const template = document.getElementById(templateId) as HTMLTemplateElement;
     const target = document.getElementById(targetId) as HTMLElement;
     target.insertBefore(template.content, target.lastChild);
-  }, { strategy: 'intersection-observer' });
+  }));
   return (
     <section {...props} data-generation-section>
       <h3>{generation.name}</h3>
       <nav id={targetId} style={{'--size': pokemons.length}}></nav>
       <template id={templateId}>
+        {/** Try to understand why it's not working */}
         {pokemons.map((pokemon) => (
-          <PokemonAnchor key={pokemon.id} pokemon={pokemon}>
-            <PokemonImg pokemon={pokemon} width="100" height="100" />
-          </PokemonAnchor>
+          <a key={pokemon.id} href={`./pokemon/${pokemon.id}`}>
+            <PokemonImg pokemon={pokemon} width="100" height="100" noViewTransition />
+          </a>
         ))}
       </template>
     </section>

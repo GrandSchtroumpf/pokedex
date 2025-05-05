@@ -36,17 +36,13 @@ interface Props extends PropsOf<'a'> {
 export const PokemonAnchor = component$<Props>(({ pokemon, ...props }) => {
   const { url, params } = useLocation();
 
-  const href = useComputed$(() => {
-    return `${url.origin}/${params.lang}/pokemon/${pokemon.id}`;
-  });
-
   const prefetch = $(() => {
     const id = `prefetch-pokemon-${pokemon.id}`;
-    if (!href.value || document.getElementById(id)) return;
+    if (document.getElementById(id)) return;
     const prefetch = document.createElement('link');
     prefetch.id = id;
     prefetch.rel = 'prefetch';
-    prefetch.href = href.value;
+    prefetch.href = `${url.origin}/${params.lang}/pokemon/${pokemon.id}`;
     document.head.appendChild(prefetch);
     if (pokemon.imgName) {
       const preload = document.createElement('link');
@@ -61,7 +57,7 @@ export const PokemonAnchor = component$<Props>(({ pokemon, ...props }) => {
   useOn('focus', prefetch);
 
 
-  return <a {...props} href={href.value}>
+  return <a {...props} href={`${url.origin}/${params.lang}/pokemon/${pokemon.id}`}>
     <Slot />
   </a>
 })
