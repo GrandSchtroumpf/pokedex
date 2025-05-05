@@ -15,10 +15,11 @@ export const GenerationSection = component$<Props>(({ generation, pokemons, ...p
   return (
     <section {...props} data-generation-section>
       <h3>{generation.name}</h3>
-      <nav style={{'--size': pokemons.length}}>
-        {pokemons.map((pokemon) => (
+      <nav style={{'--size': pokemons.filter(p => !p.formName).length}}>
+        {pokemons.filter(p => !p.formName).map((pokemon) => (
           <PokemonAnchor key={pokemon.id} pokemon={pokemon} style={{ '--translate-y': `${Math.random() * 400}px`, '--scale': Math.random() / 4}}>
             <PokemonImg pokemon={pokemon} width="100" height="100" noViewTransition />
+            {pokemon.formName}
           </PokemonAnchor>
         ))}
       </nav>
@@ -38,10 +39,10 @@ export const LazyGenerationSection = component$<Props>(({ generation, pokemons, 
   return (
     <section {...props} data-generation-section>
       <h3>{generation.name}</h3>
-      <nav id={targetId} style={{'--size': pokemons.length}}></nav>
+      <nav id={targetId} style={{'--size': pokemons.filter(p => !p.formName).length}}></nav>
       <template id={templateId}>
         {/** Try to understand why it's not working */}
-        {pokemons.map((pokemon) => (
+        {pokemons.filter(p => !p.formName).map((pokemon) => (
           <a key={pokemon.id} href={`./pokemon/${pokemon.id}`} style={{ '--translate-y': `${Math.random() * 300}px`, '--scale': Math.random() / 3}}>
             <PokemonImg pokemon={pokemon} width="100" height="100" noViewTransition />
           </a>

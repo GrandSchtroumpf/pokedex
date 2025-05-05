@@ -175,7 +175,7 @@ export default component$(() => {
           </form>
         </dialog>
       </search>
-      <main>
+      <main id="search-page">
         <GenerationList generations={generations.value} />
         {generations.value.map((generation, i) => {
           if (i === 0) {

@@ -202,26 +202,29 @@
   }
 }
 
-
-// Generation list
-.generation-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 8px;
-  padding: 16px;
-  max-width: 1020px;
-  margin: auto;
-  & > a  {
-    border-radius: 8px;
+#search-page {
+  margin-bottom: 160px;
+  // Generation list
+  .generation-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 8px;
     padding: 16px;
-    background-color: var(--surface);
-    &:hover {
-      background-color: color-mix(in oklch, var(--text) var(--alpha-hover), var(--surface));
-    }
-    &:active {
-      background-color: color-mix(in oklch, var(--text) var(--alpha-focus), var(--surface));
+    max-width: 1020px;
+    margin: auto;
+    & > a  {
+      border-radius: 8px;
+      padding: 16px;
+      background-color: var(--surface);
+      &:hover {
+        background-color: color-mix(in oklch, var(--text) var(--alpha-hover), var(--surface));
+      }
+      &:active {
+        background-color: color-mix(in oklch, var(--text) var(--alpha-focus), var(--surface));
+      }
     }
   }
+  
 }
 
 
