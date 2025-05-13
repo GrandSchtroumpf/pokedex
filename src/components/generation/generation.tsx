@@ -11,6 +11,11 @@ interface Props extends PropsOf<'section'> {
   pokemons: PokemonItem[];
 }
 
+const beforeNavigate = $((event: Event, el: HTMLElement) => {
+  const img = (el.firstElementChild as HTMLElement);
+  img.style.viewTransitionName = img.dataset.viewTransitionName!;
+});
+
 export const GenerationSection = component$<Props>(({ generation, pokemons, ...props }) => {
   useStyles$(style);
   return (
@@ -18,7 +23,12 @@ export const GenerationSection = component$<Props>(({ generation, pokemons, ...p
       <h2>{generation.name}</h2>
       <nav style={{'--size': pokemons.filter(p => !p.formName).length}}>
         {pokemons.filter(p => !p.formName).map((pokemon) => (
-          <PokemonAnchor key={pokemon.id} pokemon={pokemon} style={{ '--translate-y': `${Math.random() * 400}px`, '--scale': Math.random() / 2}}>
+          <PokemonAnchor
+            key={pokemon.id}
+            pokemon={pokemon}
+            style={{ '--translate-y': `${Math.random() * 400}px`, '--scale': Math.random() / 2}}
+            onClick$={beforeNavigate}
+          >
             <PokemonImg pokemon={pokemon} width="100" height="100" noViewTransition />
             {pokemon.formName}
           </PokemonAnchor>
@@ -46,7 +56,12 @@ export const LazyGenerationSection = component$<Props>(({ generation, pokemons, 
       <template id={templateId}>
         {/** Try to understand why it's not working */}
         {pokemons.filter(p => !p.formName).map((pokemon) => (
-          <a key={pokemon.id} href={`${baseUrl}/${pokemon.id}`} style={{ '--translate-y': `${Math.random() * 400}px`, '--scale': Math.random() / 4}}>
+          <a
+            key={pokemon.id}
+            href={`${baseUrl}/${pokemon.id}`}
+            style={{ '--translate-y': `${Math.random() * 400}px`, '--scale': Math.random() / 2}}
+            onClick$={beforeNavigate}
+          >
             <PokemonImg pokemon={pokemon} width="100" height="100" noViewTransition />
           </a>
         ))}

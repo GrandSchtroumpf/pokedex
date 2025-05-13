@@ -177,7 +177,7 @@ export default component$(() => {
             <nav role="listbox" ref={listbox}>
               {list.value.map((pokemon) => (
                 <PokemonAnchor role="option" key={pokemon.id} pokemon={pokemon} onClick$={beforeNavigate}>
-                  <PokemonImg pokemon={pokemon} width={40} height={40} noViewTransition />
+                  <PokemonImg pokemon={pokemon} width="50" height="50" noViewTransition />
                   <hgroup>
                     <h3>
                       <PokemonName pokemon={pokemon} />
