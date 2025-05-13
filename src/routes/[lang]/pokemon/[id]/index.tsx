@@ -43,7 +43,7 @@ const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
   })
 
   return (
-    <main id="pokemon-page" class="theme" style={{ '--hue': types[pokemon.types[0]].color.h }}>
+    <main id="pokemon-page" class="theme" style={{ '--hue': types[pokemon.types[0].id].color.h }}>
       <Anchor class="btn back" href={`/${params.lang}`} aria-label="Home">
         <Logo width="40" height="40" />
       </Anchor>

@@ -1,6 +1,6 @@
 @use 'sass:math';
 
-$max: 2500;
+$max: 2000;
 $step: 100;
 $cardSize: 100;
 
@@ -32,8 +32,12 @@ $cardSize: 100;
       }
     }
   }
+  @media (min-width: 2000px) {
+    --columns: 14;
+  }
   @media (max-width: 400px) {
     --columns: 3;
+    gap: 8px;
   }
 }
 

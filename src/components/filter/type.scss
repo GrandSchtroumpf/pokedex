@@ -1,0 +1,22 @@
+[data-filter-type] {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-inline: 8px;
+  label {
+    position: relative;
+    cursor: pointer;
+    padding: 4px;
+    transition: all 0.2s var(--ease-out);
+    input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      z-index: -1;
+    }
+    &:has(input:checked) {
+      color: oklch(70% 60% var(--hue));
+      transform: scale(1.1);
+    }
+  }
+}

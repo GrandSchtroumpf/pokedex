@@ -1,11 +1,10 @@
 import type { PropsOf } from '@builder.io/qwik';
 import { component$, useStyles$ } from '@builder.io/qwik';
-import { types as typeRecord } from '~/data';
-import type { TypeName } from '~/model';
 import { PokemonTypeIcon } from './type-icon';
+import type { PokemonType } from '~/model';
 
 interface Props extends PropsOf<'ol'> {
-  types: TypeName[];
+  types: PokemonType[];
 }
 
 export const PokemonTypes = component$<Props>(({ types, ...props }) => {
@@ -28,10 +27,10 @@ export const PokemonTypes = component$<Props>(({ types, ...props }) => {
   `)
   return (
     <ol {...props} data-pokemon-types>
-      {types.map(type => (
-        <li key={type} class="type-item" title={type} style={{ '--hue': typeRecord[type].color.h }}>
-          <PokemonTypeIcon width="16" height="16" type={type} />
-          {type}
+      {types.map(({ name, id, color }) => (
+        <li key={id} class="type-item" title={name} style={{ '--hue': color.h }}>
+          <PokemonTypeIcon width="16" height="16" type={id} aria-label={name} />
+          {name}
         </li>
       ))}
     </ol>

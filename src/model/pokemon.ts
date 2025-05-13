@@ -1,2 +1,2 @@
-import type { PokemonItem, Pokemon, Language, Generation } from "~/ci";
-export { PokemonItem, Pokemon, Language, Generation };
+import type { PokemonItem, Pokemon, PokemonType, Language, Generation } from "~/ci";
+export { PokemonItem, Pokemon, PokemonType, Language, Generation };

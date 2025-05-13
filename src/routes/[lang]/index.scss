@@ -14,16 +14,32 @@
   color: var(--text);
 }
 
-#search-section {
+body {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding-block: 160px;
+}
+
+#header-section {
   display: grid;
   place-items: center;
   place-content: center;
   gap: 24px;
   padding: 16px;
-  min-height: 60dvh;
+}
+
+#search-section {
+  display: grid;
+  place-items: center;
+  place-content: center;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 16px;
+
   & > button {
-    position: sticky;
-    top: 8px;
+    position: relative;
     cursor: text;
     width: 450px;
     max-width: calc(100dvw - 24px);
@@ -45,7 +61,6 @@
     border-radius: 24px;
     border: 0;
     padding: 0;
-    position: relative;
     isolation: isolate;
 
     &::before {
@@ -78,7 +93,7 @@
         @include animated-text;
         color: var(--disabled);
       }
-      input {
+      #search-input {
         grid-area: stack;
         align-self: stretch;
         border: 0;
@@ -90,7 +105,7 @@
           outline: none;
         }
       }
-      .search-field:has(input:placeholder-shown) {
+      .search-field:has(#search-input:placeholder-shown) {
         label {
           opacity: 1;
         }
@@ -130,7 +145,7 @@
         }
       }
     }
-    .search-container:has(input:focus-visible) {
+    .search-container:has(#search-input:focus-visible) {
       hr {
         border-color: var(--primary);
       }
@@ -150,7 +165,7 @@
   }
   dialog[open] {
     .search-container {
-      input, button, .empty, hr, nav {
+      input, button, .empty, hr, nav, .filter-type {
         animation: fade 500ms 200ms backwards;
       }
     }
@@ -172,7 +187,7 @@
           display: none;
         }
       }
-      input {
+      #search-input {
         font-size: 1.2rem;
       }
     }
@@ -203,7 +218,6 @@
 }
 
 #search-page {
-  margin-bottom: 160px;
   // Generation list
   .generation-list {
     display: grid;
@@ -235,7 +249,7 @@ html:active-view-transition-type(search-open, search-close) {
     &::before {
       view-transition-name: search-box;
     }
-    .search-container label {
+    #search-label {
       view-transition-name: search-input;
     }
   }
@@ -290,23 +304,22 @@ html:active-view-transition-type(search-close) {
 
 // Scroll animation
 @supports (animation-timeline: view()) {
-  #search-section {
-    h1 {
-      animation-timeline: view();
-      animation-name: title-entry;
-      animation-fill-mode: both;
-      animation-duration: 1ms;
-    }
+  h1, #app-logo, .generation-list > a {
+    animation-timeline: view();
+    animation-name: title-entry;
+    animation-fill-mode: both;
+    animation-duration: 1ms;
+    animation-timing-function: var(--ease-in);
   }
   
   @keyframes title-entry {
-    0%, 85% {
+    0%, 60% {
       opacity: 1;
       transform: translateY(0);
     }
     100% {
       opacity: 0;
-      transform: translateY(-25px);
+      transform: translateY(-100px);
     }
   }
 }

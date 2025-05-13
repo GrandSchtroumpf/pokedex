@@ -18,7 +18,7 @@ export const GenerationSection = component$<Props>(({ generation, pokemons, ...p
       <h2>{generation.name}</h2>
       <nav style={{'--size': pokemons.filter(p => !p.formName).length}}>
         {pokemons.filter(p => !p.formName).map((pokemon) => (
-          <PokemonAnchor key={pokemon.id} pokemon={pokemon} style={{ '--translate-y': `${Math.random() * 400}px`, '--scale': Math.random() / 4}}>
+          <PokemonAnchor key={pokemon.id} pokemon={pokemon} style={{ '--translate-y': `${Math.random() * 400}px`, '--scale': Math.random() / 2}}>
             <PokemonImg pokemon={pokemon} width="100" height="100" noViewTransition />
             {pokemon.formName}
           </PokemonAnchor>

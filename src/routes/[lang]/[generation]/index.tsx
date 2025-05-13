@@ -33,7 +33,7 @@ interface PokemonPage {
 
 const PokemonPage = component$<PokemonPage>(({ pokemon, eager }) => {
   const { params } = useLocation();
-  const color = types[pokemon.types[0]].color;
+  const color = types[pokemon.types[0].id].color;
   const style = {
     '--hue': color.h,
     '--timeline-name': `--pokemon-${pokemon.id}`,
@@ -126,11 +126,12 @@ const PokemonNav = component$(({pokemons}: PokemonNavProps) => {
   </nav>
 })
 
-const keyframes = (pokemons: PokemonItem[]) => `
-  @keyframes pokemon-colors {
-    ${pokemons.map((p, i) => `${i / (pokemons.length - 1) * 100}% {background-color: oklch(var(--lum-2) 15% ${types[p.types[0]].color.h});}`).join('')}
-  }
-`;
+const keyframes = (pokemons: PokemonItem[]) => {
+  const hue = (p: PokemonItem) => types[p.types[0].id].color.h
+  return `@keyframes pokemon-colors {
+    ${pokemons.map((p, i) => `${i / (pokemons.length - 1) * 100}% {background-color: oklch(var(--lum-2) 15% ${hue(p)});}`).join('')}
+  }`
+};
 
 export default component$(() => {
   useStyles$(style);
