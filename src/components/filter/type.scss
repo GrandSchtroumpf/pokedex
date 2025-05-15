@@ -1,12 +1,12 @@
 [data-filter-type] {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 16px;
   overflow-x: auto;
-  padding-inline: 8px;
+  padding: 8px 16px;
   label {
     position: relative;
     cursor: pointer;
-    padding: 4px;
     transition: all 0.2s var(--ease-out);
     input {
       position: absolute;

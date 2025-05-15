@@ -14,23 +14,23 @@ export const PokemonEvolution = component$<Props>(({ evolutions, ...props }) => 
   return (
     <div {...props} data-pokemon-evolution role="table">
       <div role="rowgroup">
-        {evolutions.map((row, i) => (
-          <div key={i} class="row" role="row">
-            {row.map((col, j) => {
-              if (!col?.pokemon) return;
-              const pokemon = col.pokemon;
-              return (
-                <div key={i + '-' + j} role="cell">
-                  <PokemonAnchor pokemon={pokemon}>
-                    <PokemonImg pokemon={pokemon} width="100" height="100" noViewTransition/>
-                    {pokemon.name}
-                  </PokemonAnchor>
-                  <PokemonEvolutionDetails details={col.details} />
-                </div>
-              )
-            })}
-          </div>
-      ))}
+          {evolutions.map((row, i) => (
+            <div key={i} class="row" role="row">
+              {row.map((col, j) => {
+                if (!col?.pokemon) return;
+                const pokemon = col.pokemon;
+                return (
+                  <div key={i + '-' + j} role="cell">
+                    <PokemonAnchor pokemon={pokemon}>
+                      <PokemonImg pokemon={pokemon} width="100" height="100" noViewTransition/>
+                      {pokemon.name}
+                    </PokemonAnchor>
+                    <PokemonEvolutionDetails details={col.details} />
+                  </div>
+                )
+              })}
+            </div>
+        ))}
       </div>
     </div>
   )
