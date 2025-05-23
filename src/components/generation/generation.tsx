@@ -1,5 +1,5 @@
 import type { PropsOf} from "@builder.io/qwik";
-import { component$, useId, useStyles$, $, useOn } from "@builder.io/qwik";
+import { component$, useId, useStyles$, $, useSignal, useOn } from "@builder.io/qwik";
 import type { PokemonItem, Generation } from "~/model";
 import { PokemonAnchor } from "../anchor";
 import { PokemonImg } from "../img/img";
@@ -30,7 +30,6 @@ export const GenerationSection = component$<Props>(({ generation, pokemons, ...p
             onClick$={beforeNavigate}
           >
             <PokemonImg pokemon={pokemon} width="100" height="100" noViewTransition />
-            {pokemon.formName}
           </PokemonAnchor>
         ))}
       </nav>
@@ -39,33 +38,28 @@ export const GenerationSection = component$<Props>(({ generation, pokemons, ...p
 })
 
 export const LazyGenerationSection = component$<Props>(({ generation, pokemons, ...props }) => {
-  useStyles$(style);
+  const list = useSignal<PokemonItem[]>([]);
   const { url, params } = useLocation();
-  const templateId = useId();
   const targetId = useId();
-  const baseUrl = `${url.origin}/${params.lang}/pokemon`;
-  useOn('qvisible', $(() => {
-    const template = document.getElementById(templateId) as HTMLTemplateElement;
-    const target = document.getElementById(targetId) as HTMLElement;
-    target.insertBefore(template.content, target.lastChild);
+  useOn('qvisible', $(async () => {
+    const res = await fetch(`${url.origin}/data/${params.lang}/generation/${generation.id}.json`);
+    list.value = await res.json();
   }));
   return (
     <section {...props} data-generation-section>
       <h2>{generation.name}</h2>
-      <nav id={targetId} style={{'--size': pokemons.filter(p => !p.formName).length}}></nav>
-      <template id={templateId}>
-        {/** Try to understand why it's not working */}
-        {pokemons.filter(p => !p.formName).map((pokemon) => (
-          <a
+      <nav id={targetId} style={{'--size': pokemons.filter(p => !p.formName).length}}>
+        {list.value.filter(p => !p.formName).map((pokemon) => (
+          <PokemonAnchor
             key={pokemon.id}
-            href={`${baseUrl}/${pokemon.id}`}
+            pokemon={pokemon}
             style={{ '--translate-y': `${Math.random() * 400}px`, '--scale': Math.random() / 2}}
             onClick$={beforeNavigate}
           >
             <PokemonImg pokemon={pokemon} width="100" height="100" noViewTransition />
-          </a>
+          </PokemonAnchor>
         ))}
-      </template>
+      </nav>
     </section>
   )
 });

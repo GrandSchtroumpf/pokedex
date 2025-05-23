@@ -18,9 +18,6 @@ $cardSize: 100;
     grid-template-columns: repeat(var(--columns), #{$cardSize}px);
     grid-template-rows: repeat(var(--rows), #{$cardSize}px);
     gap: var(--gap);
-    // contain: strict;
-    // contain-intrinsic-block-size: auto calc(100px * var(--rows) + var(--gap) * (var(--rows) - 1));
-    // contain-intrinsic-inline-size: auto calc(100px * var(--columns) + var(--gap) * (var(--columns) - 1));
   }
 
   a {
