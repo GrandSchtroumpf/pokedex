@@ -22,7 +22,6 @@ $cardSize: 100;
   a {
     animation-timeline: view(block);
     animation-name: pokemon-list-entry;
-    animation-timing-function: var(--ease-back-out);
     animation-duration: 1ms;
   }
 
@@ -51,8 +50,12 @@ $cardSize: 100;
     transform: translateY(var(--translate-y, 0)) scale(var(--scale, 0));
     opacity: 0.2;
   }
-  30% {
+  20%, 80% {
     transform: translateY(0) scale(1);
     opacity: 1;
+  }
+  100% {
+    transform: translateY(calc(-0.3 * var(--translate-y, 0))) scale(var(--scale, 0));
+    opacity: 0.2;
   }
 }
