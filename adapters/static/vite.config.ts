@@ -13,7 +13,7 @@ export default extendConfig(baseConfig, () => {
     plugins: [
       staticAdapter({
         origin: "https://qwik-pokedex.vercel.app/",
-        emitData: false
+        emitData: true
       }),
     ],
   };
