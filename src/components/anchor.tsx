@@ -68,11 +68,11 @@ export const PokemonLink = component$<Props>(({ pokemon, ...props }) => {
   const prefetch = $(() => {
     const id = `prefetch-pokemon-${pokemon.id}`;
     if (document.getElementById(id)) return;
-    const prefetch = document.createElement('link');
-    prefetch.id = id;
-    prefetch.rel = 'prefetch';
-    prefetch.href = `${url.origin}/${params.lang}/pokemon/${pokemon.id}`;
-    document.head.appendChild(prefetch);
+      const prefetch = document.createElement('link');
+      prefetch.id = id;
+      prefetch.rel = 'prefetch';
+      prefetch.href = `${url.origin}/data/${params.lang}/pokemon/${pokemon.id}.json`;
+      document.head.appendChild(prefetch);
     if (pokemon.imgName) {
       const preload = document.createElement('link');
       preload.rel = 'preload';
@@ -81,12 +81,14 @@ export const PokemonLink = component$<Props>(({ pokemon, ...props }) => {
       document.head.appendChild(preload);
     }
   });
-  useOn('mouseenter', prefetch);
-  useOn('touchstart', prefetch);
-  useOn('focus', prefetch);
 
-
-  return <Link {...props} href={`${url.origin}/${params.lang}/pokemon/${pokemon.id}`}>
+  return <Link
+    {...props}
+    href={`${url.origin}/${params.lang}/pokemon/${pokemon.id}`}
+    onMouseEnter$={prefetch}
+    onTouchStart$={prefetch}
+    onFocus$={prefetch}
+  >
     <Slot />
   </Link>
 })

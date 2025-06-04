@@ -1,6 +1,6 @@
 import { $, component$, useOnDocument, useSignal, useStyles$, useTask$ } from "@builder.io/qwik";
 import type { DocumentHead, StaticGenerateHandler} from "@builder.io/qwik-city";
-import { Link, routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
+import { routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
 import type { Pokemon } from "~/model/pokemon";
 import { langs, types } from '~/data';
@@ -11,7 +11,7 @@ import { cwd } from "node:process";
 import { join } from "node:path";
 import { PokemonEvolution } from "~/components/pokemon/evolution";
 import { PokemonTypes } from "~/components/pokemon/types";
-import { Anchor } from "~/components/anchor";
+import { Anchor, PokemonLink } from "~/components/anchor";
 import { PokemonGeneration } from "~/components/pokemon/generation";
 import { PokemonVariety } from "~/components/pokemon/variety";
 import style from './index.scss?inline';
@@ -56,20 +56,20 @@ const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
       <section aria-labelledby="pokemon-name">
         <header>
           {pokemon.previous && (
-            <Link class="previous" href={`/${params.lang}/pokemon/${pokemon.previous.id}`}>
+            <PokemonLink class="previous" pokemon={pokemon.previous}>
               <svg aria-label="next" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
                 <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/>
               </svg>
               <PokemonImg pokemon={pokemon.previous} width="40" height="40"/>
-            </Link>
+            </PokemonLink>
           )}
           {pokemon.next && (
-            <Link class="next" href={`/${params.lang}/pokemon/${pokemon.next.id}`}>
+            <PokemonLink class="next" pokemon={pokemon.next}>
               <PokemonImg pokemon={pokemon.next} width="40" height="40" />
               <svg aria-label="previous" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
                 <path d="m560-240-56-58 142-142H160v-80h486L504-662l56-58 240 240-240 240Z"/>
               </svg>
-            </Link>
+            </PokemonLink>
           )}
         </header>
         <article onTouchStart$={swipe} class="page-slide-up">
@@ -101,7 +101,7 @@ export default component$(() => {
   const { url, params } = useLocation();
   const pokemon = useSignal<Pokemon>();
   useTask$(async ({ track }) => {
-    track(() => params);
+    track(() => params.id);
     const path = `${url.origin}/data/${params.lang}/pokemon/${params.id}.json`;
     const res = await fetch(path);
     pokemon.value = await res.json();
@@ -134,8 +134,8 @@ export const head: DocumentHead = ({ resolveValue, params, url }) => {
     links: [
       {
         rel: 'icon',
-        type: 'image/webp',
-        href: `${url.origin}/imgs/pokemon/${pokemon.imgName.toLowerCase()}/100w.webp`,
+        type: 'image/avif',
+        href: `${url.origin}/imgs/pokemon/${pokemon.imgName.toLowerCase()}/100w.avif`,
       }
     ],
     meta: [
@@ -157,7 +157,7 @@ export const head: DocumentHead = ({ resolveValue, params, url }) => {
       },
       {
         name: 'og:image',
-        content: `${url.origin}/imgs/pokemon/${pokemon.imgName.toLowerCase()}/500w.webp`,
+        content: `${url.origin}/imgs/pokemon/${pokemon.imgName.toLowerCase()}/500w.avif`,
       },
       {
         name: 'og:image:width',
