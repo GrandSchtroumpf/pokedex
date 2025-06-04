@@ -14,7 +14,6 @@
   border-radius: inherit;
   background-color: var(--meter-value-color, var(--text));
   width: var(--percent, 0%);
-  view-transition-name: var(--view-transition-percent);
   view-transition-class: meter;
   animation-timeline: scroll(block root);
   animation-name: view-transition-name;
@@ -25,13 +24,5 @@ html:active-view-transition-type(page-transition) {
     height: 100%;
     width: 100%;
     animation: none;
-  }
-}
-@keyframes view-transition-name {
-  0% {
-    view-transition-name: var(--view-transition-percent);
-  }
-  1%, 100% {
-    view-transition-name: none;
   }
 }

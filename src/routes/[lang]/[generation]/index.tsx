@@ -7,12 +7,13 @@ import { generations, langs, types } from "~/data";
 import type { Generation, PokemonItem } from "~/model";
 import { Logo } from "~/components/logo";
 import { Anchor } from "~/components/anchor";
-import style from './index.scss?inline';
 import { join } from "node:path";
 import { cwd } from "node:process";
 import { readFile } from "node:fs/promises";
 import { PokemonTypes } from "~/components/pokemon/types";
 import { PokemonName } from "~/components/pokemon/name";
+import style from './index.scss?inline';
+
 
 export const useGeneration = routeLoader$(async ({ params }) => {
   const path = join(cwd(), 'public/data', params.lang, 'generations.json');
@@ -129,7 +130,11 @@ const PokemonNav = component$(({pokemons}: PokemonNavProps) => {
 const keyframes = (pokemons: PokemonItem[]) => {
   const hue = (p: PokemonItem) => types[p.types[0].id].color.h
   return `@keyframes pokemon-colors {
-    ${pokemons.map((p, i) => `${i / (pokemons.length - 1) * 100}% {background-color: oklch(var(--lum-2) 15% ${hue(p)});}`).join('')}
+    ${pokemons.map((p, i) => 
+      `${i / (pokemons.length - 1) * 100}% {
+        background-color: oklch(var(--lum-2) 15% ${hue(p)});
+      }`).join('')
+    }
   }`
 };
 
@@ -145,7 +150,7 @@ export default component$(() => {
   useTask$(({ track }) => {
     const id = track(activeId);
     if (isServer) return;
-    document.getElementById(`link-${id}`)?.scrollIntoView({ behavior: 'smooth', inline: 'center' })
+    document.getElementById(`link-${id}`)?.scrollIntoView({ behavior: 'smooth', inline: 'center' });
   });
   
   useVisibleTask$(({ cleanup }) => {
@@ -174,7 +179,7 @@ export default component$(() => {
       </header>
       <div class="pokemon-carousel">
         <Previous />
-        <ul id="pokemon-list" class="main-nav" >
+        <ul id="pokemon-list" class="main-nav">
           {pokemons.value.map((pokemon, i) => (
             <li id={`pokemon-${pokemon.id}`} key={pokemon.id} data-target={activeId.value === pokemon.id}>
               <PokemonPage pokemon={pokemon} eager={i === 0} />

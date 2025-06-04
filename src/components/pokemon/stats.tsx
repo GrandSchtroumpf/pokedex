@@ -33,7 +33,7 @@ export const PokemonStats = component$<Props>(({ pokemon }) => {
   }
   `);
   return (
-    <article class="pokemon-stats">
+    <article class="pokemon-stats page-slide-up">
       <h2>Stats</h2>
       <ul class="stats">
         {Object.entries(pokemon.stats).map(([key, stat]) => (

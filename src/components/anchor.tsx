@@ -1,6 +1,6 @@
 import type { PropsOf} from "@builder.io/qwik";
 import { $, component$, Slot, useComputed$, useId, useOn } from "@builder.io/qwik";
-import { useLocation } from "@builder.io/qwik-city";
+import { Link, useLocation } from "@builder.io/qwik-city";
 import type { PokemonItem } from "~/model";
 
 export const Anchor = component$<PropsOf<'a'>>((props) => {
@@ -60,4 +60,33 @@ export const PokemonAnchor = component$<Props>(({ pokemon, ...props }) => {
   return <a {...props} href={`${url.origin}/${params.lang}/pokemon/${pokemon.id}`}>
     <Slot />
   </a>
+})
+
+export const PokemonLink = component$<Props>(({ pokemon, ...props }) => {
+  const { url, params } = useLocation();
+
+  const prefetch = $(() => {
+    const id = `prefetch-pokemon-${pokemon.id}`;
+    if (document.getElementById(id)) return;
+    const prefetch = document.createElement('link');
+    prefetch.id = id;
+    prefetch.rel = 'prefetch';
+    prefetch.href = `${url.origin}/${params.lang}/pokemon/${pokemon.id}`;
+    document.head.appendChild(prefetch);
+    if (pokemon.imgName) {
+      const preload = document.createElement('link');
+      preload.rel = 'preload';
+      preload.href = `${url.origin}/imgs/pokemon/${pokemon.imgName}/600w.avif`;
+      preload.as = 'image';
+      document.head.appendChild(preload);
+    }
+  });
+  useOn('mouseenter', prefetch);
+  useOn('touchstart', prefetch);
+  useOn('focus', prefetch);
+
+
+  return <Link {...props} href={`${url.origin}/${params.lang}/pokemon/${pokemon.id}`}>
+    <Slot />
+  </Link>
 })

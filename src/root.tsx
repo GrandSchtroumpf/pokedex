@@ -1,4 +1,4 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, isDev } from "@builder.io/qwik";
 import {
   QwikCityProvider,
   RouterOutlet,
@@ -21,7 +21,7 @@ export default component$(() => {
   return (
     <QwikCityProvider>
       <head>
-        <link rel="manifest" href="/manifest.json" />
+        {!isDev && <link rel="manifest" href="/manifest.json" />}
         <RouterHead />
       </head>
       <body>

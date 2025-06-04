@@ -24,6 +24,7 @@ $cardSize: 100;
     animation-timeline: view(block);
     animation-name: pokemon-list-entry;
     animation-duration: 1ms;
+    animation-fill-mode: both;
     contain: strict;
     contain-intrinsic-block-size: 100px;
     contain-intrinsic-inline-size: 100px;
@@ -46,6 +47,12 @@ $cardSize: 100;
       width: 90px;
       height: 90px;
     }
+  }
+}
+
+html:active-view-transition-type(page-transition) {
+  [data-generation-section] a {
+    animation-name: pokemon-list-entry, viewport-transition;
   }
 }
 

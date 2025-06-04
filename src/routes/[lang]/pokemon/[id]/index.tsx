@@ -1,6 +1,6 @@
-import { $, component$, useStyles$ } from "@builder.io/qwik";
+import { $, component$, useOnDocument, useSignal, useStyles$, useTask$ } from "@builder.io/qwik";
 import type { DocumentHead, StaticGenerateHandler} from "@builder.io/qwik-city";
-import { routeLoader$, useLocation } from "@builder.io/qwik-city";
+import { Link, routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
 import { PokemonImg } from "~/components/img/img";
 import type { Pokemon } from "~/model/pokemon";
 import { langs, types } from '~/data';
@@ -16,7 +16,7 @@ import { PokemonGeneration } from "~/components/pokemon/generation";
 import { PokemonVariety } from "~/components/pokemon/variety";
 import style from './index.scss?inline';
 
-export const usePokemon = routeLoader$(async ({ params }) => {
+export const useServerPokemon = routeLoader$(async ({ params }) => {
   const path = join(cwd(), 'public/data', params.lang, 'pokemon', `${params.id}.json`);
   const text = await readFile(path, { encoding: 'utf-8' });
   return JSON.parse(text) as Pokemon;
@@ -24,6 +24,12 @@ export const usePokemon = routeLoader$(async ({ params }) => {
 
 const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
   const { params } = useLocation();
+  const nav = useNavigate();
+  useOnDocument('qviewTransition', $((e: CustomEvent<ViewTransition>) => {
+    const viewtransition = e.detail;
+    viewtransition.types.add('pokemon-page');
+  }));
+
   const swipe = $((startEvent: TouchEvent) => {
     const start = startEvent.touches[0].clientX;
     let delta = 0;
@@ -34,9 +40,9 @@ const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
     document.addEventListener('touchend', () => {
       const ratio =  delta / window.innerWidth;
       if (delta < 0 && ratio < -0.15 && pokemon.previous) {
-        location.pathname = `/${params.lang}/pokemon/${pokemon.previous.id}`;
+        nav(`/${params.lang}/pokemon/${pokemon.previous.id}`);
       } else if (delta > 0 && ratio > 0.15 && pokemon.next) {
-        location.pathname = `/${params.lang}/pokemon/${pokemon.next.id}`;
+        nav(`/${params.lang}/pokemon/${pokemon.next.id}`);
       }
       document.removeEventListener('touchmove', move)
     }, { once: true });
@@ -50,26 +56,26 @@ const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
       <section aria-labelledby="pokemon-name">
         <header>
           {pokemon.previous && (
-            <Anchor class="previous" href={`/${params.lang}/pokemon/${pokemon.previous.id}`}>
+            <Link class="previous" href={`/${params.lang}/pokemon/${pokemon.previous.id}`}>
               <svg aria-label="next" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
                 <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/>
               </svg>
               <PokemonImg pokemon={pokemon.previous} width="40" height="40"/>
-            </Anchor>
+            </Link>
           )}
           {pokemon.next && (
-            <Anchor class="next" href={`/${params.lang}/pokemon/${pokemon.next.id}`}>
+            <Link class="next" href={`/${params.lang}/pokemon/${pokemon.next.id}`}>
               <PokemonImg pokemon={pokemon.next} width="40" height="40" />
               <svg aria-label="previous" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor">
                 <path d="m560-240-56-58 142-142H160v-80h486L504-662l56-58 240 240-240 240Z"/>
               </svg>
-            </Anchor>
+            </Link>
           )}
         </header>
-        <article onTouchStart$={swipe}>
+        <article onTouchStart$={swipe} class="page-slide-up">
           <div class="images">
             <PokemonImg class="pokemon-img" pokemon={pokemon} eager sizes="(max-width: 400px) 300px, 375px" />
-            <PokemonVariety pokemon={pokemon} class="pokemon-varieties" stoppropagation:touchstart />
+            <PokemonVariety pokemon={pokemon} class="pokemon-varieties animated-section" stoppropagation:touchstart />
           </div>
           <div class="pokemon-profile">    
             <PokemonTypes types={pokemon.types} />
@@ -84,7 +90,7 @@ const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
           <p class="pokemon-index">#{pokemon.id}</p>
         </article>
         <PokemonStats pokemon={pokemon} />
-        <PokemonEvolution evolutions={pokemon.evolution} />
+        <PokemonEvolution evolutions={pokemon.evolution}  class="page-slide-up"/>
       </section>
     </main>
   )
@@ -92,8 +98,15 @@ const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
 
 export default component$(() => {
   useStyles$(style);
-  const pokemon = usePokemon();
-
+  const { url, params } = useLocation();
+  const pokemon = useSignal<Pokemon>();
+  useTask$(async ({ track }) => {
+    track(() => params);
+    const path = `${url.origin}/data/${params.lang}/pokemon/${params.id}.json`;
+    const res = await fetch(path);
+    pokemon.value = await res.json();
+  })
+  if (!pokemon.value) return;
   return <Content pokemon={pokemon.value} />
 });
 
@@ -115,7 +128,7 @@ export const onStaticGenerate: StaticGenerateHandler = async () => {
  
 // Now we can export a function that returns a DocumentHead object
 export const head: DocumentHead = ({ resolveValue, params, url }) => {
-  const pokemon = resolveValue(usePokemon);
+  const pokemon = resolveValue(useServerPokemon);
   return {
     title: `Pokemon - ${pokemon.name}`,
     links: [

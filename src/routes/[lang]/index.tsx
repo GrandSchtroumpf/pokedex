@@ -54,7 +54,7 @@ export default component$(() => {
   const generations = useGenerations();
   const pokemonRecord = usePokemonByGeneration();
   const search = useSignal('');
-  const filterTypes = useSignal<TypeName[]>([])
+  const filterTypes = useSignal<TypeName[]>([]);
 
   useTask$(() => {
     const urls = generations.value.map((g) => `/${params.lang}/${g.id}`);
@@ -152,10 +152,10 @@ export default component$(() => {
     <>
       <header id="header-section">
         <Logo ref={logo} width="100" height="100" />
-        <h1>Pokedex</h1>
+        <h1 class="page-slide-up">Pokedex</h1>
       </header>
       <search id="search-section">
-        <button aria-controls="search-box" onClick$={open} onKeyDown$={startWriting}>
+        <button aria-controls="search-box" onClick$={open} onKeyDown$={startWriting} class="page-slide-up">
           <span>Search</span>
         </button>
         <dialog id="search-box" onClick$={(e, el) => e.target === el ? close() : null} onClose$={() => search.value = ''}>
@@ -210,7 +210,7 @@ export default component$(() => {
 const GenerationList = component$<{ generations: Generation[] }>(({ generations }) => {
   const { params } = useLocation();
   return (
-    <nav class="generation-list">
+    <nav class="generation-list page-slide-up">
       {generations.map((generation) => (
         <a key={generation.id} href={`/${params.lang}/${generation.id}`}>
           {generation.name}

@@ -1,5 +1,5 @@
 import type { PropsOf} from "@builder.io/qwik";
-import { component$, useId, useStyles$, $, useSignal, useOn } from "@builder.io/qwik";
+import { component$, useStyles$, $, useSignal, useOn } from "@builder.io/qwik";
 import type { PokemonItem, Generation } from "~/model";
 import { PokemonAnchor } from "../anchor";
 import { PokemonImg } from "../img/img";
@@ -20,16 +20,17 @@ export const GenerationSection = component$<Props>(({ generation, pokemons, ...p
   useStyles$(style);
   return (
     <section {...props} data-generation-section>
-      <h2>{generation.name}</h2>
+      <h2 class="page-slide-up">{generation.name}</h2>
       <nav style={{'--size': pokemons.filter(p => !p.formName).length}}>
-        {pokemons.filter(p => !p.formName).map((pokemon) => (
+        {pokemons.filter(p => !p.formName).map((pokemon, i) => (
           <PokemonAnchor
             key={pokemon.id}
             pokemon={pokemon}
-            style={{ '--translate-y': `${Math.random() * 400}px`, '--scale': Math.random() / 2}}
+            class="page-slide-up"
+            style={{ '--translate-y': `${Math.random() * 400}px`, '--scale': Math.random() / 2 }}
             onClick$={beforeNavigate}
           >
-            <PokemonImg pokemon={pokemon} width="100" height="100" noViewTransition />
+            <PokemonImg pokemon={pokemon} width="100" height="100" noViewTransition eager={i < 30} />
           </PokemonAnchor>
         ))}
       </nav>
@@ -40,19 +41,20 @@ export const GenerationSection = component$<Props>(({ generation, pokemons, ...p
 export const LazyGenerationSection = component$<Props>(({ generation, pokemons, ...props }) => {
   const list = useSignal<PokemonItem[]>([]);
   const { url, params } = useLocation();
-  const targetId = useId();
   useOn('qvisible', $(async () => {
     const res = await fetch(`${url.origin}/data/${params.lang}/generation/${generation.id}.json`);
-    list.value = await res.json();
+    const result: PokemonItem[] = await res.json();
+    list.value = result.filter(p => !p.formName);
   }));
   return (
-    <section {...props} data-generation-section>
+    <section {...props} data-generation-section id={generation.id}>
       <h2>{generation.name}</h2>
-      <nav id={targetId} style={{'--size': pokemons.filter(p => !p.formName).length}}>
-        {list.value.filter(p => !p.formName).map((pokemon) => (
+      <nav style={{'--size': pokemons.filter(p => !p.formName).length}}>
+        {list.value.map((pokemon) => (
           <PokemonAnchor
             key={pokemon.id}
             pokemon={pokemon}
+            class="page-slide-up"
             style={{ '--translate-y': `${Math.random() * 400}px`, '--scale': Math.random() / 2}}
             onClick$={beforeNavigate}
           >
