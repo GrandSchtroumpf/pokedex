@@ -12,40 +12,57 @@ $cardSize: 100;
   width: fit-content;
 
   nav {
+    --card-size: 100px;
     --rows: round(up, calc(var(--size) / var(--columns)), 1);
     --gap: 16px;
     display: grid;
-    grid-template-columns: repeat(var(--columns), #{$cardSize}px);
+    grid-template-columns: repeat(var(--columns), var(--card-size));
     grid-template-rows: repeat(var(--rows), #{$cardSize}px);
     gap: var(--gap);
+    place-items: center;
   }
 
   a {
+    --size: 100px;
     animation-timeline: view(block);
     animation-name: pokemon-list-entry;
     animation-duration: 1ms;
     animation-fill-mode: both;
     contain: strict;
-    contain-intrinsic-block-size: 100px;
-    contain-intrinsic-inline-size: 100px;
+    contain-intrinsic-size: var(--card-size);
+    width: var(--card-size);
+    height: var(--card-size);
+    img {
+      width: var(--card-size);
+      height: var(--card-size);
+    }
   }
 
   @for $i from 400 through $max {
     @if ($i) % $step == 0 {
       @media (min-width: #{$i}px) and (max-width: #{$i + $step - 1}px) {
-        --columns: #{math.ceil(math.div($i, 140))};
+        nav {
+          --columns: #{math.ceil(math.div($i, 140))};
+        }
       }
     }
   }
   @media (min-width: 2000px) {
-    --columns: 14;
+    nav {
+      --columns: 14;
+    }
   }
-  @media (max-width: 400px) {
-    --columns: 3;
-    gap: 8px;
-    a img {
-      width: 90px;
-      height: 90px;
+  @media (min-width: 321px) and (max-width: 400px) {
+    nav {
+      --columns: 3;
+      --gap: 8px;
+      --card-size: 90px;
+    }
+  }
+  @media (max-width: 320px) {
+    nav {
+      --columns: 2;
+      --card-size: 90px;
     }
   }
 }
