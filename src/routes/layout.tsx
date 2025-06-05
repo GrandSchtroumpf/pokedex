@@ -1,4 +1,4 @@
-import { component$, Slot, sync$, useOnWindow } from "@builder.io/qwik";
+import { component$, Slot, sync$, useOnWindow } from "@qwik.dev/core";
 
 
 export default component$(() => {

@@ -1,8 +1,8 @@
-import { component$, isDev } from "@builder.io/qwik";
+import { component$, isDev } from "@qwik.dev/core";
 import {
-  QwikCityProvider,
+  QwikRouterProvider,
   RouterOutlet,
-} from "@builder.io/qwik-city";
+} from "@qwik.dev/router";
 import { RouterHead } from "./components/router-head/router-head";
 import { SpeculativeRulesScript, useSpeculativeRulesProvider } from "./hooks/useSpeculative";
 
@@ -19,7 +19,7 @@ export default component$(() => {
    */
 
   return (
-    <QwikCityProvider>
+    <QwikRouterProvider>
       <head>
         {!isDev && <link rel="manifest" href="/manifest.json" />}
         <RouterHead />
@@ -29,6 +29,6 @@ export default component$(() => {
         {/* <ServiceWorkerRegister /> */}
         <SpeculativeRulesScript />
       </body>
-    </QwikCityProvider>
+    </QwikRouterProvider>
   );
 });

@@ -1,6 +1,6 @@
-import { component$ } from "@builder.io/qwik";
+import { component$ } from "@qwik.dev/core";
 import { Anchor } from "../anchor";
-import { useLocation } from "@builder.io/qwik-city";
+import { useLocation } from "@qwik.dev/router";
 import type { Pokemon } from "~/model";
 
 interface Props {

@@ -1,5 +1,5 @@
-import { useResource$ } from "@builder.io/qwik";
-import { useLocation } from "@builder.io/qwik-city"
+import { useResource$ } from "@qwik.dev/core";
+import { useLocation } from "@qwik.dev/router"
 import type { Generation, Language, PokemonItem } from "~/model";
 
 interface DateSource {

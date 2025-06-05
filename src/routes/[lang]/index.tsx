@@ -1,6 +1,6 @@
-import { $, component$, isServer, sync$, useSignal, useStyles$, useTask$ } from "@builder.io/qwik";
-import type { DocumentHead, StaticGenerateHandler } from "@builder.io/qwik-city";
-import { routeLoader$, useLocation } from "@builder.io/qwik-city";
+import { $, component$, isServer, sync$, useSignal, useStyles$, useTask$ } from "@qwik.dev/core";
+import type { DocumentHead, StaticGenerateHandler } from "@qwik.dev/router";
+import { routeLoader$, useLocation } from "@qwik.dev/router";
 import type { PokemonItem, Generation, Type, TypeName } from "~/model";
 import { PokemonImg } from "~/components/img/img";
 import { langs } from "~/data";
@@ -71,7 +71,7 @@ export default component$(() => {
   const list = useSignal<PokemonItem[]>([]);
   useTask$(({ track, cleanup }) => {
     const input = track(search);
-    const types = track(filterTypes);
+    const types = Array.from(track(filterTypes));
     if (isServer) return;
     if (!workers.current) {
       workers.current ||= new SearchWorker();
@@ -81,7 +81,6 @@ export default component$(() => {
       const handler = (e: MessageEvent<PokemonItem[]>) => {
         list.value = e.data;
       }
-      console.log({ input, types });
       workers.current.addEventListener('message', handler);
       workers.current.postMessage({ type: 'search', input, types })
       cleanup(() => workers.current?.removeEventListener('message', handler))

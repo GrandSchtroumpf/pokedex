@@ -1,5 +1,5 @@
-import { $, component$, Resource, useStyles$ } from "@builder.io/qwik";
-import { useLocation } from "@builder.io/qwik-city";
+import { $, component$, Resource, useStyles$ } from "@qwik.dev/core";
+import { useLocation } from "@qwik.dev/router";
 import { useLanguages } from "~/hooks/useData";
 import style from './lang-picker.scss?inline';
 

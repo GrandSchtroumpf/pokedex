@@ -13,12 +13,12 @@
 import {
   renderToStream,
   type RenderToStreamOptions,
-} from "@builder.io/qwik/server";
+} from "@qwik.dev/core/server";
 import { manifest } from "@qwik-client-manifest";
 import Root from "./root";
 
 export default function (opts: RenderToStreamOptions) {
-  const lang = opts.serverData?.qwikcity.params.lang || 'en';
+  const lang = opts.serverData?.qwikrouter.params.lang || 'en';
   return renderToStream(<Root />, {
     manifest,
     ...opts,

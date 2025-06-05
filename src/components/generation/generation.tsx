@@ -1,9 +1,9 @@
-import type { PropsOf} from "@builder.io/qwik";
-import { component$, useStyles$, $, useSignal, useOn } from "@builder.io/qwik";
+import type { PropsOf} from "@qwik.dev/core";
+import { component$, useStyles$, $, useSignal, useOn } from "@qwik.dev/core";
 import type { PokemonItem, Generation } from "~/model";
 import { PokemonAnchor } from "../anchor";
 import { PokemonImg } from "../img/img";
-import { useLocation } from "@builder.io/qwik-city";
+import { useLocation } from "@qwik.dev/router";
 import style from './generation.scss?inline';
 
 interface Props extends PropsOf<'section'> {

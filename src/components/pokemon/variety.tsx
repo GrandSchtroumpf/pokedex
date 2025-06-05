@@ -1,5 +1,5 @@
-import type { PropsOf } from "@builder.io/qwik";
-import { component$ } from "@builder.io/qwik";
+import type { PropsOf } from "@qwik.dev/core";
+import { component$ } from "@qwik.dev/core";
 import type { Pokemon } from "~/model"
 import { PokemonImg } from "../img/img";
 import { PokemonLink } from "../anchor";

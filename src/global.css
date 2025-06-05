@@ -12,6 +12,7 @@
 @property --view-transition-name {
   syntax: "<string>";
   inherits: false;
+  initial-value: match-element;
 }
 
 :root {
@@ -248,10 +249,10 @@ a {
 html:active-view-transition-type(page-transition) {
   .page-slide-up {
     --view-transition-name: match-element;
-    animation-timeline: view(block);
+    /* animation-timeline: view(block);
     animation-name: viewport-transition;
     animation-duration: 1ms;
-    animation-fill-mode: both;
+    animation-fill-mode: both; */
     view-transition-class: animated-section;
     view-transition-name: var(--view-transition-name);
   }
@@ -338,6 +339,6 @@ html:active-view-transition-type(pokemon-page) {
     view-transition-name: none;
   }
   1%, 99% {
-    view-transition-name: match-element;
+    view-transition-name: var(--view-transition-name, match-element);
   }
 }

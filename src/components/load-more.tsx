@@ -1,4 +1,4 @@
-// import { component$, createContextId, noSerialize, useComputed$, useContext, useContextProvider, useSignal, useStore, useVisibleTask$ } from "@builder.io/qwik";
+// import { component$, createContextId, noSerialize, useComputed$, useContext, useContextProvider, useSignal, useStore, useVisibleTask$ } from "@qwik.dev/core";
 
 // const ContextList = createContextId<ListState<any, any>>('ContextList');
 // interface ListState<T, Search extends Record<string, any>> {

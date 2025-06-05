@@ -1,5 +1,5 @@
-import type { PropsOf } from '@builder.io/qwik';
-import { component$, useStyles$ } from '@builder.io/qwik';
+import type { PropsOf } from '@qwik.dev/core';
+import { component$, useStyles$ } from '@qwik.dev/core';
 import { PokemonTypeIcon } from './type-icon';
 import type { PokemonType } from '~/model';
 

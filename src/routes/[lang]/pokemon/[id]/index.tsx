@@ -1,6 +1,6 @@
-import { $, component$, useOnDocument, useSignal, useStyles$, useTask$ } from "@builder.io/qwik";
-import type { DocumentHead, StaticGenerateHandler} from "@builder.io/qwik-city";
-import { routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
+import { $, component$, useOnDocument, useSignal, useStyles$, useTask$ } from "@qwik.dev/core";
+import type { DocumentHead, StaticGenerateHandler} from "@qwik.dev/router";
+import { routeLoader$, useLocation, useNavigate } from "@qwik.dev/router";
 import { PokemonImg } from "~/components/img/img";
 import type { Pokemon } from "~/model/pokemon";
 import { langs, types } from '~/data';
@@ -75,7 +75,7 @@ const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
         <article onTouchStart$={swipe} class="page-slide-up">
           <div class="images">
             <PokemonImg class="pokemon-img" pokemon={pokemon} eager sizes="(max-width: 400px) 300px, 375px" />
-            <PokemonVariety pokemon={pokemon} class="pokemon-varieties animated-section" stoppropagation:touchstart />
+            <PokemonVariety pokemon={pokemon} class="pokemon-varieties page-slide-up" stoppropagation:touchstart />
           </div>
           <div class="pokemon-profile">    
             <PokemonTypes types={pokemon.types} />

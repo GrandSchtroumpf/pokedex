@@ -1,4 +1,4 @@
-import { component$, createContextId, useContext, useContextProvider, useStore } from "@builder.io/qwik";
+import { component$, createContextId, useContext, useContextProvider, useStore } from "@qwik.dev/core";
 
 type RuleType = 'prefetch' | 'prerender';
 type RuleSource = 'list' | 'document';

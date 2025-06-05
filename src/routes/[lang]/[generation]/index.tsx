@@ -1,7 +1,7 @@
-import { $, component$, createContextId, isServer, untrack, useContext, useContextProvider, useSignal, useStyles$, useTask$, useVisibleTask$ } from "@builder.io/qwik";
-import type { Signal } from "@builder.io/qwik";
-import type { DocumentHead, StaticGenerateHandler} from "@builder.io/qwik-city";
-import { routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
+import { $, component$, createContextId, isServer, untrack, useContext, useContextProvider, useSignal, useStyles$, useTask$, useVisibleTask$ } from "@qwik.dev/core";
+import type { Signal } from "@qwik.dev/core";
+import type { DocumentHead, StaticGenerateHandler} from "@qwik.dev/router";
+import { routeLoader$, useLocation, useNavigate } from "@qwik.dev/router";
 import { PokemonImg } from "~/components/img/img";
 import { generations, langs, types } from "~/data";
 import type { Generation, PokemonItem } from "~/model";
@@ -58,7 +58,7 @@ const PokemonPage = component$<PokemonPage>(({ pokemon, eager }) => {
 
 
   return <>
-    <article class="pokemon-page theme" aria-labelledby="pokemon-name" style={style} onTouchStart$={swipe}>
+    <article class="pokemon-page theme page-slide-up" aria-labelledby="pokemon-name" style={style} onTouchStart$={swipe}>
       <Anchor href={`/${params.lang}/pokemon/${pokemon.id}`}>
         <PokemonImg class="pokemon-img" pokemon={pokemon} eager={eager} sizes="(max-width: 400px) 200px, 375px" />
       </Anchor>

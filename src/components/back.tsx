@@ -1,7 +1,7 @@
-import type { QwikJSX} from "@builder.io/qwik";
-import { Slot, component$ } from "@builder.io/qwik";
-import type { LinkProps} from "@builder.io/qwik-city";
-import { useLocation } from "@builder.io/qwik-city";
+import type { QwikJSX} from "@qwik.dev/core";
+import { Slot, component$ } from "@qwik.dev/core";
+import type { LinkProps} from "@qwik.dev/router";
+import { useLocation } from "@qwik.dev/router";
 
 type BackProps = LinkProps & QwikJSX.IntrinsicElements['button'];
 // interface BackProps extends LinkProps {}

@@ -1,5 +1,5 @@
-import { component$ } from "@builder.io/qwik";
-import { useLocation } from "@builder.io/qwik-city";
+import { component$ } from "@qwik.dev/core";
+import { useLocation } from "@qwik.dev/router";
 import type { Generation } from "~/model";
 
 export const PreloadPokemons = component$<{ generations: Generation[]}>(({ generations }) => {

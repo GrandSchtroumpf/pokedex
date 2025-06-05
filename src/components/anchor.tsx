@@ -1,6 +1,6 @@
-import type { PropsOf} from "@builder.io/qwik";
-import { $, component$, Slot, useComputed$, useId, useOn } from "@builder.io/qwik";
-import { Link, useLocation } from "@builder.io/qwik-city";
+import type { PropsOf} from "@qwik.dev/core";
+import { $, component$, Slot, useComputed$, useId, useOn } from "@qwik.dev/core";
+import { Link, useLocation } from "@qwik.dev/router";
 import type { PokemonItem } from "~/model";
 
 export const Anchor = component$<PropsOf<'a'>>((props) => {

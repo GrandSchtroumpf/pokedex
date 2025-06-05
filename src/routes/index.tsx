@@ -1,5 +1,5 @@
-import { component$, useStyles$} from "@builder.io/qwik";
-import { routeLoader$, type DocumentHead } from "@builder.io/qwik-city";
+import { component$, useStyles$} from "@qwik.dev/core";
+import { routeLoader$, type DocumentHead } from "@qwik.dev/router";
 import type { Language } from "pokenode-ts";
 import { Logo } from "~/components/logo";
 import style from './index.scss?inline';

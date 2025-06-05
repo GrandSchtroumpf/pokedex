@@ -1,5 +1,5 @@
-import type { QwikJSX} from '@builder.io/qwik';
-import { component$ } from '@builder.io/qwik';
+import type { QwikJSX} from '@qwik.dev/core';
+import { component$ } from '@qwik.dev/core';
 import type { PokemonItem } from '~/model/pokemon';
 
 type Attributes<T extends keyof QwikJSX.IntrinsicElements> = QwikJSX.IntrinsicElements[T];
