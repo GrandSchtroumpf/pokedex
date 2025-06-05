@@ -84,7 +84,7 @@ export const PokemonLink = component$<Props>(({ pokemon, ...props }) => {
 
   return <Link
     {...props}
-    href={`${url.origin}/${params.lang}/pokemon/${pokemon.id}`}
+    href={`${url.origin}/${params.lang}/pokemon/${pokemon?.id}`}
     onMouseEnter$={prefetch}
     onTouchStart$={prefetch}
     onFocus$={prefetch}
