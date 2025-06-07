@@ -29,7 +29,7 @@ const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
   const nav = useNavigate();
 
   useTask$(() => {
-    rules.push({ type: 'prerender', eagerness: 'eager', source: 'list', urls: [`/${params.lang}/`] })
+    rules.push({ type: 'prerender', eagerness: 'moderate', source: 'list', urls: [`/${params.lang}/`] })
   });
 
   useOnDocument('qviewTransition', $((e: CustomEvent<ViewTransition>) => {

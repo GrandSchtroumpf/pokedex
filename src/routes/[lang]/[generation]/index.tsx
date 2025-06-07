@@ -13,6 +13,7 @@ import { readFile } from "node:fs/promises";
 import { PokemonTypes } from "~/components/pokemon/types";
 import { PokemonName } from "~/components/pokemon/name";
 import style from './index.scss?inline';
+import { useSpeculativeRules } from "~/hooks/useSpeculative";
 
 
 export const useGeneration = routeLoader$(async ({ params }) => {
@@ -143,10 +144,14 @@ export default component$(() => {
   const { url, params } = useLocation();
   const [, initialId = '1'] = untrack(() => url.hash.split('-'));
   const activeId = useSignal(Number(initialId));
+  const rules = useSpeculativeRules();
   useContextProvider(ActiveIdContext, activeId);
 
   const pokemons = usePokemonList();
 
+  useTask$(() => {
+    rules.push({ type: 'prerender', eagerness: 'moderate', source: 'list', urls: [`/${params.lang}/`] });
+  })
   useTask$(({ track }) => {
     const id = track(activeId);
     if (isServer) return;

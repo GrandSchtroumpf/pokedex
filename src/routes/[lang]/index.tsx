@@ -59,6 +59,7 @@ export default component$(() => {
   useTask$(() => {
     const urls = generations.value.map((g) => `/${params.lang}/${g.id}/`);
     rules.push({ type: 'prerender', urls, source: 'list', eagerness: 'moderate' });
+    rules.push({ type: 'prerender', where: { href_matches: '/*/pokemon/*' }, eagerness: 'moderate' });
   });
 
   useTask$(({ cleanup }) => {
