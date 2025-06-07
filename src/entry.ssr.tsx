@@ -27,8 +27,5 @@ export default function (opts: RenderToStreamOptions) {
       ...opts.containerAttributes,
       lang: lang
     },
-    preloader: {
-      ssrPreloads: 0
-    }
   });
 }

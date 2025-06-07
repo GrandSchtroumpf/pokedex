@@ -1,5 +1,5 @@
 import type { PropsOf} from "@qwik.dev/core";
-import { component$, useStyles$, $, useSignal, useOn } from "@qwik.dev/core";
+import { component$, useStyles$, $, useSignal, useId, useVisibleTask$ } from "@qwik.dev/core";
 import type { PokemonItem, Generation } from "~/model";
 import { PokemonAnchor } from "../anchor";
 import { PokemonImg } from "../img/img";
@@ -39,26 +39,51 @@ export const GenerationSection = component$<Props>(({ generation, pokemons, ...p
 })
 
 export const LazyGenerationSection = component$<Props>(({ generation, pokemons, ...props }) => {
+  useStyles$(style);
   const list = useSignal<PokemonItem[]>([]);
+  const max = useSignal(0);
   const { url, params } = useLocation();
-  useOn('qvisible', $(async () => {
+  const targetId = useId();
+
+  useVisibleTask$(async () => {
     const res = await fetch(`${url.origin}/data/${params.lang}/generation/${generation.id}.json`);
     const result: PokemonItem[] = await res.json();
     list.value = result.filter(p => !p.formName);
-  }));
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) max.value = list.value.length;
+      else max.value = 0;
+    });
+    const target = document.getElementById(targetId)!;
+    observer.observe(target);
+    const timeout = setTimeout(() => {
+      target.removeAttribute('data-initial-load');
+    }, result.length * 10);
+    return () => {
+      clearTimeout(timeout);
+      observer.disconnect();
+    }
+    // Note: no need to cleanup since we do MPA
+  });
+
   return (
     <section {...props} data-generation-section id={generation.id}>
       <h2>{generation.name}</h2>
-      <nav style={{'--size': pokemons.filter(p => !p.formName).length}}>
-        {list.value.map((pokemon) => (
+      <nav id={targetId} style={{'--size': pokemons.filter(p => !p.formName).length}} class="page-slide-up" data-initial-load>
+        {list.value.slice(0, max.value).map((pokemon) => (
           <PokemonAnchor
             key={pokemon.id}
             pokemon={pokemon}
-            class="page-slide-up"
+            
             style={{ '--translate-y': `${Math.random() * 400}px`, '--scale': Math.random() / 2}}
             onClick$={beforeNavigate}
           >
-            <PokemonImg pokemon={pokemon} width="100" height="100" noViewTransition />
+            <PokemonImg
+              pokemon={pokemon}
+              width="100"
+              height="100"
+              noViewTransition
+              style={{ '--delay': `${Math.random() * 100}ms` }}
+              />
           </PokemonAnchor>
         ))}
       </nav>

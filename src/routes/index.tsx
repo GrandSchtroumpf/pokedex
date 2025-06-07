@@ -2,10 +2,10 @@ import { component$, useStyles$} from "@qwik.dev/core";
 import { routeLoader$, type DocumentHead } from "@qwik.dev/router";
 import type { Language } from "pokenode-ts";
 import { Logo } from "~/components/logo";
-import style from './index.scss?inline';
 import { join } from "node:path";
 import { cwd } from "node:process";
 import { readFile } from "node:fs/promises";
+import style from './index.scss?inline';
 
 export const useLanguages = routeLoader$(async () => {
   const path = join(cwd(), 'public/data/en/languages.json');

@@ -15,6 +15,7 @@ import { Anchor, PokemonLink } from "~/components/anchor";
 import { PokemonGeneration } from "~/components/pokemon/generation";
 import { PokemonVariety } from "~/components/pokemon/variety";
 import style from './index.scss?inline';
+import { useSpeculativeRules } from "~/hooks/useSpeculative";
 
 export const useServerPokemon = routeLoader$(async ({ params }) => {
   const path = join(cwd(), 'public/data', params.lang, 'pokemon', `${params.id}.json`);
@@ -24,7 +25,13 @@ export const useServerPokemon = routeLoader$(async ({ params }) => {
 
 const Content = component$<{ pokemon: Pokemon }>(({ pokemon }) => {
   const { params } = useLocation();
+  const rules = useSpeculativeRules();
   const nav = useNavigate();
+
+  useTask$(() => {
+    rules.push({ type: 'prerender', eagerness: 'eager', source: 'list', urls: [`/${params.lang}/`] })
+  });
+
   useOnDocument('qviewTransition', $((e: CustomEvent<ViewTransition>) => {
     const viewtransition = e.detail;
     viewtransition.types.add('pokemon-page');

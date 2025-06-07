@@ -12,7 +12,7 @@ import { join } from "node:path";
 import { cwd } from "node:process";
 import { PokemonTypes } from "~/components/pokemon/types";
 import { PokemonName } from "~/components/pokemon/name";
-import { GenerationSection, LazyGenerationSection } from "~/components/generation/generation";
+import { LazyGenerationSection } from "~/components/generation/generation";
 import SearchWorker from './search.worker?worker';
 import style from './index.scss?inline';
 import { FilterTypes } from "~/components/filter/types";
@@ -57,7 +57,7 @@ export default component$(() => {
   const filterTypes = useSignal<TypeName[]>([]);
 
   useTask$(() => {
-    const urls = generations.value.map((g) => `/${params.lang}/${g.id}`);
+    const urls = generations.value.map((g) => `/${params.lang}/${g.id}/`);
     rules.push({ type: 'prerender', urls, source: 'list', eagerness: 'moderate' });
   });
 
@@ -196,7 +196,7 @@ export default component$(() => {
         <GenerationList generations={generations.value} />
         {generations.value.map((generation, i) => {
           if (i === 0) {
-            return <GenerationSection key={generation.id} generation={generation} pokemons={pokemonRecord.value[generation.id]} />
+            return <LazyGenerationSection key={generation.id} generation={generation} pokemons={pokemonRecord.value[generation.id]} />
           } else {
             return <LazyGenerationSection key={generation.id} generation={generation} pokemons={pokemonRecord.value[generation.id]} />
           }

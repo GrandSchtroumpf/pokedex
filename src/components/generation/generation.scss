@@ -4,6 +4,7 @@ $max: 2000;
 $step: 100;
 $cardSize: 100;
 
+
 [data-generation-section] {
   padding: 24px 16px;
   display: grid;
@@ -21,6 +22,9 @@ $cardSize: 100;
     gap: var(--gap);
     place-items: center;
   }
+  nav[data-initial-load] a img {
+      animation: pokemon-slide-up 400ms var(--delay) var(--ease-out) backwards;
+  }
 
   a {
     --size: 100px;
@@ -28,8 +32,6 @@ $cardSize: 100;
     animation-name: pokemon-list-entry;
     animation-duration: 1ms;
     animation-fill-mode: both;
-    contain: strict;
-    contain-intrinsic-size: var(--card-size);
     width: var(--card-size);
     height: var(--card-size);
     img {
@@ -67,11 +69,12 @@ $cardSize: 100;
   }
 }
 
-html:active-view-transition-type(page-transition) {
-  [data-generation-section] a {
-    animation-name: pokemon-list-entry, viewport-transition;
+html.navigating {
+  [data-generation-section] nav[data-initial-load] a img {
+    animation: none;
   }
 }
+
 
 @keyframes pokemon-list-entry {
   0% {
@@ -85,5 +88,13 @@ html:active-view-transition-type(page-transition) {
   100% {
     transform: translateY(calc(-0.3 * var(--translate-y, 0))) scale(var(--scale, 0));
     opacity: 0.2;
+  }
+}
+
+
+@keyframes pokemon-slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(100px) scale(0.7);
   }
 }

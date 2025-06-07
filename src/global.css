@@ -10,7 +10,7 @@
 }
 
 @property --view-transition-name {
-  syntax: "<string>";
+  syntax: "<custom-ident>";
   inherits: false;
   initial-value: match-element;
 }
@@ -248,11 +248,6 @@ a {
 
 html:active-view-transition-type(page-transition) {
   .page-slide-up {
-    --view-transition-name: match-element;
-    /* animation-timeline: view(block);
-    animation-name: viewport-transition;
-    animation-duration: 1ms;
-    animation-fill-mode: both; */
     view-transition-class: animated-section;
     view-transition-name: var(--view-transition-name);
   }
@@ -278,11 +273,11 @@ html:active-view-transition-type(pokemon-page) {
   }
   &::view-transition-old(.pokemon-img):only-child {
     animation-name: scale-up;
+    animation-direction: reverse;
     animation-duration: 200ms;
   }
   &::view-transition-new(.pokemon-img):only-child {
     animation-name: scale-up;
-    animation-direction: reverse;
     animation-duration: 200ms;
   }
 }
@@ -315,7 +310,7 @@ html:active-view-transition-type(pokemon-page) {
 }
 
 @keyframes scale-up {
-  100% {
+  0% {
     transform: scale(0.6);
     opacity: 0;
   }
@@ -339,6 +334,6 @@ html:active-view-transition-type(pokemon-page) {
     view-transition-name: none;
   }
   1%, 99% {
-    view-transition-name: var(--view-transition-name, match-element);
+    view-transition-name: var(--view-transition-name);
   }
 }
