@@ -59,7 +59,7 @@ export const PokemonAnchor = component$<Props>(({ pokemon, ...props }) => {
   useOn('focus', prefetch);
 
 
-  return <a {...props} href={`${url.origin}/${params.lang}/pokemon/${pokemon.id}`}>
+  return <a {...props} href={`${url.origin}/${params.lang}/pokemon/${pokemon.id}`} data-pokemon-anchor>
     <Slot />
   </a>
 })

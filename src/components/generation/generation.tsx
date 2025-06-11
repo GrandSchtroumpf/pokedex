@@ -1,5 +1,5 @@
 import type { PropsOf} from "@qwik.dev/core";
-import { component$, useStyles$, $, useSignal, useId, useVisibleTask$ } from "@qwik.dev/core";
+import { component$, useStyles$, $, useSignal, useId, useVisibleTask$, useOn, Slot } from "@qwik.dev/core";
 import type { PokemonItem, Generation } from "~/model";
 import { PokemonAnchor } from "../anchor";
 import { PokemonImg } from "../img/img";
@@ -16,30 +16,39 @@ const beforeNavigate = $((event: Event, el: HTMLElement) => {
   img.style.viewTransitionName = img.dataset.viewTransitionName!;
 });
 
-export const GenerationSection = component$<Props>(({ generation, pokemons, ...props }) => {
+export const FirstGenerationSection = component$<Props>(({ generation, pokemons, ...props }) => {
   useStyles$(style);
+  const visible = useSignal(false);
+  useOn('qvisible', $(() => visible.value = true));
   return (
     <section {...props} data-generation-section>
       <h2 class="page-slide-up">{generation.name}</h2>
-      <nav style={{'--size': pokemons.filter(p => !p.formName).length}}>
-        {pokemons.filter(p => !p.formName).map((pokemon, i) => (
-          <PokemonAnchor
-            key={pokemon.id}
-            pokemon={pokemon}
-            class="page-slide-up"
-            style={{ '--translate-y': `${Math.random() * 400}px`, '--scale': Math.random() / 2 }}
-            onClick$={beforeNavigate}
-          >
-            <PokemonImg pokemon={pokemon} width="100" height="100" noViewTransition eager={i < 30} />
-          </PokemonAnchor>
-        ))}
+      <nav id="first-gen-target" class="page-slide-up" style={{'--size': pokemons.filter(p => !p.formName).length}}>
+        {visible.value && <Slot />}
       </nav>
     </section>
   )
+});
+
+export const GenerationPokemonList = component$<{ pokemons: PokemonItem[] }>(({ pokemons }) => {
+  return (
+    <>
+      {pokemons.filter(p => !p.formName).map((pokemon, i) => (
+        <PokemonAnchor
+          key={pokemon.id}
+          pokemon={pokemon}
+          style={{ '--translate-y': `${Math.random() * 400}px`, '--scale': Math.random() / 2 }}
+          onClick$={beforeNavigate}
+        >
+          <PokemonImg pokemon={pokemon} width="100" height="100" noViewTransition eager={i < 30} />
+        </PokemonAnchor>
+      ))}
+    </>
+  )
 })
 
+
 export const LazyGenerationSection = component$<Props>(({ generation, pokemons, ...props }) => {
-  useStyles$(style);
   const list = useSignal<PokemonItem[]>([]);
   const max = useSignal(0);
   const { url, params } = useLocation();
@@ -62,7 +71,6 @@ export const LazyGenerationSection = component$<Props>(({ generation, pokemons, 
       clearTimeout(timeout);
       observer.disconnect();
     }
-    // Note: no need to cleanup since we do MPA
   });
 
   return (

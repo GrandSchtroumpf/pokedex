@@ -12,7 +12,7 @@ import { join } from "node:path";
 import { cwd } from "node:process";
 import { PokemonTypes } from "~/components/pokemon/types";
 import { PokemonName } from "~/components/pokemon/name";
-import { LazyGenerationSection } from "~/components/generation/generation";
+import { FirstGenerationSection, GenerationPokemonList, LazyGenerationSection } from "~/components/generation/generation";
 import SearchWorker from './search.worker?worker';
 import style from './index.scss?inline';
 import { FilterTypes } from "~/components/filter/types";
@@ -59,7 +59,7 @@ export default component$(() => {
   useTask$(() => {
     const urls = generations.value.map((g) => `/${params.lang}/${g.id}/`);
     rules.push({ type: 'prerender', urls, source: 'list', eagerness: 'moderate' });
-    rules.push({ type: 'prerender', where: { href_matches: '/*/pokemon/*' }, eagerness: 'moderate' });
+    rules.push({ type: 'prerender', where: { selector_matches: '[data-pokemon-anchor]' }, eagerness: 'moderate' });
   });
 
   useTask$(({ cleanup }) => {
@@ -197,7 +197,11 @@ export default component$(() => {
         <GenerationList generations={generations.value} />
         {generations.value.map((generation, i) => {
           if (i === 0) {
-            return <LazyGenerationSection key={generation.id} generation={generation} pokemons={pokemonRecord.value[generation.id]} />
+            return (
+              <FirstGenerationSection key={generation.id} generation={generation} pokemons={pokemonRecord.value[generation.id]}>
+                <GenerationPokemonList pokemons={pokemonRecord.value[generation.id]} />
+              </FirstGenerationSection>
+            )
           } else {
             return <LazyGenerationSection key={generation.id} generation={generation} pokemons={pokemonRecord.value[generation.id]} />
           }
